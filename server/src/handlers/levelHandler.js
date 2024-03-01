@@ -1,3 +1,5 @@
+const pool = require("../dataBase/conexion");
+
 const postLevel = (request, response) => {
   try {
     const data = 1;
@@ -7,9 +9,9 @@ const postLevel = (request, response) => {
   }
 };
 
-const getLevelAll = (request, response) => {
+const getLevelAll = async (request, response) => {
   try {
-    const data = 1;
+    const data = await pool.query("select * from level");
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
