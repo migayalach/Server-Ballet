@@ -11,9 +11,3 @@ const pool = createPool({
 });
 
 module.exports = pool;
-
-// host: "localhost",
-// user: "root",
-// password: "",
-// port: 3308,
-// database: "ballet",
