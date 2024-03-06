@@ -1,7 +1,6 @@
 const server = require("../app");
 const session = require("supertest");
 const agent = session(server);
-const { createLevel } = require("../controllers/levelController");
 
 describe("TEST CRUD DE RUTA LEVEL", () => {
   describe("Request GET all /academy/level", () => {
@@ -68,16 +67,3 @@ describe("TEST CRUD DE RUTA LEVEL", () => {
     });
   });
 });
-
-// test("There cam be no repeats, response status 400", async () => {
-//   const response = await agent.post(`/academy/level`).send(data3);
-//   expect({nameLevel: "Admin"}).toEqual([])
-// });
-
-// describe("Test fuctions", () => {
-//   describe("POST LEVEL", () => {});
-//   describe("GET ALL LEVEL", () => {});
-//   describe("GET ID LEVEL", () => {});
-//   describe("UPDATE LEVEL", () => {});
-//   describe("DELETE LEVEL", () => {});
-// });
