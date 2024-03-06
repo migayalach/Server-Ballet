@@ -1,44 +1,54 @@
-const pool = require("../dataBase/conexion");
+const {
+  createLevel,
+  getAllLevel,
+  getIdLevel,
+  updateLevel,
+  removeLevel,
+} = require("../controllers/levelController");
 
-const postLevel = (request, response) => {
+const postLevel = async (request, response) => {
+  const { nameLevel } = request.body;
   try {
-    const data = 1;
+    const data = await createLevel(nameLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getLevelAll = async (request, response) => {
+const getLevelAll = (request, response) => {
   try {
-    const data = await pool.query("select * from level");
+    const data = getAllLevel();
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getLevelId = (request, response) => {
+const getLevelId = async (request, response) => {
+  const { idLevel } = request.params;
   try {
-    const data = 1;
+    const data = await getIdLevel(idLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const putLevel = (request, response) => {
+const putLevel = async (request, response) => {
+  const { idLevel, nameLevel } = request.body;
   try {
-    const data = 1;
+    const data = await updateLevel(idLevel, nameLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const deleteLevel = (request, response) => {
+const deleteLevel = async (request, response) => {
+  const { idLevel } = request.params;
   try {
-    const data = 1;
+    const data = await removeLevel(idLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
