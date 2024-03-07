@@ -1,33 +1,32 @@
 const { responseData } = require("../utils/response");
 const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
 
-const getAllUser = () => {
+const getAllExtension = () => {
   return;
 };
 
-const getIdUser = (idUser) => {
+const getIdExtension = (idUser) => {
   if (!toNumber(idUser)) {
     throw Error(`El parametro debe ser un numero`);
   }
   return;
 };
 
-const createUser = (idLevel, nameUser, emailUser, registrationNumber) => {
-  
+const createExtension = (idLevel, nameUser, emailUser, registrationNumber) => {
   if (!lengthNameLevel(nameUser)) {
     throw Error(`Por favor ingrese un nombre para el usuario`);
   }
   return;
 };
 
-const updateUser = () => {};
+const updateExtension = () => {};
 
-const removeUser = () => {};
+const removeExtension = () => {};
 
 module.exports = {
-  createUser,
-  getAllUser,
-  getIdUser,
-  updateUser,
-  removeUser,
+  getAllExtension,
+  getIdExtension,
+  createExtension,
+  updateExtension,
+  removeExtension,
 };

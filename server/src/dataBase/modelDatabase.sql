@@ -8,16 +8,25 @@ create table level(
   primary key(idLevel)
 );
 
+create table extension(
+  idExtension int auto_increment not null,
+  nameExtension varchar (4) unique not null,
+  primary key(idExtension) 
+);
+
 create table user(
   idUser int auto_increment not null,
   idLevel int not null,
+  idExtension int not null,
   nameUser varchar(100) not null,
   emailUser varchar(100) unique not null,
+  carnet int unique not null,
   registrationNumber varchar(20) unique not null,
   enabled boolean default false not null,
   password varchar(100) not null,
   primary key(idUser),
-  foreign key(idLevel) references level(idLevel)
+  foreign key(idLevel) references level(idLevel),
+  foreign key(idExtension) references extension(idExtension)
 );
 
 create table class(
