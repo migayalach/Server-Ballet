@@ -1,5 +1,10 @@
 const { responseData } = require("../utils/response");
-const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
+const {
+  isNumber,
+  lengthNameLevel,
+  toNumber,
+  lengthElderForElementents,
+} = require("../helpers/funcAux");
 
 const getAllExtension = () => {
   return;
@@ -12,16 +17,41 @@ const getIdExtension = (idUser) => {
   return;
 };
 
-const createExtension = (idLevel, nameUser, emailUser, registrationNumber) => {
-  if (!lengthNameLevel(nameUser)) {
-    throw Error(`Por favor ingrese un nombre para el usuario`);
+const createExtension = (nameExtension) => {
+  if (toNumber(nameExtension)) {
+    throw Error(`El parametro no debe ser un numero`);
+  }
+  if (!lengthNameLevel(nameExtension)) {
+    throw Error(`Por favor ingrese un nombre para la extension`);
+  }
+  if (!lengthElderForElementents(nameExtension)) {
+    throw Error(`La extension no debe ser mayor a cuatro caracteres`);
   }
   return;
 };
 
-const updateExtension = () => {};
+const updateExtension = (idExtension, nameExtension) => {
+  if (!toNumber(idExtension)) {
+    throw Error(`El parametro debe ser un numero`);
+  }
+  if (!lengthNameLevel(nameExtension)) {
+    throw Error(`Por favor ingrese un nombre para la extension`);
+  }
+  if (!lengthElderForElementents(nameExtension)) {
+    throw Error(`La extension no debe ser mayor a cuatro caracteres`);
+  }
+  if (toNumber(nameExtension)) {
+    throw Error(`El nombre de la extension no debe ser un numero`);
+  }
+  return;
+};
 
-const removeExtension = () => {};
+const removeExtension = (idExtension) => {
+  if (!toNumber(idExtension)) {
+    throw Error(`El parametro debe ser un numero`);
+  }
+  return;
+};
 
 module.exports = {
   getAllExtension,

@@ -8,6 +8,10 @@ create table level(
   primary key(idLevel)
 );
 
+create table staff(
+  
+);
+
 create table extension(
   idExtension int auto_increment not null,
   nameExtension varchar (4) unique not null,
@@ -32,6 +36,7 @@ create table user(
 create table class(
   idClass int auto_increment not null,
   nameClass varchar(255) unique not null,
+
   primary key(idClass)
 );
 

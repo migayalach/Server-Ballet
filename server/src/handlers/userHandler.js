@@ -28,19 +28,19 @@ const getUserId = (request, response) => {
 const postUser = (request, response) => {
   const {
     idLevel,
+    idExtension,
     nameUser,
     emailUser,
     carnet,
-    extension,
     registrationNumber,
   } = request.body;
   try {
     const data = createUser(
       idLevel,
+      idExtension,
       nameUser,
       emailUser,
       carnet,
-      extension,
       registrationNumber
     );
     response.status(200).json(data);
@@ -50,8 +50,25 @@ const postUser = (request, response) => {
 };
 
 const putUser = (request, response) => {
+  const {
+    idUser,
+    idLevel,
+    idExtension,
+    nameUser,
+    emailUser,
+    carnet,
+    registrationNumber,
+  } = request.body;
   try {
-    const data = 1;
+    const data = updateUser(
+      idUser,
+      idLevel,
+      idExtension,
+      nameUser,
+      emailUser,
+      carnet,
+      registrationNumber
+    );
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -59,8 +76,9 @@ const putUser = (request, response) => {
 };
 
 const deleteUser = (request, response) => {
+  const { idUser } = request.params;
   try {
-    const data = 1;
+    const data = removeUser(idUser);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });

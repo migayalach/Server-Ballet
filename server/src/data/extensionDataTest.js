@@ -46,6 +46,8 @@ const deleteExtension = {
   idStringMix: "H123P",
 };
 
+const databaseExample = ["Or", "LP", "Scr"];
+
 module.exports = {
   postExtensionData1,
   postExtensionData2,
@@ -56,4 +58,5 @@ module.exports = {
   putExtensionData7,
   putExtensionData8,
   deleteExtension,
+  databaseExample,
 };

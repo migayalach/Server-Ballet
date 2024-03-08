@@ -32,44 +32,65 @@ describe("TEST CRUD DE RUTA USER", () => {
     });
   });
 
-  xdescribe("POST /academy/user", () => {
+  describe("POST /academy/user", () => {
     test("Add new User and key 'nameLevel' has data, response status 200", async () => {
       const response = await agent.post(`/academy/user`).send(user1);
       expect(response.status).toBe(200);
     });
     test("Add new level and key 'nameLevel' has not data, response status 400", async () => {
-      const response = await agent.post(`/academy/user`).send(data2);
+      const response = await agent.post(`/academy/user`).send(user2);
+      expect(response.status).toBe(400);
+    });
+    test("Add new User and key 'nameLevel' has data, response status 400", async () => {
+      const response = await agent.post(`/academy/user`).send(user3);
+      expect(response.status).toBe(400);
+    });
+    test("Add new level and key 'nameLevel' has not data, response status 400", async () => {
+      const response = await agent.post(`/academy/user`).send(user4);
+      expect(response.status).toBe(400);
+    });
+    test("Add new User and key 'nameLevel' has data, response status 400", async () => {
+      const response = await agent.post(`/academy/user`).send(user5);
+      expect(response.status).toBe(400);
+    });
+    test("Add new level and key 'nameLevel' has not data, response status 400", async () => {
+      const response = await agent.post(`/academy/user`).send(user6);
+      expect(response.status).toBe(400);
+    });
+    test("Add new User and key 'nameLevel' has data, response status 400", async () => {
+      const response = await agent.post(`/academy/user`).send(user7);
       expect(response.status).toBe(400);
     });
   });
 
-  xdescribe("UPDATE /academy/level", () => {
-    const data1 = { idLevel: 10, nameLevel: "Admin" };
-    const data2 = { idLevel: 20, nameLevel: "" };
-    const data3 = { idLevel: "str", nameLevel: "Standar" };
+  describe("UPDATE /academy/user", () => {
     test("Update level, key idLevel is number and'nameLevel' has data, response status 200", async () => {
-      const response = await agent.put(`/academy/level`).send(data1);
+      const response = await agent.put(`/academy/user`).send(user1);
       expect(response.status).toBe(200);
     });
     test("Update level, key idLevel is number and'nameLevel' has no data, response status 400", async () => {
-      const response = await agent.put(`/academy/level`).send(data2);
+      const response = await agent.put(`/academy/user`).send(user2);
       expect(response.status).toBe(400);
     });
     test("Update level, key idLevel is string and'nameLevel' has no data, response status 400", async () => {
-      const response = await agent.put(`/academy/level`).send(data3);
+      const response = await agent.put(`/academy/user`).send(user3);
+      expect(response.status).toBe(400);
+    });
+    test("Update level, key idLevel is string and'nameLevel' has no data, response status 400", async () => {
+      const response = await agent.put(`/academy/user`).send(user4);
       expect(response.status).toBe(400);
     });
   });
 
-  xdescribe("DELETE /academy/level", () => {
+  describe("DELETE /academy/user", () => {
     test("Param idLevel is number, response status 200", async () => {
-      const response = await agent.delete(`/academy/level/10`);
+      const response = await agent.delete(`/academy/user/10`);
       expect(response.statusCode).toBe(200);
     });
 
     test("Param idLevel is not to number, response status 400", async () => {
-      const idLevel = "!num";
-      const response = await agent.delete(`/academy/level/${idLevel}`);
+      const idUser = "!num";
+      const response = await agent.delete(`/academy/user/${idUser}`);
       expect(response.statusCode).toBe(400);
     });
   });
