@@ -20,9 +20,16 @@ function toNumber(idLevel) {
   return true;
 }
 
+function lengthElderForElementents(nameExtension) {
+  if (nameExtension.length > 4) {
+    return false;
+  }
+  return true;
+}
 
 module.exports = {
   isNumber,
   lengthNameLevel,
   toNumber,
+  lengthElderForElementents,
 };
