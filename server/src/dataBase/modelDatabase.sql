@@ -74,7 +74,7 @@ create table student(
   dateBirthStudent date not null,
   codeStudent varchar(20) unique not null,
   photoStudent text,
-  stateStudent boolean default false not null,
+  stateStudent boolean default true not null,
   primary key(idStudent),
   foreign key(idLevel) references level(idLevel),
   foreign key(idExtension) references extension(idExtension)
