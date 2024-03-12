@@ -15,6 +15,10 @@ const getAllLevel = async () => {
   return;
 };
 
+const getPageLevel = (page) => {
+  return;
+};
+
 const getIdLevel = async (idLevel) => {
   if (!toNumber(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
@@ -41,6 +45,7 @@ const removeLevel = async (idLevel) => {
 module.exports = {
   createLevel,
   getAllLevel,
+  getPageLevel,
   getIdLevel,
   updateLevel,
   removeLevel,
