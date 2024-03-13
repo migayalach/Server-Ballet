@@ -1,6 +1,19 @@
-const { responseData } = require("../utils/response");
+const responseData = require("../utils/response");
 const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
+const {
+  localDataBase,
+  LEVEL,
+  EXTENSION,
+  STAFF,
+  HOURS,
+  TYPECLASS,
+  CLASS,
+  STUDENT,
+  PAYMENT,
+  QUALIFICATION,
+  ASSISTANCE,
+} = require("../dataBase/dataBaseLocal");
 
 const createLevel = async (nameLevel) => {
   if (!lengthNameLevel(nameLevel)) {
@@ -9,14 +22,18 @@ const createLevel = async (nameLevel) => {
   return;
 };
 
-const getAllLevel = async () => {
+const getAllLevel = () => {
+  const page = 1;
   // const [response] = await pool.query("select * from level");
   // return responseData(response);
-  return;
+  // *TESTING
+  const response = responseData(LEVEL, "level", page);
+  return response;
 };
 
 const getPageLevel = (page) => {
-  return;
+  const response = responseData(LEVEL, "level", page);
+  return response;
 };
 
 const getIdLevel = async (idLevel) => {
