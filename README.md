@@ -47,3 +47,36 @@ DELETE
   PASO 3: DEVOLVER TODOS LOS DATOS CON LA RESPUESTA 1
 
 STATUS                  200 400
+
+
+[{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}] 
+*largo 10 elementos
+*quiero por pagina 2                       5 = 10 / 2
+                          [0] [1]
+PAGINA N° 1 ==> results: [{1},{2}]  
+                          [2] [3]
+PAGINA N° 2 ==> results: [{3},{4}]
+                          [4] [5]
+PAGINA N° 3 ==> results: [{5},{6}]
+                          [6] [7]
+PAGINA N° 4 ==> results: [{7},{8}]
+                          [8] [9]
+PAGINA N° 5 ==> results: [{9},{10}]
+
+*quiero por pagina 3
+                           [0] [1] [2]
+PAGINA N° 1 ==>  results: [{1},{2},{3}]
+                           [3] [4] [5]
+PAGINA N° 2 ==>  results: [{4},{5},{6}]
+                           [6] [7] [8]
+PAGINA N° 3 ==>  results: [{7},{8},{9}]
+                           [9] 
+PAGINA N° 4 ==>  results: [{10}]
+
+*quiero por pagina 8
+                           [0] [1] [2] [3]
+PAGINA N° 1 ==>  results: [{1},{2},{3},{4}]
+                           [4] [5] [6] [7]
+PAGINA N° 2 ==>  results: [{5},{6},{7},{8}]
+                           [8] [9]
+PAGINA N° 3 ==>  results: [{9},{10}]
