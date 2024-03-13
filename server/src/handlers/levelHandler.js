@@ -20,7 +20,7 @@ const postLevel = async (request, response) => {
 const getLevelAll = (request, response) => {
   const { page } = request.query;
   try {
-    const data = page ? getPageLevel(page) : getAllLevel();
+    const data = !page ? getAllLevel() : getPageLevel(page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
