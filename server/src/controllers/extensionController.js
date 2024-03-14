@@ -1,10 +1,24 @@
-const { responseData } = require("../utils/response");
+const responseData = require("../utils/response");
 const {
   isNumber,
   lengthNameLevel,
   toNumber,
   lengthElderForElementents,
 } = require("../helpers/funcAux");
+const pool = require("../dataBase/conexion");
+const {
+  localDataBase,
+  LEVEL,
+  EXTENSION,
+  STAFF,
+  HOURS,
+  TYPECLASS,
+  CLASS,
+  STUDENT,
+  PAYMENT,
+  QUALIFICATION,
+  ASSISTANCE,
+} = require("../dataBase/dataBaseLocal");
 
 const getAllExtension = () => {
   return;
