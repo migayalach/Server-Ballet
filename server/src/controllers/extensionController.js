@@ -20,15 +20,25 @@ const {
   ASSISTANCE,
 } = require("../dataBase/dataBaseLocal");
 
+function repeatedExtension(nameExtension) {
+  const data = EXTENSION.filter(
+    ({ departament }) => departament === nameExtension
+  );
+  if (data.length) {
+    return true;
+  }
+  return false;
+}
+
 const getAllExtension = () => {
-  return;
+  const page = 1;
+  const response = responseData(EXTENSION, "extension", page);
+  return response;
 };
 
-const getIdExtension = (idUser) => {
-  if (!toNumber(idUser)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
-  return;
+const getPageExtension = (page) => {
+  const response = responseData(EXTENSION, "extension", page);
+  return response;
 };
 
 const createExtension = (nameExtension) => {
@@ -38,10 +48,13 @@ const createExtension = (nameExtension) => {
   if (!lengthNameLevel(nameExtension)) {
     throw Error(`Por favor ingrese un nombre para la extension`);
   }
+  if (repeatedExtension(nameExtension)) {
+    throw Error(`No puedo haber extensiones repetidas`);
+  }
   if (!lengthElderForElementents(nameExtension)) {
     throw Error(`La extension no debe ser mayor a cuatro caracteres`);
   }
-  return;
+  return getAllExtension();
 };
 
 const updateExtension = (idExtension, nameExtension) => {
@@ -69,7 +82,7 @@ const removeExtension = (idExtension) => {
 
 module.exports = {
   getAllExtension,
-  getIdExtension,
+  getPageExtension,
   createExtension,
   updateExtension,
   removeExtension,
