@@ -1,6 +1,6 @@
 const {
   getAllExtension,
-  getIdExtension,
+  getPageExtension,
   createExtension,
   updateExtension,
   removeExtension,
@@ -17,8 +17,9 @@ const postExtension = (request, response) => {
 };
 
 const getExtensionAll = (request, response) => {
+  const { page } = request.query;
   try {
-    const data = 1;
+    const data = !page ? getAllExtension() : getPageExtension(page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
