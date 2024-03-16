@@ -47,8 +47,14 @@ const createStaff = (
   return getAllStaff();
 };
 
-const getAllStaff = () => {};
-const getPageStaff = () => {};
+const getAllStaff = () => {
+
+};
+
+const getPageStaff = (page) => {
+  
+};
+
 const getIdStaff = () => {};
 const updateStaff = () => {};
 const removeStaff = () => {};

@@ -3,21 +3,21 @@ const pool = require("../dataBase/conexion");
 const { LEVEL, EXTENSION, STAFF } = require("../dataBase/dataBaseLocal");
 
 function levelExist(idLevel) {
-  if (1) {
+  if (idLevel) {
     return false;
   }
   return true;
 }
 
 function extensionExist(idExtension) {
-  if (1) {
+  if (idExtension) {
     return false;
   }
   return true;
 }
 
 function userRepeated(carnetStaff) {
-  if (1) {
+  if (carnetStaff) {
     return false;
   }
   return true;
