@@ -32,7 +32,6 @@ const createStaff = (
   ) {
     throw Error(`Por favor ingrese los datos requeridos`);
   }
-
   if (isNumber(carnetStaff) || isNaN(carnetStaff)) {
     throw Error(`Por favor ingrese la extension de la CI del usuario`);
   }
@@ -42,8 +41,6 @@ const createStaff = (
   if (!userRepeated(carnetStaff)) {
     throw Error(`Este usuario ya se encuentra registrado`);
   }
-  
-  // CREATE
   return getAllStaff();
 };
 
