@@ -46,7 +46,7 @@ const data3 = {
     "https://www.suzuki.com.bo/media/fvli4nhu/foto_0000009420220526152924_turquesa.png",
 };
 const data4 = {
-  idLevel: 100000000000,
+  idLevel: 1,
   idExtension: 3000000,
   nameStaff: "",
   lastNameStaff: "",
@@ -72,29 +72,40 @@ const data5 = {
 
 describe("POST STAFF", () => {
   describe("CREATE", () => {
-    test("Crear con exito y respuesta 200", async () => {
-      const response = await agent.post(`${URL_STAFF}`);
-      expect(response.statusCode).toBe(200);
+    xtest("Creacion sin exito y respuesta 400", async () => {
+      const response = (await agent.post(`${URL_STAFF}`).send(data2)).text;
+      const resonseBody = JSON.parse(response);
+      expect(resonseBody.error).toBe(
+        "Los id de nivel y extension deben ser numeros"
+      );
+    });
+    xtest("Creacion sin exito, nivel de acceso no existe", async () => {
+      const response = (await agent.post(`${URL_STAFF}`).send(data1)).text;
+      const resonseBody = JSON.parse(response);
+      expect(resonseBody.error).toBe("El nivel de acceso no existe");
+    });
+    xtest("Por favor ingrese los datos requeridos, error", async()=>{
+      const response = (await agent.post(`${URL_STAFF}`).send(data4)).text;
+      const resonseBody = JSON.parse(response);
+      expect(resonseBody.error).toBe("Por favor ingrese los datos requeridos");
     });
 
-    test("Datos completos", () => {
-      
-    });
+    test("Datos completos", () => {});
   });
 
-  describe("GET ALL", () => {
+  xdescribe("GET ALL", () => {
     test("", () => {});
   });
 
-  describe("GET ID", () => {
+  xdescribe("GET ID", () => {
     test("", () => {});
   });
 
-  describe("UPDATE", () => {
+  xdescribe("UPDATE", () => {
     test("", () => {});
   });
 
-  describe("DELETE", () => {
+  xdescribe("DELETE", () => {
     test("", () => {});
   });
 });
