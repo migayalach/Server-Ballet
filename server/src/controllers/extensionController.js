@@ -20,44 +20,67 @@ const {
   ASSISTANCE,
 } = require("../dataBase/dataBaseLocal");
 
-function repeatedExtension(nameExtension) {
-  const data = EXTENSION.filter(
-    ({ departament }) => departament === nameExtension
+async function repeatedNameExtension(nameExtension) {
+  const [data] = await pool.query(
+    `SELECT department FROM extension WHERE department LIKE ?`,
+    [`%${nameExtension}%`]
   );
-  if (data.length) {
-    return true;
-  }
-  return false;
+  return data;
 }
 
-const getAllExtension = () => {
+async function repeatedExtension(nameExtension) {
+  const [data] = await pool.query(
+    `SELECT department FROM extension WHERE department LIKE ?`,
+    [`%${nameExtension}%`]
+  );
+  if (!data.length) {
+    return false;
+  }
+  return true;
+}
+
+const getAllExtension = async () => {
   const page = 1;
-  const response = responseData(EXTENSION, "extension", page);
-  return response;
+  const [response] = await pool.query(`SELECT * FROM extension`);
+  return responseData(response, "extension", page);
 };
 
-const getPageExtension = (page) => {
-  const response = responseData(EXTENSION, "extension", page);
-  return response;
+const getPageExtension = async (page) => {
+  const [response] = await pool.query(`SELECT * FROM extension`);
+  return responseData(response, "extension", page);
 };
 
-const createExtension = (nameExtension) => {
+const createExtension = async (nameExtension) => {
   if (toNumber(nameExtension)) {
     throw Error(`El parametro no debe ser un numero`);
   }
   if (!lengthNameLevel(nameExtension)) {
     throw Error(`Por favor ingrese un nombre para la extension`);
   }
-  if (repeatedExtension(nameExtension)) {
+  if (await repeatedExtension(nameExtension)) {
     throw Error(`No puedo haber extensiones repetidas`);
   }
   if (!lengthElderForElementents(nameExtension)) {
     throw Error(`La extension no debe ser mayor a cuatro caracteres`);
   }
-  return getAllExtension();
+  await pool.query(`INSERT INTO extension (department) VALUES(?)`, [
+    nameExtension,
+  ]);
+  return await getAllExtension();
 };
 
-const updateExtension = (idExtension, nameExtension) => {
+const getIdExtension = async (idExtension) => {
+  const [data] = await pool.query(
+    "SELECT * FROM extension WHERE idExtension = ?",
+    [idExtension]
+  );
+  if (!data.length) {
+    throw Error(`La extension que usted intenta modificar no existe`);
+  }
+  return data[0];
+};
+
+const updateExtension = async (idExtension, nameExtension) => {
   if (!toNumber(idExtension)) {
     throw Error(`El parametro debe ser un numero`);
   }
@@ -70,14 +93,25 @@ const updateExtension = (idExtension, nameExtension) => {
   if (toNumber(nameExtension)) {
     throw Error(`El nombre de la extension no debe ser un numero`);
   }
-  return;
+  if ((await repeatedNameExtension(nameExtension)).length) {
+    throw Error(`No puede haber elementos repetidos`);
+  }
+  await pool.query(
+    `UPDATE extension SET department = ? WHERE idExtension = ?`,
+    [nameExtension, idExtension]
+  );
+  return await getIdExtension(idExtension);
 };
 
-const removeExtension = (idExtension) => {
-  if (!toNumber(idExtension)) {
+const removeExtension = async (idExtension) => {
+  if (isNaN(idExtension)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  return;
+  await getIdExtension(+idExtension);
+  await pool.query(`DELETE FROM extension WHERE idExtension = ?`, [
+    idExtension,
+  ]);
+  return await getAllExtension();
 };
 
 module.exports = {
