@@ -3,21 +3,21 @@ const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
 const { LEVEL } = require("../dataBase/dataBaseLocal");
 
-function existIdLevel(idLevel) {
-  // TESTING
-  const data = LEVEL.find((index) => index.idLevel === idLevel);
-  if (!data) {
+async function existIdLevel(idLevel) {
+  const [data] = await pool.query(
+    `SELECT idLevel FROM level WHERE idLevel=${idLevel}`
+  );
+  if (!data.length) {
     return false;
   }
   return true;
 }
 
-function repeatedLevel(nameLevel) {
-  // TESTING
-  const data = LEVEL.find(
-    (index) => index.nameLevel === nameLevel.toUpperCase()
+async function repeatedLevel(nameLevel) {
+  const [data] = await pool.query(
+    `SELECT nameLevel from level WHERE nameLevel LIKE '%${nameLevel}%'`
   );
-  if (!data) {
+  if (!data.length) {
     return false;
   }
   return true;
@@ -27,57 +27,65 @@ const createLevel = async (nameLevel) => {
   if (!lengthNameLevel(nameLevel)) {
     throw Error(`Por favor ingrese un nombre para el nivel`);
   }
-  if (repeatedLevel(nameLevel)) {
+  if (await repeatedLevel(nameLevel)) {
     throw Error(`El nombre que intenta agregar ya existe`);
   }
+  await pool.query("INSERT INTO level (nameLevel) VALUES(?)", [nameLevel]);
   return getAllLevel();
 };
 
-const getAllLevel = () => {
+const getAllLevel = async () => {
   const page = 1;
-  // const [response] = await pool.query("select * from level");
-  // return responseData(response);
-  // *TESTING
+  const [response] = await pool.query("select * from level");
+  return responseData(response, "level", page);
+};
+
+const getPageLevel = async (page) => {
   const response = responseData(LEVEL, "level", page);
   return response;
 };
 
-const getPageLevel = (page) => {
-  const response = responseData(LEVEL, "level", page);
-  return response;
-};
-
-const getIdLevel = (idLevel) => {
-  if (!toNumber(idLevel)) {
+const getIdLevel = async (idLevel) => {
+  if (isNumber(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  // *TESTING
-  const response = LEVEL.find((index) => index.idLevel === +idLevel);
-  return response;
+  const [data] = await pool.query(`SELECT * FROM level WHERE idLevel = ?`, [
+    idLevel,
+  ]);
+  if (!data.length) {
+    throw Error(`El nivel que usted busca no se encuentra registrado`);
+  }
+  return data[0];
 };
 
 const updateLevel = async (idLevel, nameLevel) => {
   if (!toNumber(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
-  } else if (!lengthNameLevel(nameLevel)) {
+  }
+  if (!lengthNameLevel(nameLevel)) {
     throw Error(`Por favor ingrese un nombre para el nivel`);
   }
-  if (!existIdLevel(idLevel)) {
-    throw Error(`El nivel que usted quiere cambiar no existe`);
+  await getIdLevel(idLevel);
+  if (await repeatedLevel(nameLevel)) {
+    throw Error(`El nombre que quiere cambiar ya se encuentra registrado`);
   }
-  // TESTING
-  const [testing] = LEVEL.filter((index) => index.idLevel === idLevel);
-  return testing;
+  await existIdLevel(idLevel);
+  await pool.query(`UPDATE level SET nameLevel = ? WHERE idLevel = ?`, [
+    nameLevel,
+    idLevel,
+  ]);
+  return await getIdLevel(idLevel);
 };
 
 const removeLevel = async (idLevel) => {
   if (isNaN(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  if (!existIdLevel(+idLevel)) {
+  if (!(await existIdLevel(+idLevel))) {
     throw Error(`El nivel que usted quiere eliminar no existe`);
   }
-  return getAllLevel();
+  await pool.query(`DELETE FROM level WHERE idLevel = ?`, [idLevel]);
+  return await getAllLevel();
 };
 
 module.exports = {
