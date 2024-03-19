@@ -23,7 +23,7 @@ async function repeatedLevel(nameLevel) {
   return true;
 }
 
-const createLevel = async (nameLevel) => {
+const createHours = async (nameLevel) => {
   if (!lengthNameLevel(nameLevel)) {
     throw Error(`Por favor ingrese un nombre para el nivel`);
   }
@@ -34,18 +34,18 @@ const createLevel = async (nameLevel) => {
   return getAllLevel();
 };
 
-const getAllLevel = async () => {
+const getAllHours = async () => {
   const page = 1;
   const [response] = await pool.query("select * from level");
   return responseData(response, "level", page);
 };
 
-const getPageLevel = async (page) => {
+const getPageHours = async (page) => {
   const response = responseData(LEVEL, "level", page);
   return response;
 };
 
-const getIdLevel = async (idLevel) => {
+const getIdHours = async (idLevel) => {
   if (isNumber(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
@@ -58,7 +58,7 @@ const getIdLevel = async (idLevel) => {
   return data[0];
 };
 
-const updateLevel = async (idLevel, nameLevel) => {
+const updateHours = async (idLevel, nameLevel) => {
   if (!toNumber(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
@@ -77,7 +77,7 @@ const updateLevel = async (idLevel, nameLevel) => {
   return await getIdLevel(idLevel);
 };
 
-const removeLevel = async (idLevel) => {
+const removeHours = async (idLevel) => {
   if (isNaN(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
@@ -89,10 +89,10 @@ const removeLevel = async (idLevel) => {
 };
 
 module.exports = {
-  createLevel,
-  getAllLevel,
-  getPageLevel,
-  getIdLevel,
-  updateLevel,
-  removeLevel,
+  createHours,
+  getAllHours,
+  getPageHours,
+  getIdHours,
+  updateHours,
+  removeHours,
 };

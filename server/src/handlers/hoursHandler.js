@@ -1,56 +1,56 @@
 const {
-  createLevel,
-  getAllLevel,
-  getPageLevel,
-  getIdLevel,
-  updateLevel,
-  removeLevel,
-} = require("../controllers/levelController");
+  createHours,
+  getAllHours,
+  getPageHours,
+  getIdHours,
+  updateHours,
+  removeHours,
+} = require("../controllers/hoursController");
 
-const postLevel = async (request, response) => {
+const postHours = async (request, response) => {
   const { nameLevel } = request.body;
   try {
-    const data = await createLevel(nameLevel);
+    const data = await createHours(nameLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getLevelAll = async (request, response) => {
+const getHoursAllPage = async (request, response) => {
   const { page } = request.query;
   try {
-    const data = !page ? await getAllLevel() : await getPageLevel(page);
+    const data = !page ? await getAllHours() : await getPageHours(page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getLevelId = async (request, response) => {
+const getHoursId = async (request, response) => {
   const { idLevel } = request.params;
   try {
-    const data = await getIdLevel(idLevel);
+    const data = await getIdHours(idLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const putLevel = async (request, response) => {
+const putHours = async (request, response) => {
   const { idLevel, nameLevel } = request.body;
   try {
-    const data = await updateLevel(idLevel, nameLevel);
+    const data = await updateHours(idLevel, nameLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const deleteLevel = async (request, response) => {
+const deleteHours = async (request, response) => {
   const { idLevel } = request.params;
   try {
-    const data = await removeLevel(idLevel);
+    const data = await removeHours(idLevel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -58,9 +58,9 @@ const deleteLevel = async (request, response) => {
 };
 
 module.exports = {
-  postLevel,
-  getLevelAll,
-  getLevelId,
-  putLevel,
-  deleteLevel,
+  postHours,
+  getHoursAllPage,
+  getHoursId,
+  putHours,
+  deleteHours,
 };

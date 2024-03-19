@@ -1,5 +1,8 @@
 function isNumber(idLevel) {
-  if (typeof idLevel !== "number") {
+  if (typeof idLevel === "number") {
+    return false;
+  }
+  if (idLevel % 1 !== 0) {
     return false;
   }
   return true;
@@ -13,12 +16,15 @@ function lengthNameLevel(nameLevel) {
 }
 
 function toNumber(idLevel) {
-  const data = parseInt(idLevel);
-  if (isNumber(data) && isNaN(data)) {
+  if (typeof idLevel === "string") {
+    return false;
+  }
+  if (idLevel % 1 !== 0) {
     return false;
   }
   return true;
 }
+
 
 function lengthElderForElementents(nameExtension) {
   if (nameExtension.length > 4) {
