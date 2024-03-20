@@ -1,60 +1,35 @@
+const pool = require("../dataBase/conexion");
 const responseData = require("../utils/response");
 const {
   isNumber,
-  lengthNameLevel,
-  toNumber,
+  lengthName,
   lengthElderForElementents,
 } = require("../helpers/funcAux");
-const pool = require("../dataBase/conexion");
 const {
-  localDataBase,
-  LEVEL,
-  EXTENSION,
-  STAFF,
-  HOURS,
-  TYPECLASS,
-  CLASS,
-  STUDENT,
-  PAYMENT,
-  QUALIFICATION,
-  ASSISTANCE,
-} = require("../dataBase/dataBaseLocal");
-
-async function repeatedNameExtension(nameExtension) {
-  const [data] = await pool.query(
-    `SELECT department FROM extension WHERE department LIKE ?`,
-    [`%${nameExtension}%`]
-  );
-  return data;
-}
-
-async function repeatedExtension(nameExtension) {
-  const [data] = await pool.query(
-    `SELECT department FROM extension WHERE department LIKE ?`,
-    [`%${nameExtension}%`]
-  );
-  if (!data.length) {
-    return false;
-  }
-  return true;
-}
+  allExtension,
+  repeatedNameExtension,
+  repeatedExtension,
+} = require("./controllerData");
 
 const getAllExtension = async () => {
   const page = 1;
-  const [response] = await pool.query(`SELECT * FROM extension`);
+  const response = await allExtension();
   return responseData(response, "extension", page);
 };
 
 const getPageExtension = async (page) => {
-  const [response] = await pool.query(`SELECT * FROM extension`);
+  if (isNumber(page)) {
+    throw Error(`El numero de pagina debe ser un numero`);
+  }
+  const response = await allExtension();
   return responseData(response, "extension", page);
 };
 
 const createExtension = async (nameExtension) => {
-  if (toNumber(nameExtension)) {
+  if (isNumber(nameExtension)) {
     throw Error(`El parametro no debe ser un numero`);
   }
-  if (!lengthNameLevel(nameExtension)) {
+  if (!lengthName(nameExtension)) {
     throw Error(`Por favor ingrese un nombre para la extension`);
   }
   if (await repeatedExtension(nameExtension)) {
@@ -81,16 +56,16 @@ const getIdExtension = async (idExtension) => {
 };
 
 const updateExtension = async (idExtension, nameExtension) => {
-  if (!toNumber(idExtension)) {
+  if (!isNumber(idExtension)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  if (!lengthNameLevel(nameExtension)) {
+  if (!lengthName(nameExtension)) {
     throw Error(`Por favor ingrese un nombre para la extension`);
   }
   if (!lengthElderForElementents(nameExtension)) {
     throw Error(`La extension no debe ser mayor a cuatro caracteres`);
   }
-  if (toNumber(nameExtension)) {
+  if (isNumber(nameExtension)) {
     throw Error(`El nombre de la extension no debe ser un numero`);
   }
   if ((await repeatedNameExtension(nameExtension)).length) {
