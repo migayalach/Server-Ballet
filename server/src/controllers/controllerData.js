@@ -69,6 +69,34 @@ async function existIdHours(idHours) {
   return true;
 }
 
+// TYPE CLASS
+async function allTypeClass() {
+  const [data] = await pool.query(`SELECT * FROM typeClass`);
+  return data;
+}
+
+async function matchNameClass(nameClass) {
+  const [data] = await pool.query(
+    "SELECT nameClass FROM typeClass WHERE nameClass LIKE ? ",
+    [`%${nameClass}%`]
+  );
+  if (data.length) {
+    return true;
+  }
+  return false;
+}
+
+async function existIdTypeClass(idTypeClass) {
+  const [data] = await pool.query(
+    "SELECT idTypeClass FROM typeClass WHERE idTypeClass = ? ",
+    [idTypeClass]
+  );
+  if (!data.length) {
+    return false;
+  }
+  return true;
+}
+
 module.exports = {
   allLevel,
   existIdLevel,
@@ -78,4 +106,7 @@ module.exports = {
   repeatedExtension,
   allHours,
   existIdHours,
+  allTypeClass,
+  matchNameClass,
+  existIdTypeClass,
 };
