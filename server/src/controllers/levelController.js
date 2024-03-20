@@ -1,30 +1,10 @@
 const responseData = require("../utils/response");
-const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
+const { existIdLevel, repeatedLevel, allLevel } = require("./controllerData");
+const { isNumber, isString, lengthName } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
-const { LEVEL } = require("../dataBase/dataBaseLocal");
-
-async function existIdLevel(idLevel) {
-  const [data] = await pool.query(
-    `SELECT idLevel FROM level WHERE idLevel=${idLevel}`
-  );
-  if (!data.length) {
-    return false;
-  }
-  return true;
-}
-
-async function repeatedLevel(nameLevel) {
-  const [data] = await pool.query(
-    `SELECT nameLevel from level WHERE nameLevel LIKE '%${nameLevel}%'`
-  );
-  if (!data.length) {
-    return false;
-  }
-  return true;
-}
 
 const createLevel = async (nameLevel) => {
-  if (!lengthNameLevel(nameLevel)) {
+  if (!lengthName(nameLevel)) {
     throw Error(`Por favor ingrese un nombre para el nivel`);
   }
   if (await repeatedLevel(nameLevel)) {
@@ -36,13 +16,16 @@ const createLevel = async (nameLevel) => {
 
 const getAllLevel = async () => {
   const page = 1;
-  const [response] = await pool.query("select * from level");
+  const response = await allLevel();
   return responseData(response, "level", page);
 };
 
 const getPageLevel = async (page) => {
-  const response = responseData(LEVEL, "level", page);
-  return response;
+  if (isNumber(page)) {
+    throw Error(`El numero de pagina debe ser un numero`);
+  }
+  const response = await allLevel();
+  return responseData(response, "level", page);
 };
 
 const getIdLevel = async (idLevel) => {
@@ -59,10 +42,10 @@ const getIdLevel = async (idLevel) => {
 };
 
 const updateLevel = async (idLevel, nameLevel) => {
-  if (!toNumber(idLevel)) {
+  if (isNumber(idLevel) || isString(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  if (!lengthNameLevel(nameLevel)) {
+  if (!lengthName(nameLevel)) {
     throw Error(`Por favor ingrese un nombre para el nivel`);
   }
   await getIdLevel(idLevel);
@@ -78,7 +61,7 @@ const updateLevel = async (idLevel, nameLevel) => {
 };
 
 const removeLevel = async (idLevel) => {
-  if (isNaN(idLevel)) {
+  if (isNumber(idLevel)) {
     throw Error(`El parametro debe ser un numero`);
   }
   if (!(await existIdLevel(+idLevel))) {

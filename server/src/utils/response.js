@@ -1,11 +1,11 @@
-const { toNumber } = require("../helpers/funcAux");
+const { isNumber } = require("../helpers/funcAux");
 const { pagesCurrent, pageCurrent } = require("./currentPages");
 const { nextPage, prevPage } = require("./pageNavegation");
 let pages = 0;
 const elementPage = 20;
 
 function responseData(results, url, page) {
-  if (!toNumber(page)) {
+  if (isNumber(page)) {
     throw Error(`There is nothing here`);
   } else if (isNaN(page)) {
     page = 1;

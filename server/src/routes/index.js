@@ -7,6 +7,7 @@ const levelRouter = require("./levelRoute");
 const extensionRouter = require("./extensionRoute");
 const staffRouter = require("./staffRouter");
 const hoursRouter = require("./hoursRoute");
+const typeClassRouter = require("./typeClassRoute");
 
 // const classRouter = require("./classRoute");
 // const paymentRouter = require("./paymentRoute");
@@ -19,6 +20,7 @@ mainRouter.use("/asistance", assistanceRouter);
 mainRouter.use("/extension", extensionRouter);
 mainRouter.use("/staff", staffRouter);
 mainRouter.use("/hours", hoursRouter);
+mainRouter.use("/typeClass", typeClassRouter);
 
 // mainRouter.use("/class", classRouter);
 // mainRouter.use("/payment", paymentRouter);

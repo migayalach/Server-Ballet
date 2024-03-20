@@ -8,9 +8,9 @@ const {
 } = require("../controllers/hoursController");
 
 const postHours = async (request, response) => {
-  const { nameLevel } = request.body;
+  const { startTime, endTime, totalTime } = request.body;
   try {
-    const data = await createHours(nameLevel);
+    const data = await createHours(startTime, endTime, totalTime);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -28,9 +28,9 @@ const getHoursAllPage = async (request, response) => {
 };
 
 const getHoursId = async (request, response) => {
-  const { idLevel } = request.params;
+  const { idHours } = request.params;
   try {
-    const data = await getIdHours(idLevel);
+    const data = await getIdHours(idHours);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -38,9 +38,15 @@ const getHoursId = async (request, response) => {
 };
 
 const putHours = async (request, response) => {
-  const { idLevel, nameLevel } = request.body;
+  const { idHours, startTime, endTime, totalTime, stateHours } = request.body;
   try {
-    const data = await updateHours(idLevel, nameLevel);
+    const data = await updateHours(
+      idHours,
+      startTime,
+      endTime,
+      totalTime,
+      stateHours
+    );
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -48,9 +54,9 @@ const putHours = async (request, response) => {
 };
 
 const deleteHours = async (request, response) => {
-  const { idLevel } = request.params;
+  const { idHours } = request.params;
   try {
-    const data = await removeHours(idLevel);
+    const data = await removeHours(idHours);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });

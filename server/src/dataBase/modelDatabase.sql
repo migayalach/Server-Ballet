@@ -2,12 +2,14 @@ create database ballet
 
 use ballet
 
+-- OK
 create table level(
   idLevel int auto_increment not null,
   nameLevel varchar(100) not null,
   primary key(idLevel)
 );
 
+-- OK
 create table extension(
   idExtension int auto_increment not null,
   department varchar (4) unique not null,
@@ -32,11 +34,12 @@ create table staff(
   foreign key(idExtension) references extension(idExtension)
 );
 
+-- OK
 create table hours(
   idHours int auto_increment not null,
   startTime time not null,
   endTime time not null,
-  totalTime double(7,2) not null,
+  totalTime time not null,
   stateHours boolean default true not null,
   primary key(idHours)
 );
