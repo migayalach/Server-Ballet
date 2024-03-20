@@ -1,91 +1,79 @@
-const responseData = require("../utils/response");
-const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
-const { LEVEL } = require("../dataBase/dataBaseLocal");
+const { allHours, existIdHours } = require("./controllerData");
+const responseData = require("../utils/response");
+const { isNumber, isString, dateComplete } = require("../helpers/funcAux");
 
-async function existIdLevel(idLevel) {
-  const [data] = await pool.query(
-    `SELECT idLevel FROM level WHERE idLevel=${idLevel}`
-  );
-  if (!data.length) {
-    return false;
+const createHours = async (startTime, endTime, totalTime) => {
+  if (dateComplete(startTime, endTime, totalTime)) {
+    await pool.query(
+      `INSERT INTO hours (startTime, endTime, totalTime) VALUES(?,?,?)`,
+      [startTime, endTime, totalTime]
+    );
+    return await getAllHours();
   }
-  return true;
-}
-
-async function repeatedLevel(nameLevel) {
-  const [data] = await pool.query(
-    `SELECT nameLevel from level WHERE nameLevel LIKE '%${nameLevel}%'`
-  );
-  if (!data.length) {
-    return false;
-  }
-  return true;
-}
-
-const createHours = async (nameLevel) => {
-  if (!lengthNameLevel(nameLevel)) {
-    throw Error(`Por favor ingrese un nombre para el nivel`);
-  }
-  if (await repeatedLevel(nameLevel)) {
-    throw Error(`El nombre que intenta agregar ya existe`);
-  }
-  await pool.query("INSERT INTO level (nameLevel) VALUES(?)", [nameLevel]);
-  return getAllLevel();
 };
 
 const getAllHours = async () => {
   const page = 1;
-  const [response] = await pool.query("select * from level");
-  return responseData(response, "level", page);
+  const response = await allHours();
+  return responseData(response, "hours", page);
 };
 
 const getPageHours = async (page) => {
-  const response = responseData(LEVEL, "level", page);
-  return response;
+  if (isNumber(page)) {
+    throw Error(`El numero de pagina debe ser un numero`);
+  }
+  const response = await allHours();
+  return responseData(response, "hours", page);
 };
 
-const getIdHours = async (idLevel) => {
-  if (isNumber(idLevel)) {
+const getIdHours = async (idHours) => {
+  if (isNumber(idHours)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  const [data] = await pool.query(`SELECT * FROM level WHERE idLevel = ?`, [
-    idLevel,
+  const [data] = await pool.query(`SELECT * FROM hours WHERE idHours= ?`, [
+    idHours,
   ]);
   if (!data.length) {
-    throw Error(`El nivel que usted busca no se encuentra registrado`);
+    throw Error(`La hora que usted busca no se encuentra en los registros`);
   }
   return data[0];
 };
 
-const updateHours = async (idLevel, nameLevel) => {
-  if (!toNumber(idLevel)) {
+const updateHours = async (
+  idHours,
+  startTime,
+  endTime,
+  totalTime,
+  stateHours
+) => {
+  if (isNumber(idHours)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  if (!lengthNameLevel(nameLevel)) {
-    throw Error(`Por favor ingrese un nombre para el nivel`);
+  if (isString(stateHours)) {
+    throw Error(`Solo se permiten estados activo o desactivado`);
   }
-  await getIdLevel(idLevel);
-  if (await repeatedLevel(nameLevel)) {
-    throw Error(`El nombre que quiere cambiar ya se encuentra registrado`);
+  if (dateComplete(startTime, endTime, totalTime)) {
+    if (!existIdHours(idHours)) {
+      throw Error(`No se encuentro la hora seleccionada`);
+    }
+    await pool.query(
+      `UPDATE hours SET startTime = ?, endTime = ?, totalTime = ?, stateHours = ? WHERE idHours = ?`,
+      [startTime, endTime, totalTime, stateHours, idHours]
+    );
+    return await getAllHours();
   }
-  await existIdLevel(idLevel);
-  await pool.query(`UPDATE level SET nameLevel = ? WHERE idLevel = ?`, [
-    nameLevel,
-    idLevel,
-  ]);
-  return await getIdLevel(idLevel);
 };
 
-const removeHours = async (idLevel) => {
-  if (isNaN(idLevel)) {
+const removeHours = async (idHours) => {
+  if (isNaN(idHours)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  if (!(await existIdLevel(+idLevel))) {
+  if (!(await existIdHours(+idHours))) {
     throw Error(`El nivel que usted quiere eliminar no existe`);
   }
-  await pool.query(`DELETE FROM level WHERE idLevel = ?`, [idLevel]);
-  return await getAllLevel();
+  await pool.query(`DELETE FROM hours WHERE idHours = ?`, [idHours]);
+  return await getAllHours();
 };
 
 module.exports = {
