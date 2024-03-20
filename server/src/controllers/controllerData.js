@@ -1,30 +1,81 @@
 // BASE DE DATOS
 const pool = require("../dataBase/conexion");
-const { LEVEL, EXTENSION, STAFF } = require("../dataBase/dataBaseLocal");
 
-function levelExist(idLevel) {
-  if (idLevel) {
+// LEVEL
+async function allLevel() {
+  const [data] = await pool.query("SELECT * FROM level");
+  return data;
+}
+
+async function existIdLevel(idLevel) {
+  const [data] = await pool.query(
+    `SELECT idLevel FROM level WHERE idLevel=${idLevel}`
+  );
+  if (!data.length) {
     return false;
   }
   return true;
 }
 
-function extensionExist(idExtension) {
-  if (idExtension) {
+async function repeatedLevel(nameLevel) {
+  const [data] = await pool.query(
+    `SELECT nameLevel from level WHERE nameLevel LIKE '%${nameLevel}%'`
+  );
+  if (!data.length) {
     return false;
   }
   return true;
 }
 
-function userRepeated(carnetStaff) {
-  if (carnetStaff) {
+// EXTENSION
+async function allExtension() {
+  const [data] = await pool.query(`SELECT * FROM extension`);
+  return data;
+}
+
+async function repeatedNameExtension(nameExtension) {
+  const [data] = await pool.query(
+    `SELECT department FROM extension WHERE department LIKE ?`,
+    [`%${nameExtension}%`]
+  );
+  return data;
+}
+
+async function repeatedExtension(nameExtension) {
+  const [data] = await pool.query(
+    `SELECT department FROM extension WHERE department LIKE ?`,
+    [`%${nameExtension}%`]
+  );
+  if (!data.length) {
+    return false;
+  }
+  return true;
+}
+
+// HOURS
+async function allHours() {
+  const [data] = await pool.query("SELECT * FROM hours");
+  return data;
+}
+
+async function existIdHours(idHours) {
+  const [data] = await pool.query(
+    `SELECT idHours FROM hours WHERE idHours = ?`,
+    [idHours]
+  );
+  if (!data.length) {
     return false;
   }
   return true;
 }
 
 module.exports = {
-  levelExist,
-  extensionExist,
-  userRepeated,
+  allLevel,
+  existIdLevel,
+  repeatedLevel,
+  allExtension,
+  repeatedNameExtension,
+  repeatedExtension,
+  allHours,
+  existIdHours,
 };
