@@ -27,6 +27,17 @@ async function repeatedLevel(nameLevel) {
   return true;
 }
 
+async function nameLevelData(value) {
+  const [data] = await pool.query(
+    `SELECT idLevel FROM level WHERE nameLevel LIKE ? `,
+    [`%${value}%`]
+  );
+  if (!data.length) {
+    throw Error(`El nivel que usted quiere asignar no existe`);
+  }
+  return data[0].idLevel;
+}
+
 // EXTENSION
 async function allExtension() {
   const [data] = await pool.query(`SELECT * FROM extension`);
@@ -50,6 +61,17 @@ async function repeatedExtension(nameExtension) {
     return false;
   }
   return true;
+}
+
+async function existExtension(idExtension) {
+  const [data] = await pool.query(
+    "SELECT * FROM extension WHERE idExtension = ?",
+    [idExtension]
+  );
+  if (!data.length) {
+    return false;
+  }
+  return data[0];
 }
 
 // HOURS
@@ -97,16 +119,49 @@ async function existIdTypeClass(idTypeClass) {
   return true;
 }
 
+// STUDENT
+async function matchCarnetStudent(carnetStudent) {
+  const [data] = await pool.query(
+    "SELECT carnetStudent FROM student WHERE carnetStudent = ?",
+    [carnetStudent]
+  );
+  if (!data.length) {
+    return true;
+  }
+  return false;
+}
+
+async function matchEmail(table, column, carnet) {
+  const [data] = await pool.query(
+    `SELECT * FROM ${table} WHERE ${column} = ?`,
+    [carnet]
+  );
+  if (data.length) {
+    return true;
+  }
+  return false;
+}
+
+async function allStudent() {
+  const [data] = await pool.query("SELECT * FROM student");
+  return data;
+}
+
 module.exports = {
   allLevel,
   existIdLevel,
   repeatedLevel,
+  nameLevelData,
   allExtension,
   repeatedNameExtension,
   repeatedExtension,
+  existExtension,
   allHours,
   existIdHours,
   allTypeClass,
   matchNameClass,
   existIdTypeClass,
+  matchCarnetStudent,
+  matchEmail,
+  allStudent,
 };
