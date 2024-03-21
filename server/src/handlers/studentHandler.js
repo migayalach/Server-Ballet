@@ -7,29 +7,28 @@ const {
   removeStudent,
 } = require("../controllers/studentController");
 
-const getStudentAll = (request, response) => {
+const getStudentAll = async (request, response) => {
   const { page } = request.query;
   try {
-    const data = !page ? getAllStudent() : getPageStudent();
+    const data = !page ? await getAllStudent() : await getPageStudent(page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getStudentId = (request, response) => {
-  const { idUser } = request.params;
+const getStudentId = async (request, response) => {
+  const { idStudent } = request.params;
   try {
-    const data = getIdStudent(idUser);
+    const data = await getIdStudent(idStudent);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const postStudent = (request, response) => {
+const postStudent = async (request, response) => {
   const {
-    idLevel,
     idExtension,
     nameStudent,
     lastNameStudent,
@@ -40,8 +39,7 @@ const postStudent = (request, response) => {
     photoStudent,
   } = request.body;
   try {
-    const data = createStudent(
-      idLevel,
+    const data = await createStudent(
       idExtension,
       nameStudent,
       lastNameStudent,
@@ -57,25 +55,37 @@ const postStudent = (request, response) => {
   }
 };
 
-const putStudent = (request, response) => {
+const putStudent = async (request, response) => {
   const {
-    idUser,
+    idStudent,
     idLevel,
     idExtension,
-    nameUser,
-    emailUser,
-    carnet,
-    registrationNumber,
+    nameStudent,
+    lastNameStudent,
+    emailStudent,
+    passwordStudent,
+    carnetStudent,
+    addressStudent,
+    dateBirthStudent,
+    codeStudent,
+    photoStudent,
+    stateStudent,
   } = request.body;
   try {
-    const data = updateStudent(
-      idUser,
+    const data = await updateStudent(
+      idStudent,
       idLevel,
       idExtension,
-      nameUser,
-      emailUser,
-      carnet,
-      registrationNumber
+      nameStudent,
+      lastNameStudent,
+      emailStudent,
+      passwordStudent,
+      carnetStudent,
+      addressStudent,
+      dateBirthStudent,
+      codeStudent,
+      photoStudent,
+      stateStudent
     );
     response.status(200).json(data);
   } catch (error) {
@@ -83,10 +93,10 @@ const putStudent = (request, response) => {
   }
 };
 
-const deleteStudent = (request, response) => {
-  const { idUser } = request.params;
+const deleteStudent = async (request, response) => {
+  const { idStudent } = request.params;
   try {
-    const data = removeStudent(idUser);
+    const data = await removeStudent(idStudent);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
