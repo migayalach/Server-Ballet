@@ -44,6 +44,7 @@ create table hours(
   primary key(idHours)
 );
 
+-- OK
 create table typeClass(
   idTypeClass int auto_increment not null,
   nameClass varchar(100) not null,

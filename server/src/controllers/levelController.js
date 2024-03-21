@@ -52,7 +52,9 @@ const updateLevel = async (idLevel, nameLevel) => {
   if (await repeatedLevel(nameLevel)) {
     throw Error(`El nombre que quiere cambiar ya se encuentra registrado`);
   }
-  await existIdLevel(idLevel);
+  // if (!(await existIdLevel(idLevel))) {
+  //   throw Error(`El nivel que usted quiere modificar no existe`);
+  // }
   await pool.query(`UPDATE level SET nameLevel = ? WHERE idLevel = ?`, [
     nameLevel,
     idLevel,

@@ -8,6 +8,8 @@ function URL_OPTION(option) {
       return `hours?page=`;
     case "typeClass":
       return `typeClass?page=`;
+    case "student":
+      return `student?page=`;
     case "staff":
       return `staff?page=`;
   }

@@ -7,6 +7,7 @@ const {
 } = require("../helpers/funcAux");
 const {
   allExtension,
+  existExtension,
   repeatedNameExtension,
   repeatedExtension,
 } = require("./controllerData");
@@ -45,18 +46,15 @@ const createExtension = async (nameExtension) => {
 };
 
 const getIdExtension = async (idExtension) => {
-  const [data] = await pool.query(
-    "SELECT * FROM extension WHERE idExtension = ?",
-    [idExtension]
-  );
-  if (!data.length) {
+  const data = await existExtension(idExtension);
+  if (!data) {
     throw Error(`La extension que usted intenta modificar no existe`);
   }
-  return data[0];
+  return data;
 };
 
 const updateExtension = async (idExtension, nameExtension) => {
-  if (!isNumber(idExtension)) {
+  if (isNaN(idExtension)) {
     throw Error(`El parametro debe ser un numero`);
   }
   if (!lengthName(nameExtension)) {
@@ -65,12 +63,12 @@ const updateExtension = async (idExtension, nameExtension) => {
   if (!lengthElderForElementents(nameExtension)) {
     throw Error(`La extension no debe ser mayor a cuatro caracteres`);
   }
-  if (isNumber(nameExtension)) {
+  if (!isNaN(nameExtension)) {
     throw Error(`El nombre de la extension no debe ser un numero`);
   }
-  if ((await repeatedNameExtension(nameExtension)).length) {
-    throw Error(`No puede haber elementos repetidos`);
-  }
+  // if ((await repeatedNameExtension(nameExtension)).length) {
+  //   throw Error(`No puede haber elementos repetidos`);
+  // }
   await pool.query(
     `UPDATE extension SET department = ? WHERE idExtension = ?`,
     [nameExtension, idExtension]
