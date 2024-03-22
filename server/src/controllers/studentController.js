@@ -13,7 +13,9 @@ const {
   isString,
   codeStaffStudent,
   completeStaffStudent,
+  stateBoolean,
 } = require("../helpers/funcAux");
+const hashedPassword = require("../utils/passwordEncrypt");
 
 const createStudent = async (
   idExtension,
@@ -48,6 +50,7 @@ const createStudent = async (
     throw Error(`No se puede haber un carnet repetido`);
   }
   const code = codeStaffStudent(lastNameStudent, nameStudent, carnetStudent);
+  const password = await hashedPassword(code);
   await pool.query(
     "INSERT INTO student (idLevel, idExtension, nameStudent, lastNameStudent, emailStudent, carnetStudent, addressStudent, dateBirthStudent, photoStudent, codeStudent, passwordStudent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
@@ -61,7 +64,7 @@ const createStudent = async (
       dateBirthStudent,
       photoStudent,
       code,
-      code,
+      password,
     ]
   );
   return await getAllStudent();
@@ -96,7 +99,6 @@ const getIdStudent = async (idStudent) => {
 
 const updateStudent = async (
   idStudent,
-  idLevel,
   idExtension,
   nameStudent,
   lastNameStudent,
@@ -105,11 +107,44 @@ const updateStudent = async (
   carnetStudent,
   addressStudent,
   dateBirthStudent,
-  codeStudent,
   photoStudent,
   stateStudent
 ) => {
-  return;
+  completeStaffStudent(
+    idExtension,
+    nameStudent,
+    lastNameStudent,
+    emailStudent,
+    carnetStudent
+  );
+  await getIdStudent(idStudent);
+  if (!isString(addressStudent) || !lengthName(addressStudent)) {
+    throw Error(`Por favor ingrese la direccion del estudiante`);
+  }
+  if (!isString(dateBirthStudent) || !lengthName(dateBirthStudent)) {
+    throw Error(`Por favor ingrese la fecha de nacimiento`);
+  }
+  stateBoolean(stateStudent);
+  const code = codeStaffStudent(lastNameStudent, nameStudent, carnetStudent);
+  const password = await hashedPassword(passwordStudent);
+  await pool.query(
+    "UPDATE student SET idExtension = ?, nameStudent = ?, lastNameStudent = ?, emailStudent = ?, passwordStudent = ?, carnetStudent = ?, addressStudent = ?, dateBirthStudent = ?, photoStudent = ?, stateStudent = ?, codeStudent = ?  WHERE idStudent = ?",
+    [
+      idExtension,
+      nameStudent,
+      lastNameStudent,
+      emailStudent,
+      password,
+      carnetStudent,
+      addressStudent,
+      dateBirthStudent,
+      photoStudent,
+      stateStudent,
+      code,
+      idStudent,
+    ]
+  );
+  return await getIdStudent(idStudent);
 };
 
 const removeStudent = async (idStudent) => {

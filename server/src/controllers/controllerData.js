@@ -38,6 +38,13 @@ async function nameLevelData(value) {
   return data[0].idLevel;
 }
 
+async function selectMaxLevel() {
+  const [data] = await pool.query(
+    "SELECT idLevel FROM level WHERE nameLevel LIKE '%director%'"
+  );
+  return data[0].idLevel;
+}
+
 // EXTENSION
 async function allExtension() {
   const [data] = await pool.query(`SELECT * FROM extension`);
@@ -131,6 +138,12 @@ async function matchCarnetStudent(carnetStudent) {
   return false;
 }
 
+async function allStudent() {
+  const [data] = await pool.query("SELECT * FROM student");
+  return data;
+}
+
+// BUSQUEDA DE CARNET DE ESTUDIANTE Y STAFF
 async function matchEmail(table, column, carnet) {
   const [data] = await pool.query(
     `SELECT * FROM ${table} WHERE ${column} = ?`,
@@ -142,12 +155,41 @@ async function matchEmail(table, column, carnet) {
   return false;
 }
 
-async function allStudent() {
-  const [data] = await pool.query("SELECT * FROM student");
+// STAFF
+async function countStaff() {
+  const [data] = await pool.query("SELECT COUNT(*) AS TOTAL FROM staff");
+  return data[0].TOTAL;
+}
+
+async function matchCarnetStaff(carnetStaff) {
+  const [data] = await pool.query(
+    "SELECT carnetStaff FROM staff WHERE carnetStaff = ?",
+    [carnetStaff]
+  );
+  if (!data.length) {
+    return true;
+  }
+  return false;
+}
+
+async function allStaff() {
+  const [data] = await pool.query("SELECT * FROM staff");
   return data;
 }
 
+async function existStaff() {
+  const [data] = await pool.query(
+    "SELECT idStaff FROM staff WHERE idStaff = ? ",
+    [idStaff]
+  );
+  if (!data.length) {
+    throw Error("No se pudo encontrar el usuario");
+  }
+  return true;
+}
+
 module.exports = {
+  selectMaxLevel,
   allLevel,
   existIdLevel,
   repeatedLevel,
@@ -164,4 +206,7 @@ module.exports = {
   matchCarnetStudent,
   matchEmail,
   allStudent,
+  countStaff,
+  matchCarnetStaff,
+  allStaff,
 };

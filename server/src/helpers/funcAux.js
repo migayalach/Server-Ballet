@@ -71,18 +71,25 @@ function completeStaffStudent(idExtension, name, lastName, email, carnet) {
     throw Error(`Por favor asigne una extension`);
   }
   if (!isString(name) || !lengthName(name)) {
-    throw Error(`Por introduzca el nombre del estudiante`);
+    throw Error(`Por introduzca un nombre`);
   }
   if (!isString(lastName) || !lengthName(lastName)) {
-    throw Error(`Por favor introduzca los apellidos del estudiante`);
+    throw Error(`Por favor introduzca los apellidos`);
   }
   if (!isString(email) || !lengthName(email)) {
-    throw Error(`Por favor introduzca el email del estudiante`);
+    throw Error(`Por favor introduzca el email`);
   }
   if (isNumber(carnet) || isString(carnet)) {
     throw Error(`Por favor introduzca el numero de carnet`);
   }
   return true;
+}
+
+function stateBoolean(state) {
+  if (typeof state === "boolean") {
+    return true;
+  }
+  throw Error(`Por favor asigne un estado al usuario`);
 }
 
 module.exports = {
@@ -96,4 +103,5 @@ module.exports = {
   dateComplete,
   codeStaffStudent,
   completeStaffStudent,
+  stateBoolean,
 };

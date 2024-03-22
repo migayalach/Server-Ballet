@@ -1,14 +1,25 @@
-const responseData = require("../utils/response");
-const { isNumber, lengthNameLevel, toNumber } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
-const { LEVEL, EXTENSION, STAFF } = require("../dataBase/dataBaseLocal");
 const {
-  levelExist,
-  extensionExist,
-  userRepeated,
+  selectMaxLevel,
+  countStaff,
+  existExtension,
+  matchCarnetStaff,
+  matchEmail,
+  allStaff,
+  existIdLevel,
 } = require("./controllerData");
+const responseData = require("../utils/response");
+const {
+  isNumber,
+  lengthName,
+  isString,
+  codeStaffStudent,
+  completeStaffStudent,
+  stateBoolean,
+} = require("../helpers/funcAux");
+const hashedPassword = require("../utils/passwordEncrypt");
 
-const createStaff = (
+const createStaff = async (
   idLevel,
   idExtension,
   nameStaff,
@@ -19,42 +30,139 @@ const createStaff = (
   carnetStaff,
   photoStaff
 ) => {
-  if (!isNumber(idLevel) || !isNumber(idExtension)) {
-    throw Error(`Los id de nivel y extension deben ser numeros`);
+  completeStaffStudent(
+    idExtension,
+    nameStaff,
+    lastNameStaff,
+    emailStaff,
+    carnetStaff
+  );
+  if (!(await existExtension(idExtension))) {
+    throw Error(`La extension que usted quiere asignar no existe`);
   }
-  if (!levelExist(idLevel)) {
-    throw Error(`El nivel de acceso no existe`);
+  if (await matchEmail("staff", "emailStaff", emailStaff)) {
+    throw Error(`No pueden haber emails repetidos`);
   }
-  if (
-    lengthNameLevel(nameStaff) ||
-    lengthNameLevel(lastNameStaff) ||
-    lengthNameLevel(emailStaff)
-  ) {
-    throw Error(`Por favor ingrese los datos requeridos`);
+  if (!(await matchCarnetStaff(carnetStaff))) {
+    throw Error(`No se puede haber un carnet repetido`);
   }
-  if (isNumber(carnetStaff) || isNaN(carnetStaff)) {
-    throw Error(`Por favor ingrese la extension de la CI del usuario`);
+  const password = await hashedPassword(
+    codeStaffStudent(lastNameStaff, nameStaff, carnetStaff)
+  );
+  let level = 0;
+  if (parseInt(await countStaff()) === 0) {
+    level = await selectMaxLevel();
+  } else {
+    level = idLevel;
   }
-  if (!extensionExist(idExtension)) {
-    throw Error(`La extension no existe`);
-  }
-  if (!userRepeated(carnetStaff)) {
-    throw Error(`Este usuario ya se encuentra registrado`);
-  }
-  return getAllStaff();
+  await pool.query(
+    "INSERT INTO staff (idLevel, idExtension, nameStaff, lastNameStaff, emailStaff, passwordStaff, addressStaff, dateBirthStaff, carnetStaff, photoStaff) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      level,
+      idExtension,
+      nameStaff,
+      lastNameStaff,
+      emailStaff,
+      password,
+      addressStaff,
+      dateBirthStaff,
+      carnetStaff,
+      photoStaff,
+    ]
+  );
+  return await getAllStaff();
 };
 
-const getAllStaff = () => {
-
+const getAllStaff = async () => {
+  const page = 1;
+  const response = await allStaff();
+  return responseData(response, "staff", page);
 };
 
-const getPageStaff = (page) => {
-  
+const getPageStaff = async (page) => {
+  if (isNumber(page)) {
+    throw Error(`El numero de pagina debe ser un numero`);
+  }
+  const response = await allStaff();
+  return responseData(response, "staff", page);
 };
 
-const getIdStaff = () => {};
-const updateStaff = () => {};
-const removeStaff = () => {};
+const getIdStaff = async (idStaff) => {
+  if (isNumber(idStaff)) {
+    throw Error(`El parametro debe ser un numero`);
+  }
+  const [data] = await pool.query("SELECT * FROM staff WHERE idStaff = ? ", [
+    idStaff,
+  ]);
+  if (!data.length) {
+    throw Error(`El usuario que usted busca no se encuentra registrado`);
+  }
+  return data[0];
+};
+
+const updateStaff = async (
+  idStaff,
+  idLevel,
+  idExtension,
+  nameStaff,
+  lastNameStaff,
+  emailStaff,
+  passwordStaff,
+  addressStaff,
+  dateBirthStaff,
+  carnetStaff,
+  photoStaff,
+  stateStaff
+) => {
+  completeStaffStudent(
+    idExtension,
+    nameStaff,
+    lastNameStaff,
+    emailStaff,
+    carnetStaff
+  );
+  stateBoolean(stateStaff);
+  if (isNaN(idStaff)) {
+    throw Error(`Por favor ingrese el identificador del usuario`);
+  }
+  if (isNaN(idLevel)) {
+    throw Error("Por favor ingrese el nivel que quiere asignar");
+  }
+  if (!(await existIdLevel(idLevel))) {
+    throw Error(`El nivel que usted quiere asignar no se encuentra registrado`);
+  }
+  await getIdStaff(idStaff);
+  if (!(await existExtension(idExtension))) {
+    throw Error(`La extension que usted quiere asignar no existe`);
+  }
+  const password = await hashedPassword(passwordStaff);
+  await pool.query(
+    "UPDATE staff SET idLevel = ?, idExtension = ?, nameStaff = ?, lastNameStaff = ?, emailStaff = ?, passwordStaff = ?, addressStaff = ?, dateBirthStaff = ?,  carnetStaff = ?, photoStaff = ?, stateStaff = ? WHERE idStaff = ?",
+    [
+      idLevel,
+      idExtension,
+      nameStaff,
+      lastNameStaff,
+      emailStaff,
+      password,
+      addressStaff,
+      dateBirthStaff,
+      carnetStaff,
+      photoStaff,
+      stateStaff,
+      idStaff,
+    ]
+  );
+  return await getIdStaff(idStaff);
+};
+
+const removeStaff = async (idStaff) => {
+  if (isNumber(idStaff)) {
+    throw Error(`El parametro debe ser un numero`);
+  }
+  await pool.query("DELETE FROM staff WHERE idStaff = ? ", [idStaff]);
+  return await getAllStaff();
+};
 
 module.exports = {
   createStaff,
