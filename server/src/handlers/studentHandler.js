@@ -58,7 +58,6 @@ const postStudent = async (request, response) => {
 const putStudent = async (request, response) => {
   const {
     idStudent,
-    idLevel,
     idExtension,
     nameStudent,
     lastNameStudent,
@@ -67,14 +66,12 @@ const putStudent = async (request, response) => {
     carnetStudent,
     addressStudent,
     dateBirthStudent,
-    codeStudent,
     photoStudent,
     stateStudent,
   } = request.body;
   try {
     const data = await updateStudent(
       idStudent,
-      idLevel,
       idExtension,
       nameStudent,
       lastNameStudent,
@@ -83,7 +80,6 @@ const putStudent = async (request, response) => {
       carnetStudent,
       addressStudent,
       dateBirthStudent,
-      codeStudent,
       photoStudent,
       stateStudent
     );
