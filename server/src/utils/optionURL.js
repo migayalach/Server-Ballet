@@ -12,6 +12,8 @@ function URL_OPTION(option) {
       return `student?page=`;
     case "staff":
       return `staff?page=`;
+    case "class":
+      return `class?page=`;
   }
 }
 
