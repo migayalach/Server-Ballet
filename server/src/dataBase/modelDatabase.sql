@@ -16,6 +16,7 @@ create table extension(
   primary key(idExtension) 
 );
 
+-- OK
 create table staff(
   idStaff int auto_increment not null,
   idLevel int not null,
@@ -65,6 +66,7 @@ create table class(
   foreign key(idTypeClass) references typeClass(idTypeClass)
 );
 
+-- OK
 create table student(
   idStudent int auto_increment not null,
   idLevel int not null,
