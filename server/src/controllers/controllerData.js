@@ -177,7 +177,7 @@ async function allStaff() {
   return data;
 }
 
-async function existStaff() {
+async function existStaff(idStaff) {
   const [data] = await pool.query(
     "SELECT idStaff FROM staff WHERE idStaff = ? ",
     [idStaff]
@@ -186,6 +186,23 @@ async function existStaff() {
     throw Error("No se pudo encontrar el usuario");
   }
   return true;
+}
+
+// CLASS
+async function existParallel(parallel) {
+  const [data] = await pool.query(
+    "SELECT parallel FROM class WHERE parallel LIKE ?",
+    [`%${parallel}%`]
+  );
+  if (data.length) {
+    throw Error(`Lo siento este paralelo ya se encuentra asignado`);
+  }
+  return;
+}
+
+async function allClass() {
+  const [data] = await pool.query("SELECT * FROM class");
+  return data;
 }
 
 module.exports = {
@@ -209,4 +226,7 @@ module.exports = {
   countStaff,
   matchCarnetStaff,
   allStaff,
+  existStaff,
+  existParallel,
+  allClass,
 };
