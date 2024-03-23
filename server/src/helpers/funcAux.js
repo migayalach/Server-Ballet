@@ -89,7 +89,7 @@ function stateBoolean(state) {
   if (typeof state === "boolean") {
     return true;
   }
-  throw Error(`Por favor asigne un estado al usuario`);
+  throw Error(`Por favor asigne un estado`);
 }
 
 module.exports = {
