@@ -7,7 +7,12 @@ const {
   allClass,
 } = require("./controllerData");
 const responseData = require("../utils/response");
-const { lengthName, isString, isNumber } = require("../helpers/funcAux");
+const {
+  lengthName,
+  isString,
+  isNumber,
+  stateBoolean,
+} = require("../helpers/funcAux");
 
 const createClass = async (idHours, idStaff, idTypeClass, parallel) => {
   if (isNaN(idHours) || isNaN(idStaff) || isNaN(idTypeClass)) {
@@ -72,8 +77,37 @@ const updateClass = async (
   parallel,
   stateClass
 ) => {
-  
-  return ":D";
+  if (
+    isNaN(idClass) ||
+    isNaN(idHours) ||
+    isNaN(idStaff) ||
+    isNaN(idTypeClass)
+  ) {
+    throw Error(`Por favor ingrese los parametros requeridos`);
+  }
+  if (isString(idHours) || isString(idStaff) || isString(idTypeClass)) {
+    throw Error(`Por favor ingrese los parametros requeridos`);
+  }
+  if (!isString(parallel) || !lengthName(parallel)) {
+    throw Error(`Por favor asigne un paralelo a esta clase`);
+  }
+  stateBoolean(stateClass);
+  await getIdClass(idClass);
+  if (!(await existIdHours(idHours))) {
+    throw Error(`La hora que intensa asignar no se encuentra disponible`);
+  }
+  await existStaff(idStaff);
+  if (!(await existIdTypeClass(idTypeClass))) {
+    throw Error(
+      `Lo siento el tipo de clase que intenta seleccionar no se encutra disponible`
+    );
+  }
+  await existParallel(parallel);
+  await pool.query(
+    "UPDATE class SET idHours = ?, idStaff = ?, idTypeClass = ?, parallel = ?, stateClass = ? WHERE idClass = ?",
+    [idHours, idStaff, idTypeClass, parallel, stateClass, idClass]
+  );
+  return await getIdClass(idClass);
 };
 
 const removeClass = async (idClass) => {
