@@ -53,6 +53,7 @@ create table typeClass(
   primary key(idTypeClass)
 );
 
+-- OK
 create table class(
   idClass int auto_increment not null,
   idHours int not null,
