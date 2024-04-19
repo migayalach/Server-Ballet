@@ -91,9 +91,10 @@ const getIdStaff = async (idStaff) => {
   if (isNumber(idStaff)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  const [data] = await pool.query("SELECT * FROM staff WHERE idStaff = ? ", [
-    idStaff,
-  ]);
+  const [data] = await pool.query(
+    "SELECT s.idStaff, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameStaff,  s.lastNameStaff,  s.emailStaff,  s.passwordStaff,  s.addressStaff, s.dateBirthStaff,  s.carnetStaff,  s.photoStaff,  s.stateStaff FROM staff s, extension e, level l WHERE s.idStaff = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
+    [idStaff]
+  );
   if (!data.length) {
     throw Error(`El usuario que usted busca no se encuentra registrado`);
   }
