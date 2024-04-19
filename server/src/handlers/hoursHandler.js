@@ -39,6 +39,9 @@ const getHoursId = async (request, response) => {
 
 const putHours = async (request, response) => {
   const { idHours, startTime, endTime, totalTime, stateHours } = request.body;
+  console.log(
+    idHours, startTime, endTime, totalTime, stateHours
+  );
   try {
     const data = await updateHours(
       idHours,

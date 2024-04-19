@@ -1,6 +1,16 @@
-const postQualification = (request, response) => {
+const {
+  createQualification,
+  // getAllStaff,
+  // getPageStaff,
+  // getIdStaff,
+  // updateStaff,
+  // removeStaff,
+} = require("../controllers/../controllers/qualificationController");
+
+const postQualification = async (request, response) => {
+  const { idClass, idStudent, notes, average } = request.body;
   try {
-    const data = 1;
+    const data = await createQualification(idClass, idStudent, notes, average);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });

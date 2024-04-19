@@ -61,7 +61,7 @@ const updateHours = async (
       `UPDATE hours SET startTime = ?, endTime = ?, totalTime = ?, stateHours = ? WHERE idHours = ?`,
       [startTime, endTime, totalTime, stateHours, idHours]
     );
-    return await getAllHours();
+    return await getIdHours(idHours);
   }
 };
 

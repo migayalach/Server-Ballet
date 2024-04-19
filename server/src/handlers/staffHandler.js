@@ -28,7 +28,7 @@ const postStaff = async (request, response) => {
       emailStaff,
       addressStaff,
       dateBirthStaff,
-      carnetStaff,
+      +carnetStaff,
       photoStaff
     );
     response.status(200).json(data);
