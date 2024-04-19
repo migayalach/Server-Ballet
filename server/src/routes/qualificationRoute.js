@@ -5,7 +5,7 @@ const {
   getQualificationId,
   putQualification,
   deleteQualification,
-} = require("../handlers/qualification");
+} = require("../handlers/qualificationHandler");
 const qualificationRouter = Router();
 
 qualificationRouter.post("/", postQualification);
