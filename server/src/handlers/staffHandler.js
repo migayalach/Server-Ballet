@@ -65,11 +65,9 @@ const putStaff = async (request, response) => {
     nameStaff,
     lastNameStaff,
     emailStaff,
-    passwordStaff,
     addressStaff,
     dateBirthStaff,
     carnetStaff,
-    photoStaff,
     stateStaff,
   } = request.body;
   try {
@@ -80,11 +78,9 @@ const putStaff = async (request, response) => {
       nameStaff,
       lastNameStaff,
       emailStaff,
-      passwordStaff,
       addressStaff,
       dateBirthStaff,
       carnetStaff,
-      photoStaff,
       stateStaff
     );
     response.status(200).json(data);
