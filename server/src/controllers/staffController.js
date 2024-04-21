@@ -108,11 +108,9 @@ const updateStaff = async (
   nameStaff,
   lastNameStaff,
   emailStaff,
-  passwordStaff,
   addressStaff,
   dateBirthStaff,
   carnetStaff,
-  photoStaff,
   stateStaff
 ) => {
   completeStaffStudent(
@@ -122,7 +120,7 @@ const updateStaff = async (
     emailStaff,
     carnetStaff
   );
-  stateBoolean(stateStaff);
+  // stateBoolean(stateStaff);
   if (isNaN(idStaff)) {
     throw Error(`Por favor ingrese el identificador del usuario`);
   }
@@ -136,20 +134,17 @@ const updateStaff = async (
   if (!(await existExtension(idExtension))) {
     throw Error(`La extension que usted quiere asignar no existe`);
   }
-  const password = await hashedPassword(passwordStaff);
   await pool.query(
-    "UPDATE staff SET idLevel = ?, idExtension = ?, nameStaff = ?, lastNameStaff = ?, emailStaff = ?, passwordStaff = ?, addressStaff = ?, dateBirthStaff = ?,  carnetStaff = ?, photoStaff = ?, stateStaff = ? WHERE idStaff = ?",
+    "UPDATE staff SET idLevel = ?, idExtension = ?, nameStaff = ?, lastNameStaff = ?, emailStaff = ?, addressStaff = ?, dateBirthStaff = ?,  carnetStaff = ?, stateStaff = ? WHERE idStaff = ?",
     [
       idLevel,
       idExtension,
       nameStaff,
       lastNameStaff,
       emailStaff,
-      password,
       addressStaff,
       dateBirthStaff,
       carnetStaff,
-      photoStaff,
       stateStaff,
       idStaff,
     ]
