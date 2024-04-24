@@ -38,8 +38,7 @@ const createClass = async (idHours, idStaff, idTypeClass, parallel) => {
     "INSERT INTO class (idHours, idStaff, idTypeClass, parallel) VALUES (?, ?, ?, ?)",
     [idHours, idStaff, idTypeClass, parallel]
   );
-  return true;
-  // return await getAllClass();
+  return await getAllClass();
 };
 
 const getAllClass = async () => {
@@ -60,9 +59,10 @@ const getIdClass = async (idClass) => {
   if (isNumber(idClass)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  const [data] = await pool.query("SELECT * FROM class WHERE idClass = ? ", [
-    idClass,
-  ]);
+  const [data] = await pool.query(
+    "SELECT c.idClass, h.idHours, h.totalTime, h.stateHours, s.idStaff, s.nameStaff, s.lastNameStaff, s.carnetStaff, e.department, t.idTypeClass, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, staff s, hours h, extension e WHERE idClass = ? AND c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idStaff = s.idStaff AND  s.idExtension = e.idExtension",
+    [idClass]
+  );
   if (!data.length) {
     throw Error(`La clase que no se encutra registrado`);
   }
@@ -77,32 +77,40 @@ const updateClass = async (
   parallel,
   stateClass
 ) => {
-  if (
-    isNaN(idClass) ||
-    isNaN(idHours) ||
-    isNaN(idStaff) ||
-    isNaN(idTypeClass)
-  ) {
-    throw Error(`Por favor ingrese los parametros requeridos`);
-  }
-  if (isString(idHours) || isString(idStaff) || isString(idTypeClass)) {
-    throw Error(`Por favor ingrese los parametros requeridos`);
-  }
-  if (!isString(parallel) || !lengthName(parallel)) {
-    throw Error(`Por favor asigne un paralelo a esta clase`);
-  }
-  stateBoolean(stateClass);
-  await getIdClass(idClass);
-  if (!(await existIdHours(idHours))) {
-    throw Error(`La hora que intensa asignar no se encuentra disponible`);
-  }
-  await existStaff(idStaff);
-  if (!(await existIdTypeClass(idTypeClass))) {
-    throw Error(
-      `Lo siento el tipo de clase que intenta seleccionar no se encutra disponible`
-    );
-  }
-  await existParallel(parallel);
+  console.log(
+    idClass,
+  idHours,
+  idStaff,
+  idTypeClass,
+  parallel,
+  stateClass
+  );
+  // if (
+  //   isNaN(idClass) ||
+  //   isNaN(idHours) ||
+  //   isNaN(idStaff) ||
+  //   isNaN(idTypeClass)
+  // ) {
+  //   throw Error(`Por favor ingrese los parametros requeridos`);
+  // }
+  // if (isString(idHours) || isString(idStaff) || isString(idTypeClass)) {
+  //   throw Error(`Por favor ingrese los parametros requeridos`);
+  // }
+  // if (!isString(parallel) || !lengthName(parallel)) {
+  //   throw Error(`Por favor asigne un paralelo a esta clase`);
+  // }
+  // // stateBoolean(stateClass);
+  // await getIdClass(idClass);
+  // if (!(await existIdHours(idHours))) {
+  //   throw Error(`La hora que intensa asignar no se encuentra disponible`);
+  // }
+  // await existStaff(idStaff);
+  // if (!(await existIdTypeClass(idTypeClass))) {
+  //   throw Error(
+  //     `Lo siento el tipo de clase que intenta seleccionar no se encutra disponible`
+  //   );
+  // }
+  // await existParallel(parallel);
   await pool.query(
     "UPDATE class SET idHours = ?, idStaff = ?, idTypeClass = ?, parallel = ?, stateClass = ? WHERE idClass = ?",
     [idHours, idStaff, idTypeClass, parallel, stateClass, idClass]
