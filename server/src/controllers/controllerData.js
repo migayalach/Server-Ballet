@@ -201,7 +201,9 @@ async function existParallel(parallel) {
 }
 
 async function allClass() {
-  const [data] = await pool.query("SELECT * FROM class");
+  const [data] = await pool.query(
+    "SELECT c.idClass, h.totalTime, s.nameStaff, s.lastNameStaff, s.carnetStaff, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, staff s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idStaff = s.idStaff AND  s.idExtension = e.idExtension"
+  );
   return data;
 }
 
