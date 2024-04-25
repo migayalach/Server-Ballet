@@ -32,7 +32,7 @@ const createStudent = async (
     nameStudent,
     lastNameStudent,
     emailStudent,
-    carnetStudent
+    +carnetStudent
   );
   if (!isString(addressStudent) || !lengthName(addressStudent)) {
     throw Error(`Por favor ingrese la direccion del estudiante`);
@@ -88,9 +88,10 @@ const getIdStudent = async (idStudent) => {
   if (isNumber(idStudent)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  const [data] = await pool.query(`SELECT * FROM student WHERE idStudent = ?`, [
-    idStudent,
-  ]);
+  const [data] = await pool.query(
+    `SELECT s.idStudent, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameStudent, s.lastNameStudent, s.emailStudent, s.addressStudent, s.dateBirthStudent, s.carnetStudent, s.photoStudent, s.stateStudent FROM student s, level l, extension e WHERE s.idLevel = l.idLevel AND s.idExtension = e.idExtension AND s.idStudent = ?`,
+    [idStudent]
+  );
   if (!data.length) {
     throw Error(`El estudiante que usted busca no se encuentra registrado`);
   }
@@ -124,21 +125,19 @@ const updateStudent = async (
   if (!isString(dateBirthStudent) || !lengthName(dateBirthStudent)) {
     throw Error(`Por favor ingrese la fecha de nacimiento`);
   }
-  stateBoolean(stateStudent);
+  // stateBoolean(stateStudent);
   const code = codeStaffStudent(lastNameStudent, nameStudent, carnetStudent);
-  const password = await hashedPassword(passwordStudent);
+  // const password = await hashedPassword(passwordStudent);
   await pool.query(
-    "UPDATE student SET idExtension = ?, nameStudent = ?, lastNameStudent = ?, emailStudent = ?, passwordStudent = ?, carnetStudent = ?, addressStudent = ?, dateBirthStudent = ?, photoStudent = ?, stateStudent = ?, codeStudent = ?  WHERE idStudent = ?",
+    "UPDATE student SET idExtension = ?, nameStudent = ?, lastNameStudent = ?, emailStudent = ?, carnetStudent = ?, addressStudent = ?, dateBirthStudent = ?, stateStudent = ?, codeStudent = ?  WHERE idStudent = ?",
     [
       idExtension,
       nameStudent,
       lastNameStudent,
       emailStudent,
-      password,
       carnetStudent,
       addressStudent,
       dateBirthStudent,
-      photoStudent,
       stateStudent,
       code,
       idStudent,
