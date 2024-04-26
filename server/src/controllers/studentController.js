@@ -104,11 +104,9 @@ const updateStudent = async (
   nameStudent,
   lastNameStudent,
   emailStudent,
-  passwordStudent,
   carnetStudent,
   addressStudent,
   dateBirthStudent,
-  photoStudent,
   stateStudent
 ) => {
   completeStaffStudent(
@@ -125,9 +123,7 @@ const updateStudent = async (
   if (!isString(dateBirthStudent) || !lengthName(dateBirthStudent)) {
     throw Error(`Por favor ingrese la fecha de nacimiento`);
   }
-  // stateBoolean(stateStudent);
   const code = codeStaffStudent(lastNameStudent, nameStudent, carnetStudent);
-  // const password = await hashedPassword(passwordStudent);
   await pool.query(
     "UPDATE student SET idExtension = ?, nameStudent = ?, lastNameStudent = ?, emailStudent = ?, carnetStudent = ?, addressStudent = ?, dateBirthStudent = ?, stateStudent = ?, codeStudent = ?  WHERE idStudent = ?",
     [
