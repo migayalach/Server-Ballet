@@ -62,11 +62,9 @@ const putStudent = async (request, response) => {
     nameStudent,
     lastNameStudent,
     emailStudent,
-    passwordStudent,
     carnetStudent,
     addressStudent,
     dateBirthStudent,
-    photoStudent,
     stateStudent,
   } = request.body;
   try {
@@ -76,11 +74,9 @@ const putStudent = async (request, response) => {
       nameStudent,
       lastNameStudent,
       emailStudent,
-      passwordStudent,
-      carnetStudent,
+      +carnetStudent,
       addressStudent,
       dateBirthStudent,
-      photoStudent,
       stateStudent
     );
     response.status(200).json(data);

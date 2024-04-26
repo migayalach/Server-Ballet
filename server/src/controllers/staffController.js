@@ -49,12 +49,14 @@ const createStaff = async (
   const password = await hashedPassword(
     codeStaffStudent(lastNameStaff, nameStaff, carnetStaff)
   );
+
   let level = 0;
   if (parseInt(await countStaff()) === 0) {
     level = await selectMaxLevel();
   } else {
     level = idLevel;
   }
+  
   await pool.query(
     "INSERT INTO staff (idLevel, idExtension, nameStaff, lastNameStaff, emailStaff, passwordStaff, addressStaff, dateBirthStaff, carnetStaff, photoStaff) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
@@ -120,7 +122,6 @@ const updateStaff = async (
     emailStaff,
     carnetStaff
   );
-  // stateBoolean(stateStaff);
   if (isNaN(idStaff)) {
     throw Error(`Por favor ingrese el identificador del usuario`);
   }
