@@ -1,12 +1,12 @@
 const loginAccess = require("../controllers/loginController");
 
 const accessLogin = async (request, response) => {
-  const { user, password } = request.body;
+  const { email, password } = request.body;
   try {
-    const data = await loginAccess(user, password);
+    const data = await loginAccess(email, password);
     response.status(200).json(data);
   } catch (error) {
-    response.status(400).json({ error: error.message });
+    response.status(400).json({ message: error.message, access: false });
   }
 };
 
