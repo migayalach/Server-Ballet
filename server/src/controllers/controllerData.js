@@ -127,9 +127,9 @@ async function existIdTypeClass(idTypeClass) {
 }
 
 // STUDENT
-async function matchCarnetStudent(carnetStudent) {
+async function matchCarnetUser(carnetStudent) {
   const [data] = await pool.query(
-    "SELECT carnetStudent FROM student WHERE carnetStudent = ?",
+    "SELECT carnetUser FROM user WHERE carnetUser = ?",
     [carnetStudent]
   );
   if (!data.length) {
@@ -156,8 +156,8 @@ async function matchEmail(table, column, carnet) {
 }
 
 // STAFF
-async function countStaff() {
-  const [data] = await pool.query("SELECT COUNT(*) AS TOTAL FROM staff");
+async function countUser() {
+  const [data] = await pool.query("SELECT COUNT(*) AS TOTAL FROM user");
   return data[0].TOTAL;
 }
 
@@ -172,15 +172,15 @@ async function matchCarnetStaff(carnetStaff) {
   return false;
 }
 
-async function allStaff() {
-  const [data] = await pool.query("SELECT * FROM staff");
+async function allUser() {
+  const [data] = await pool.query("SELECT * FROM user");
   return data;
 }
 
-async function existStaff(idStaff) {
+async function existUser(idUser) {
   const [data] = await pool.query(
-    "SELECT idStaff FROM staff WHERE idStaff = ? ",
-    [idStaff]
+    "SELECT idUser FROM user WHERE idUser = ? ",
+    [idUser]
   );
   if (!data.length) {
     throw Error("No se pudo encontrar el usuario");
@@ -202,7 +202,7 @@ async function existParallel(parallel) {
 
 async function allClass() {
   const [data] = await pool.query(
-    "SELECT c.idClass, h.totalTime, s.nameStaff, s.lastNameStaff, s.carnetStaff, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, staff s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idStaff = s.idStaff AND  s.idExtension = e.idExtension"
+    "SELECT c.idClass, h.totalTime, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension"
   );
   return data;
 }
@@ -222,13 +222,13 @@ module.exports = {
   allTypeClass,
   matchNameClass,
   existIdTypeClass,
-  matchCarnetStudent,
+  matchCarnetUser,
   matchEmail,
   allStudent,
-  countStaff,
+  countUser,
   matchCarnetStaff,
-  allStaff,
-  existStaff,
+  allUser,
+  existUser,
   existParallel,
   allClass,
 };
