@@ -8,9 +8,9 @@ const {
 } = require("../controllers/classController");
 
 const postClass = async (request, response) => {
-  const { idHours, idStaff, idTypeClass, parallel } = request.body;
+  const { idHours, idUser, idTypeClass, parallel } = request.body;
   try {
-    const data = await createClass(idHours, idStaff, idTypeClass, parallel);
+    const data = await createClass(idHours, idUser, idTypeClass, parallel);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -38,13 +38,13 @@ const getClassId = async (request, response) => {
 };
 
 const putClass = async (request, response) => {
-  const { idClass, idHours, idStaff, idTypeClass, parallel, stateClass } =
+  const { idClass, idHours, idUser, idTypeClass, parallel, stateClass } =
     request.body;
   try {
     const data = await updateClass(
       idClass,
       idHours,
-      idStaff,
+      idUser,
       idTypeClass,
       parallel,
       stateClass
