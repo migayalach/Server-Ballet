@@ -57,16 +57,16 @@ function dateComplete(startTime, endTime, totalTime) {
   throw Error(`Por favor ingrese las horas solicitadas`);
 }
 
-function codeStaffStudent(lastName, name, carnet) {
+function codeUser(lastName, name, carnet) {
   const nameLast = lastName.split(" ");
-  const codeStudent = `${nameLast[0].slice(0, 2)}${nameLast[1].slice(
+  const codeUser = `${nameLast[0].slice(0, 2)}${nameLast[1].slice(
     0,
     2
   )}${name.slice(0, 2)}${carnet.toString().slice(0, 2)}`.toUpperCase();
-  return codeStudent;
+  return codeUser;
 }
 
-function completeStaffStudent(idExtension, name, lastName, email, carnet) {
+function completeUser(idExtension, name, lastName, email, carnet) {
   if (isNumber(idExtension) || isString(idExtension)) {
     throw Error(`Por favor asigne una extension`);
   }
@@ -101,7 +101,7 @@ module.exports = {
   extensionExist,
   userRepeated,
   dateComplete,
-  codeStaffStudent,
-  completeStaffStudent,
+  codeUser,
+  completeUser,
   stateBoolean,
 };
