@@ -71,6 +71,9 @@ create table class(
 create table student(
   idClass int not null,
   idUser int not null,
+  stateStudent boolean default true not null,
+  -- qualification JSON,
+  -- assistance JSON,
   foreign key(idClass) references class(idClass),
   foreign key(idUser) references user(idUser)
 );
