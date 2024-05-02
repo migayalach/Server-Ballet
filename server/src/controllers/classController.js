@@ -58,21 +58,6 @@ const getPageClass = async (page) => {
   return responseData(response, "class", page);
 };
 
-// TODO MOSTRAR DATOS POR ID DEL USER
-const getIdClass = async (idClass) => {
-  if (isNumber(idClass)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
-  const [data] = await pool.query(
-    "SELECT c.idClass, h.idHours, h.totalTime, h.stateHours, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.idTypeClass, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE idClass = ? AND c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension",
-    [idClass]
-  );
-  if (!data.length) {
-    throw Error(`La clase que no se encutra registrado`);
-  }
-  return data[0];
-};
-
 // TODO EDITAR CLASE
 const updateClass = async (
   idClass,
@@ -128,7 +113,6 @@ const removeClass = async (idClass) => {
 module.exports = {
   createClass,
   getAllClass,
-  getIdClass,
   getPageClass,
   updateClass,
   removeClass,

@@ -1,4 +1,4 @@
-function URL_OPTION(option) {
+function URL_OPTION(option, queryId) {
   switch (option) {
     case "level":
       return `level?page=`;
@@ -8,10 +8,10 @@ function URL_OPTION(option) {
       return `hours?page=`;
     case "typeClass":
       return `typeClass?page=`;
-    case "student":
-      return `student?page=`;
-    case "staff":
-      return `staff?page=`;
+    case "classStudent":
+      return `classStudent?idClass=${queryId}&page=`;
+    case "user":
+      return `user?page=`;
     case "class":
       return `class?page=`;
   }
