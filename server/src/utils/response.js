@@ -4,26 +4,26 @@ const { nextPage, prevPage } = require("./pageNavegation");
 let pages = 0;
 const elementPage = 20;
 
-function responseData(results, url, page) {
+function responseData(results, url, page, queryId) {
   if (isNumber(page)) {
     throw Error(`There is nothing here`);
   } else if (isNaN(page)) {
     page = 1;
   }
   return {
-    info: info(results, url, pageCurrent(+page, pages)),
+    info: info(results, url, pageCurrent(+page, pages), queryId),
     results: resultData(results, pageCurrent(+page, pages)),
   };
 }
 
-function info(data, direction, page) {
+function info(data, direction, page, queryId) {
   const count = data.length;
   pages = pagesCurrent(count, elementPage);
   return {
     count,
     pages,
-    next: nextPage(direction, page, pages),
-    prev: prevPage(direction, page, pages),
+    next: nextPage(direction, page, pages, queryId),
+    prev: prevPage(direction, page, queryId), //TODO SE QUITO COMO PARAMETRO A PAGES PORQUE NO CUMPLIA NUNGUN PROPOCITO
   };
 }
 
