@@ -139,7 +139,9 @@ async function matchCarnetUser(carnetStudent) {
 }
 
 async function allStudent() {
-  const [data] = await pool.query("SELECT * FROM student");
+  const [data] = await pool.query(
+    "SELECT u.idUser, u.idLevel, l.nameLevel, u.idExtension, e.department, u.nameUser, u.lastNameUser, u.emailUser, u.addressUser, u.dateBirthUser, u.carnetUser, u.photoUser, u.stateUser FROM user u, level l, extension e WHERE l.nameLevel = 'ESTUDIANTE' AND u.idLevel = l.idLevel AND u.idExtension = e.idExtension"
+  );
   return data;
 }
 
@@ -178,10 +180,9 @@ async function allUser() {
 }
 
 async function existUser(idUser) {
-  const [data] = await pool.query(
-    "SELECT idUser FROM user WHERE idUser = ? ",
-    [idUser]
-  );
+  const [data] = await pool.query("SELECT idUser FROM user WHERE idUser = ? ", [
+    idUser,
+  ]);
   if (!data.length) {
     throw Error("No se pudo encontrar el usuario");
   }
@@ -205,6 +206,17 @@ async function allClass() {
     "SELECT c.idClass, h.totalTime, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension"
   );
   return data;
+}
+
+async function existClass(idClass) {
+  const [data] = await pool.query(
+    "SELECT stateClass FROM class WHERE idClass = ? ",
+    [idClass]
+  );
+  if (!data.length) {
+    throw Error(`La clase no existe`);
+  }
+  return;
 }
 
 module.exports = {
@@ -231,4 +243,5 @@ module.exports = {
   existUser,
   existParallel,
   allClass,
+  existClass,
 };
