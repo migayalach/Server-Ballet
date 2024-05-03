@@ -5,6 +5,7 @@ const {
   existIdTypeClass,
   existParallel,
   allClass,
+  existClass,
 } = require("./controllerData");
 const responseData = require("../utils/response");
 const {
@@ -49,6 +50,15 @@ const getAllClass = async () => {
   return responseData(response, "class", page);
 };
 
+const getByIdClass = async (idClass) => {
+  await existClass(idClass);
+  const [data] = await pool.query(
+    `SELECT c.*, h.totalTime, h.stateHours, u.nameUser, u.lastNameUser, t.nameClass FROM class c, hours h, user u, typeClass t WHERE idClass = ? AND c.idHours = h.idHours AND c.idUser = u.idUser AND c.idTypeClass = t.idTypeClass`,
+    [idClass]
+  );
+  return data[0];
+};
+
 // TODO MOSTRAR POR PAGINA
 const getPageClass = async (page) => {
   if (isNumber(page)) {
@@ -82,7 +92,7 @@ const updateClass = async (
     throw Error(`Por favor asigne un paralelo a esta clase`);
   }
   // stateBoolean(stateClass);
-  await getIdClass(idClass);
+  await existClass(idClass);
   if (!(await existIdHours(idHours))) {
     throw Error(`La hora que intensa asignar no se encuentra disponible`);
   }
@@ -97,7 +107,7 @@ const updateClass = async (
     "UPDATE class SET idHours = ?, idUser = ?, idTypeClass = ?, parallel = ?, stateClass = ? WHERE idClass = ?",
     [idHours, idUser, idTypeClass, parallel, stateClass, idClass]
   );
-  return await getIdClass(idClass);
+  return await getByIdClass(idClass);
 };
 
 // TODO ELIMINAR CLASE
@@ -105,7 +115,7 @@ const removeClass = async (idClass) => {
   if (isNumber(idClass)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  await getIdClass(idClass);
+  await existClass(idClass);
   await pool.query("DELETE FROM class WHERE idClass = ? ", [idClass]);
   return await getAllClass();
 };
@@ -113,6 +123,7 @@ const removeClass = async (idClass) => {
 module.exports = {
   createClass,
   getAllClass,
+  getByIdClass,
   getPageClass,
   updateClass,
   removeClass,

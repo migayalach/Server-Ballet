@@ -1,6 +1,7 @@
 const {
   createClass,
   getAllClass,
+  getByIdClass,
   getPageClass,
   updateClass,
   removeClass,
@@ -20,6 +21,16 @@ const getClassAll = async (request, response) => {
   const { page } = request.query;
   try {
     const data = !page ? await getAllClass() : await getPageClass(page);
+    response.status(200).json(data);
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+};
+
+const getIdClass = async (request, response) => {
+  const { idClass } = request.params;
+  try {
+    const data = await getByIdClass(idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -57,6 +68,7 @@ const deleteClass = async (request, response) => {
 module.exports = {
   postClass,
   getClassAll,
+  getIdClass,
   putClass,
   deleteClass,
 };
