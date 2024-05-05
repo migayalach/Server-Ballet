@@ -16,7 +16,6 @@ function prevPage(direction, page, queryId) {
     return null;
   }
   const request = URL_OPTION(direction, queryId);
-  console.log(request);
   return `${URL}${request}${page - 1}`;
 }
 
