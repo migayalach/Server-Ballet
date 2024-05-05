@@ -50,7 +50,7 @@ const createUser = async (
   } else {
     level = idLevel;
   }
-  await pool.query(
+  const [ResultSetHeader] = await pool.query(
     "INSERT INTO user (idLevel, idExtension, nameUser, lastNameUser, emailUser, passwordUser, addressUser, dateBirthUser, carnetUser, photoUser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       level,
@@ -65,7 +65,9 @@ const createUser = async (
       photoUser,
     ]
   );
-  return await getAllUser();
+  const userData = await getIdUser(ResultSetHeader.insertId);
+  const infoData = await getAllUser();
+  return { userData, infoData, state: "create" };
 };
 
 const getAllUser = async () => {
@@ -148,7 +150,9 @@ const removeUser = async (idUser) => {
     throw Error(`El parametro debe ser un numero`);
   }
   await pool.query("DELETE FROM user WHERE idUser = ? ", [idUser]);
-  return await getAllUser();
+  // return await getAllUser();
+  const infoData = await getAllUser();
+  return { infoData, state: "delete" };
 };
 
 module.exports = {
