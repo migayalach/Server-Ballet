@@ -10,6 +10,7 @@ const hoursRouter = require("./hoursRoute");
 const classRouter = require("./classRoute");
 const loginRouter = require("./loginRoute");
 const classStudentRouter = require("./classStudentRoute");
+const filterRouter = require("./filterRoute");
 
 // const qualificationRouter = require("./qualificationRoute");
 // const assistanceRouter = require("./assistanceRoute");
@@ -24,6 +25,7 @@ mainRouter.use("/hours", hoursRouter);
 mainRouter.use("/class", classRouter);
 mainRouter.use("/login", loginRouter);
 mainRouter.use("/classStudent", classStudentRouter);
+mainRouter.use("/filter", filterRouter);
 
 // mainRouter.use("/qualification", qualificationRouter);
 // mainRouter.use("/payment", paymentRouter);
