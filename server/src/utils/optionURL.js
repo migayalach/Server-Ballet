@@ -14,6 +14,8 @@ function URL_OPTION(option, queryId) {
       return `user?page=`;
     case "class":
       return `class?page=`;
+    case "filter":
+      return `filter?page=`;
   }
 }
 
