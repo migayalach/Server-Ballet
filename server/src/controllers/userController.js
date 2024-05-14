@@ -150,7 +150,6 @@ const removeUser = async (idUser) => {
     throw Error(`El parametro debe ser un numero`);
   }
   await pool.query("DELETE FROM user WHERE idUser = ? ", [idUser]);
-  // return await getAllUser();
   const infoData = await getAllUser();
   return { infoData, state: "delete" };
 };

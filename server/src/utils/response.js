@@ -23,7 +23,7 @@ function info(data, direction, page, queryId) {
     count,
     pages,
     next: nextPage(direction, page, pages, queryId),
-    prev: prevPage(direction, page, queryId), //TODO SE QUITO COMO PARAMETRO A PAGES PORQUE NO CUMPLIA NUNGUN PROPOCITO
+    prev: prevPage(direction, page, queryId),
   };
 }
 
