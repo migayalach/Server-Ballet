@@ -10,6 +10,7 @@ function responseData(results, url, page, queryId) {
   } else if (isNaN(page)) {
     page = 1;
   }
+  pages = pagesCurrent(results.length, elementPage);
   return {
     info: info(results, url, pageCurrent(+page, pages), queryId),
     results: resultData(results, pageCurrent(+page, pages)),
