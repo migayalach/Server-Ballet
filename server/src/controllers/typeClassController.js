@@ -17,11 +17,13 @@ const createTypeClass = async (nameClass, description) => {
   if (await matchNameClass(nameClass)) {
     throw Error(`Lo siento no pueden haber tipo de clases repetidas`);
   }
-  await pool.query(
+  const [ResultSetHeader] = await pool.query(
     `INSERT INTO typeClass (nameClass, description) VALUES(?,?)`,
     [nameClass, description]
   );
-  return await getAllTypeClass();
+  const typeClassData = await getIdTypeClass(ResultSetHeader.insertId);
+  const infoData = await getAllTypeClass();
+  return { typeClassData, infoData, state: "create" };
 };
 
 const getAllTypeClass = async () => {
@@ -82,7 +84,8 @@ const removeTypeClass = async (idTypeClass) => {
   await pool.query("DELETE FROM typeClass WHERE idTypeClass = ?", [
     idTypeClass,
   ]);
-  return await getAllTypeClass();
+  const infoData = await getAllTypeClass();
+  return { infoData, state: "delete" };
 };
 
 module.exports = {
