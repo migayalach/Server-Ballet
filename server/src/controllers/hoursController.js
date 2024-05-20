@@ -5,11 +5,13 @@ const { isNumber, isString, dateComplete } = require("../helpers/funcAux");
 
 const createHours = async (startTime, endTime, totalTime) => {
   if (dateComplete(startTime, endTime, totalTime)) {
-    await pool.query(
+    const [ResultSetHeader] = await pool.query(
       `INSERT INTO hours (startTime, endTime, totalTime) VALUES(?,?,?)`,
       [startTime, endTime, totalTime]
     );
-    return await getAllHours();
+    const hoursData = await getIdHours(ResultSetHeader.insertId);
+    const infoData = await getAllHours();
+    return { hoursData, infoData, state: "create" };
   }
 };
 
@@ -73,7 +75,8 @@ const removeHours = async (idHours) => {
     throw Error(`El nivel que usted quiere eliminar no existe`);
   }
   await pool.query(`DELETE FROM hours WHERE idHours = ?`, [idHours]);
-  return await getAllHours();
+  const infoData = await getAllHours();
+  return { infoData, state: "delete" };
 };
 
 module.exports = {
