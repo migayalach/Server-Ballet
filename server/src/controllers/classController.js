@@ -36,11 +36,13 @@ const createClass = async (idHours, idUser, idTypeClass, parallel) => {
     );
   }
   await existParallel(parallel);
-  await pool.query(
+  const [ResultSetHeader] = await pool.query(
     "INSERT INTO class (idHours, idUser, idTypeClass, parallel) VALUES (?, ?, ?, ?)",
     [idHours, idUser, idTypeClass, parallel]
   );
-  return await getAllClass();
+  const classData = await getByIdClass(ResultSetHeader.insertId);
+  const infoData = await getAllClass();
+  return { classData, infoData, state: "create" };
 };
 
 // TODO MOSTRAR TODAS LAS CLASES
@@ -117,7 +119,8 @@ const removeClass = async (idClass) => {
   }
   await existClass(idClass);
   await pool.query("DELETE FROM class WHERE idClass = ? ", [idClass]);
-  return await getAllClass();
+  const infoData = await getAllClass();
+  return { infoData, state: "delete" };
 };
 
 module.exports = {
