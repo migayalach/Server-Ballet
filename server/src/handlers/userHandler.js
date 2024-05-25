@@ -65,6 +65,7 @@ const putUser = async (request, response) => {
     nameUser,
     lastNameUser,
     emailUser,
+    passwordUser,
     addressUser,
     dateBirthUser,
     carnetUser,
@@ -78,10 +79,11 @@ const putUser = async (request, response) => {
       nameUser,
       lastNameUser,
       emailUser,
+      passwordUser,
       addressUser,
       dateBirthUser,
       +carnetUser,
-      stateUser
+      stateUser,
     );
     response.status(200).json(data);
   } catch (error) {

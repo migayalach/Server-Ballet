@@ -107,6 +107,7 @@ const updateUser = async (
   nameUser,
   lastNameUser,
   emailUser,
+  passwordUser,
   addressUser,
   dateBirthUser,
   carnetUser,
@@ -126,22 +127,43 @@ const updateUser = async (
   if (!(await existExtension(idExtension))) {
     throw Error(`La extension que usted quiere asignar no existe`);
   }
-  await pool.query(
-    "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, stateUser = ? WHERE idUser = ?",
-    [
-      idLevel,
-      idExtension,
-      nameUser,
-      lastNameUser,
-      emailUser,
-      addressUser,
-      dateBirthUser,
-      carnetUser,
-      stateUser,
-      idUser,
-    ]
-  );
-  return await getIdUser(idUser);
+  if (!passwordUser) {
+    await pool.query(
+      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, stateUser = ? WHERE idUser = ?",
+      [
+        idLevel,
+        idExtension,
+        nameUser,
+        lastNameUser,
+        emailUser,
+        addressUser,
+        dateBirthUser,
+        carnetUser,
+        stateUser,
+        idUser,
+      ]
+    );
+    return await getIdUser(idUser);
+  } else if (passwordUser.length >= 8) {
+    const password = await hashedPassword(passwordUser);
+    await pool.query(
+      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, passwordUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, stateUser = ? WHERE idUser = ?",
+      [
+        idLevel,
+        idExtension,
+        nameUser,
+        lastNameUser,
+        emailUser,
+        password,
+        addressUser,
+        dateBirthUser,
+        carnetUser,
+        stateUser,
+        idUser,
+      ]
+    );
+    return await getIdUser(idUser);
+  }
 };
 
 // TODO ELIMINAR USUARIO
