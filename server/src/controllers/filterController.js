@@ -8,7 +8,11 @@ const filterUser = async (
   idLevel,
   idExtension,
   stateUser,
-  stateOrTime,
+  totalTime,
+  stateHours,
+  idUser,
+  idTypeClass,
+  stateClass,
   page
 ) => {
   switch (search) {
@@ -61,17 +65,48 @@ const filterUser = async (
 
     case "hours":
       let queryH = "SELECT * FROM hours";
-      if (order !== undefined && stateOrTime !== undefined) {
-        queryH += ` ORDER BY ${stateOrTime} ${order}`;
-      }
-      const [dataH] = await pool.query(queryH);
-      if (!dataH.length) throw Error(`No se encontro nada`);
       const queryDataH = {
         search,
         order,
-        stateOrTime,
       };
+      if (totalTime && !stateHours) {
+        queryH += ` ORDER BY totalTime ${order}`;
+        queryDataH.totalTime = totalTime;
+      } else if (!totalTime && stateHours) {
+        queryH += ` WHERE stateHours = ${stateHours} ORDER BY totalTime ${order}`;
+        queryDataH.stateHours = stateHours;
+      }
+
+      const [dataH] = await pool.query(queryH);
+      if (!dataH.length) throw Error(`No se encontro nada`);
+
       return responseData(dataH, "filter", page, queryDataH);
+
+    case "class":
+      let queryC =
+        "SELECT c.idClass, h.totalTime, u.idUser, u.nameUser, u.lastNameUser, u.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user u, hours h, extension e WHERE ";
+      const queryDataC = {
+        search,
+        order,
+        stateClass,
+      };
+      if (idUser && stateClass && !idExtension && !idTypeClass) {
+        queryC += `c.idUser = ${idUser} `;
+        queryDataC.idUser = idUser;
+      } else if (!idUser && stateClass && idExtension && !idTypeClass) {
+        queryC += `u.idExtension = ${idExtension} `;
+        queryDataC.idExtension = idExtension;
+      } else if (!idUser && stateClass && !idExtension && idTypeClass) {
+        queryC += `c.idTypeClass = ${idTypeClass} `;
+        queryDataC.idTypeClass = idTypeClass;
+      }
+
+      queryC += `AND c.stateClass = ${stateClass} AND c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = u.idUser AND  u.idExtension = e.idExtension ORDER BY c.idClass ${order}`;
+
+      const [dataC] = await pool.query(queryC);
+      if (!dataC.length) throw Error(`No se encontro nada`);
+
+      return responseData(dataC, "filter", page, queryDataC);
 
     default:
       break;
