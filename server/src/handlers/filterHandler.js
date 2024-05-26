@@ -8,8 +8,11 @@ const getFilterUser = async (request, response) => {
     idLevel,
     idExtension,
     stateUser,
-    stateOrTime,
+    totalTime,
     stateHours,
+    idUser,
+    idTypeClass,
+    stateClass,
     page,
   } = request.query;
   try {
@@ -20,7 +23,11 @@ const getFilterUser = async (request, response) => {
       idLevel,
       idExtension,
       stateUser,
-      stateOrTime,
+      totalTime,
+      stateHours,
+      idUser,
+      idTypeClass,
+      stateClass,
       page
     );
     response.status(200).json(data);
