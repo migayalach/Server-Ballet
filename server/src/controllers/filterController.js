@@ -1,7 +1,9 @@
 const responseData = require("../utils/response");
+const { getAllLevel } = require("../controllers/levelController");
 const pool = require("../dataBase/conexion");
 
 const filterUser = async (
+  all,
   search,
   order,
   nameOrLastName,
@@ -113,4 +115,54 @@ const filterUser = async (
   }
 };
 
-module.exports = { filterUser };
+const filterAll = async (option) => {
+  let queryFilter = "";
+  if (option === "typeClass" || option === "hours" || option === "class") {
+    let data = [];
+    switch (option) {
+      case "typeClass":
+        queryFilter += " SELECT * FROM typeClass ORDER BY idTypeClass ASC";
+        [data] = await pool.query(queryFilter);
+        if (!data.length) throw Error(`No se encontro nada`);
+        return data;
+      case "hours":
+        queryFilter +=
+          "SELECT * FROM hours WHERE stateHours = TRUE ORDER BY idHours ASC";
+        [data] = await pool.query(queryFilter);
+        if (!data.length) throw Error(`No se encontro nada`);
+        return data;
+      case "class":
+        queryFilter +=
+          "SELECT * FROM class WHERE stateClass = true ORDER BY idClass ASC";
+        [data] = await pool.query(queryFilter);
+        if (!data.length) throw Error(`No se encontro nada`);
+        return data;
+    }
+  } else {
+    queryFilter +=
+      "SELECT u.idUser, l.nameLevel, u.nameUser, u.lastNameUser, u.carnetUser, e.department, u.photoUser FROM user u, level l, extension e";
+
+    if (option === "student") {
+      queryFilter += ` WHERE u.idLevel = 4 `;
+    }
+
+    if (option === "teacher") {
+      queryFilter += ` WHERE u.idLevel = 2 `;
+    }
+
+    queryFilter +=
+      "AND u.stateUser = true AND u.idLevel = l.idLevel AND u.idExtension = e.idExtension ORDER BY u.idUser";
+    const [responseAll] = await pool.query(queryFilter);
+    if (!responseAll.length) throw Error(`No se encontro nada`);
+    return responseAll;
+  }
+};
+
+module.exports = { filterUser, filterAll };
+
+// ****BUSCAR POR NOMBRE CARNET O APELLIDO
+
+// SELECT u.idUser, l.nameLevel, u.nameUser, u.lastNameUser, u.carnetUser, e.department, u.photoUser
+// FROM user u, level l, extension e
+// WHERE u.nameUser LIKE 'M%' AND u.idLevel = 4 AND u.stateUser = true AND u.idLevel = l.idLevel AND u.idExtension = e.idExtension
+// ORDER BY u.idUser
