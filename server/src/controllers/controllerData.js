@@ -219,6 +219,13 @@ async function existClass(idClass) {
   return;
 }
 
+const allParams = async () => {
+  const [data] = await pool.query(
+    "SELECT idParams, idClass, dateTest, title FROM params"
+  );
+  return data;
+};
+
 module.exports = {
   selectMaxLevel,
   allLevel,
@@ -244,4 +251,5 @@ module.exports = {
   existParallel,
   allClass,
   existClass,
+  allParams,
 };

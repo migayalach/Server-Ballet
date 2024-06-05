@@ -72,8 +72,24 @@ create table student(
   idClass int not null,
   idUser int not null,
   stateStudent boolean default true not null,
-  -- qualification JSON,
-  -- assistance JSON,
   foreign key(idClass) references class(idClass),
+  foreign key(idUser) references user(idUser)
+);
+
+create table params(
+  idParams int auto_increment not null,
+  idClass int not null,
+  dateTest date not null,
+  title varchar(500) not null,
+  params JSON not null,
+  primary key(idParams),
+  foreign key(idClass) references class(idClass) 
+);
+
+create table qualification(
+  idParams	int not null,
+  idUser	int not null,
+  qualification JSON not null,
+  foreign key(idParams) references params(idParams),
   foreign key(idUser) references user(idUser)
 );
