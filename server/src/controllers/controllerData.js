@@ -221,7 +221,7 @@ async function existClass(idClass) {
 
 const allParams = async () => {
   const [data] = await pool.query(
-    "SELECT idParams, idClass, dateTest, title FROM params"
+    "SELECT p.idParams, p.idClass, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title FROM params p, class c, user u WHERE p.idClass = c.idClass AND u.idUser = c.idUser"
   );
   return data;
 };

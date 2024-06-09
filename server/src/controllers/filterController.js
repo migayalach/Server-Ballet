@@ -1,5 +1,6 @@
 const responseData = require("../utils/response");
 const { getAllLevel } = require("../controllers/levelController");
+const { getIdUser } = require("./userController");
 const pool = require("../dataBase/conexion");
 
 const filterUser = async (
@@ -158,11 +159,27 @@ const filterAll = async (option) => {
   }
 };
 
-module.exports = { filterUser, filterAll };
+const getInfoIdUser = async (idUser) => {
+  const { nameLevel } = await getIdUser(idUser);
+  if (nameLevel === "Estudiante" || nameLevel === "Secretaria") {
+    throw Error(`Lo siento usted no tiene permiso para acceder`);
+  }
+  let query =
+    "SELECT c.idClass, c.idHours, c.idTypeClass, t.nameClass, c.parallel, h.totalTime,  c.stateClass FROM class c, user u, typeClass t, hours h WHERE u.idUser = c.idUser AND t.idTypeClass = c.idTypeClass AND h.idHours = c.idHours AND c.stateClass = true ";
+  if (nameLevel === "Director") {
+    const [data] = await pool.query(query);
+    if (!data.length) {
+      throw Error`No se encontraron clases`;
+    }
+    return data;
+  } else if (nameLevel === "Profesor") {
+    query += `AND c.idUser = ${idUser}`;
+    const [data] = await pool.query(query);
+    if (!data.length) {
+      throw Error`No se encontraron clases`;
+    }
+    return data;
+  }
+};
 
-// ****BUSCAR POR NOMBRE CARNET O APELLIDO
-
-// SELECT u.idUser, l.nameLevel, u.nameUser, u.lastNameUser, u.carnetUser, e.department, u.photoUser
-// FROM user u, level l, extension e
-// WHERE u.nameUser LIKE 'M%' AND u.idLevel = 4 AND u.stateUser = true AND u.idLevel = l.idLevel AND u.idExtension = e.idExtension
-// ORDER BY u.idUser
+module.exports = { filterUser, filterAll, getInfoIdUser };
