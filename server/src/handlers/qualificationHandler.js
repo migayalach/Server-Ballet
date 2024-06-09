@@ -1,6 +1,6 @@
 const {
   createQualification,
-  // getAllStaff,
+  getAllStaff,
   // getPageStaff,
   // getIdStaff,
   // updateStaff,
@@ -17,9 +17,9 @@ const postQualification = async (request, response) => {
   }
 };
 
-const getQualificationAll = (request, response) => {
+const getQualificationAll = async (request, response) => {
   try {
-    const data = 1;
+    const data = await getAllStaff();
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
