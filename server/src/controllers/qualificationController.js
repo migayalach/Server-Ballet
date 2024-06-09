@@ -10,6 +10,12 @@ const createQualification = async (idClass, idStudent, qualification) => {
   return;
 };
 
+const getAllStaff = async () => {
+  const [data] = await pool.query(`SELECT * FROM qualification`);
+  return data;
+};
+
 module.exports = {
   createQualification,
+  getAllStaff,
 };
