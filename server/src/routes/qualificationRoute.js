@@ -10,7 +10,7 @@ const qualificationRouter = Router();
 
 qualificationRouter.post("/", postQualification);
 qualificationRouter.get("/", getQualificationAll);
-qualificationRouter.get("/:idQualification", getQualificationId);
+qualificationRouter.get("/:idUser", getQualificationId);
 qualificationRouter.put("/", putQualification);
 qualificationRouter.delete("/:idQualification", deleteQualification);
 
