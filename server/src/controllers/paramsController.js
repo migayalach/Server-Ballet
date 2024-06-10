@@ -20,7 +20,7 @@ const createParams = async (idClass, dateTest, title, params) => {
   //   (idUser = results),
   //   (qualification = params)
   // );
-  return await getAllParams();
+  return;
 };
 
 const getAllParams = async () => {
