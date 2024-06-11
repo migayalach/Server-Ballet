@@ -2,6 +2,7 @@ const {
   createClass,
   getAllClass,
   getByIdClass,
+  getAllClassId,
   getPageClass,
   updateClass,
   removeClass,
@@ -18,9 +19,9 @@ const postClass = async (request, response) => {
 };
 
 const getClassAll = async (request, response) => {
-  const { page } = request.query;
+  const { page, idUser } = request.query;
   try {
-    const data = !page ? await getAllClass() : await getPageClass(page);
+    const data = !page ? await getAllClass(idUser) : await getPageClass(page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
