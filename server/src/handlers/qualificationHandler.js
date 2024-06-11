@@ -32,7 +32,8 @@ const getQualificationId = async (request, response) => {
     response.status(400).json({ error: error.message });
   }
 };
-// miguel@gmail.com
+
+// TODO miguel@gmail.com
 // AYCHMI86
 
 const putQualification = (request, response) => {

@@ -46,9 +46,9 @@ const createClass = async (idHours, idUser, idTypeClass, parallel) => {
 };
 
 // TODO MOSTRAR TODAS LAS CLASES
-const getAllClass = async () => {
+const getAllClass = async (idUser) => {
   const page = 1;
-  const response = await allClass();
+  const response = await allClass(idUser);
   return responseData(response, "class", page);
 };
 
@@ -59,6 +59,10 @@ const getByIdClass = async (idClass) => {
     [idClass]
   );
   return data[0];
+};
+
+const getAllClassId = async (idLevel, idUser) => {
+  return ":D"
 };
 
 // TODO MOSTRAR POR PAGINA
@@ -128,6 +132,7 @@ module.exports = {
   getAllClass,
   getByIdClass,
   getPageClass,
+  getAllClassId,
   updateClass,
   removeClass,
 };
