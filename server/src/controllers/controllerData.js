@@ -1,5 +1,6 @@
 // BASE DE DATOS
 const pool = require("../dataBase/conexion");
+const { getIdUser } = require("./userController");
 
 // LEVEL
 async function allLevel() {
@@ -201,11 +202,25 @@ async function existParallel(parallel) {
   return;
 }
 
-async function allClass() {
-  const [data] = await pool.query(
-    "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension"
-  );
-  return data;
+async function allClass(idUser) {
+  const { nameLevel } = await getIdUser(idUser);
+  if (nameLevel === "Estudiante") {
+    throw Error(`Perminos insuficientes`);
+  }
+  let query =
+    "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension";
+  if (nameLevel === "Director" || nameLevel === "Secretaria") {
+    const [data] = await pool.query(query);
+    return data;
+  } else if (nameLevel === "Profesor") {
+    query += ` AND c.idUser = ${idUser}`;
+    const [data] = await pool.query(query);
+    return data;
+  }
+  // const [data] = await pool.query(
+  //   "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension"
+  // );
+  // return data;
 }
 
 async function existClass(idClass) {
