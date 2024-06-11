@@ -118,7 +118,12 @@ const filterUser = async (
 
 const filterAll = async (option) => {
   let queryFilter = "";
-  if (option === "typeClass" || option === "hours" || option === "class") {
+  if (
+    option === "typeClass" ||
+    option === "hours" ||
+    option === "class" ||
+    option === "student"
+  ) {
     let data = [];
     switch (option) {
       case "typeClass":
@@ -136,6 +141,12 @@ const filterAll = async (option) => {
         queryFilter +=
           "SELECT * FROM class WHERE stateClass = true ORDER BY idClass ASC";
         [data] = await pool.query(queryFilter);
+        if (!data.length) throw Error(`No se encontro nada`);
+        return data;
+      case "student":
+        [data] = await pool.query(
+          `SELECT u.idUser, u.nameUser, u.lastNameUser, u.carnetUser, e.department, u.photoUser FROM user u, level l, extension e WHERE u.idLevel = l.idLevel AND u.stateUser = TRUE AND e.idExtension = u.idExtension AND l.nameLevel = "Estudiante"`
+        );
         if (!data.length) throw Error(`No se encontro nada`);
         return data;
     }
