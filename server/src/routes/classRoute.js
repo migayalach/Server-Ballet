@@ -8,10 +8,10 @@ const {
 } = require("../handlers/classHandler");
 const classRouter = Router();
 
-classRouter.post("/", postClass);
 classRouter.get("/", getClassAll);
-classRouter.get("/:idClass", getIdClass);
+classRouter.post("/", postClass);
 classRouter.put("/", putClass);
-classRouter.delete("/:idClass", deleteClass);
+classRouter.delete("/:idUser/:idClass", deleteClass);
+classRouter.get("/:idClass", getIdClass);1
 
 module.exports = classRouter;
