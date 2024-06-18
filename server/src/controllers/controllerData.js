@@ -1,6 +1,5 @@
 // BASE DE DATOS
 const pool = require("../dataBase/conexion");
-const { getIdUser } = require("./userController");
 
 // LEVEL
 async function allLevel() {
@@ -203,24 +202,30 @@ async function existParallel(parallel) {
 }
 
 async function allClass(idUser) {
-  const { nameLevel } = await getIdUser(idUser);
+  const [data] = await pool.query(
+    "SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.passwordUser,  s.addressUser, s.dateBirthUser,  s.carnetUser,  s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idUser = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
+    [idUser]
+  );
+  if (!data.length) {
+    throw Error(`El usuario que usted busca no se encuentra registrado`);
+  }
+
+  const { nameLevel } = data[0];
+
   if (nameLevel === "Estudiante") {
     throw Error(`Perminos insuficientes`);
   }
   let query =
     "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension";
   if (nameLevel === "Director" || nameLevel === "Secretaria") {
+    query += ` ORDER BY c.idClass`;
     const [data] = await pool.query(query);
     return data;
   } else if (nameLevel === "Profesor") {
-    query += ` AND c.idUser = ${idUser}`;
+    query += ` AND c.idUser = ${idUser} ORDER BY c.idClass`;
     const [data] = await pool.query(query);
     return data;
   }
-  // const [data] = await pool.query(
-  //   "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension"
-  // );
-  // return data;
 }
 
 async function existClass(idClass) {
