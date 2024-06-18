@@ -8,25 +8,39 @@ const {
   removeClass,
 } = require("../controllers/classController");
 
-const postClass = async (request, response) => {
-  const { idHours, idUser, idTypeClass, parallel } = request.body;
+const getClassAll = async (request, response) => {
+  const { page, idUser } = request.query;
   try {
-    const data = await createClass(idHours, idUser, idTypeClass, parallel);
+    const data = !page
+      ? await getAllClass(idUser)
+      : await getPageClass(page, idUser);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getClassAll = async (request, response) => {
-  const { page, idUser } = request.query;
+const postClass = async (request, response) => {
+  const { idUserCreate, idHours, idUser, idTypeClass, parallel } = request.body;
   try {
-    const data = !page ? await getAllClass(idUser) : await getPageClass(page);
+    const data = await createClass(
+      idUserCreate,
+      idHours,
+      idUser,
+      idTypeClass,
+      parallel
+    );
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
+
+
+
+
+
+
 
 const getIdClass = async (request, response) => {
   const { idClass } = request.params;
@@ -57,9 +71,9 @@ const putClass = async (request, response) => {
 };
 
 const deleteClass = async (request, response) => {
-  const { idClass } = request.params;
+  const { idUser, idClass } = request.params;
   try {
-    const data = await removeClass(idClass);
+    const data = await removeClass(idUser, idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
