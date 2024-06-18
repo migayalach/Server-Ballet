@@ -1,13 +1,4 @@
 const pool = require("../dataBase/conexion");
-const {
-  selectMaxLevel,
-  countUser,
-  existExtension,
-  matchCarnetUser,
-  matchEmail,
-  allUser,
-  existIdLevel,
-} = require("./controllerData");
 const responseData = require("../utils/response");
 const {
   isNumber,
@@ -18,6 +9,15 @@ const {
   stateBoolean,
 } = require("../helpers/funcAux");
 const hashedPassword = require("../utils/passwordEncrypt");
+const {
+  selectMaxLevel,
+  countUser,
+  existExtension,
+  matchCarnetUser,
+  matchEmail,
+  allUser,
+  existIdLevel,
+} = require("./controllerData");
 
 //TODO CREACION DE USUARIO NUEVO
 const createUser = async (

@@ -16,7 +16,13 @@ const {
 } = require("../helpers/funcAux");
 
 // TODO CREACION DE CLASE
-const createClass = async (idHours, idUser, idTypeClass, parallel) => {
+const createClass = async (
+  idUserCreate,
+  idHours,
+  idUser,
+  idTypeClass,
+  parallel
+) => {
   if (isNaN(idHours) || isNaN(idUser) || isNaN(idTypeClass)) {
     throw Error(`Por favor ingrese los parametros requeridos`);
   }
@@ -41,7 +47,7 @@ const createClass = async (idHours, idUser, idTypeClass, parallel) => {
     [idHours, idUser, idTypeClass, parallel]
   );
   const classData = await getByIdClass(ResultSetHeader.insertId);
-  const infoData = await getAllClass();
+  const infoData = await getAllClass(idUserCreate);
   return { classData, infoData, state: "create" };
 };
 
@@ -49,7 +55,7 @@ const createClass = async (idHours, idUser, idTypeClass, parallel) => {
 const getAllClass = async (idUser) => {
   const page = 1;
   const response = await allClass(idUser);
-  return responseData(response, "class", page);
+  return responseData(response, "class", page, idUser);
 };
 
 const getByIdClass = async (idClass) => {
@@ -62,16 +68,16 @@ const getByIdClass = async (idClass) => {
 };
 
 const getAllClassId = async (idLevel, idUser) => {
-  return ":D"
+  return ":D";
 };
 
 // TODO MOSTRAR POR PAGINA
-const getPageClass = async (page) => {
+const getPageClass = async (page, idUser) => {
   if (isNumber(page)) {
     throw Error(`El numero de pagina debe ser un numero`);
   }
-  const response = await allClass();
-  return responseData(response, "class", page);
+  const response = await allClass(idUser);
+  return responseData(response, "class", page, idUser);
 };
 
 // TODO EDITAR CLASE
@@ -117,13 +123,13 @@ const updateClass = async (
 };
 
 // TODO ELIMINAR CLASE
-const removeClass = async (idClass) => {
+const removeClass = async (idUser, idClass) => {
   if (isNumber(idClass)) {
     throw Error(`El parametro debe ser un numero`);
   }
   await existClass(idClass);
   await pool.query("DELETE FROM class WHERE idClass = ? ", [idClass]);
-  const infoData = await getAllClass();
+  const infoData = await getAllClass(idUser);
   return { infoData, state: "delete" };
 };
 

@@ -13,7 +13,7 @@ function URL_OPTION(option, queryId) {
     case "user":
       return `user?page=`;
     case "class":
-      return `class?page=`;
+      return `class?idUser=${queryId}&page=`;
     case "params":
       return `params?page=`;
     case "filter":
