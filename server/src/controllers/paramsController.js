@@ -7,20 +7,39 @@ const { allParams } = require("./controllerData");
 
 const createParams = async (idClass, dateTest, title, params) => {
   const jsonParmas = JSON.stringify(params);
-  await pool.query(
+  const [ResultSetHeader] = await pool.query(
     "INSERT INTO params (idClass, dateTest, title, params) VALUES (?, ?, ?, ?)",
     [idClass, dateTest, title, jsonParmas]
   );
-  // LISTA DE ESTUDIANTES DE LA CLASE
-  // const results = (await getIdClassStudent(idClass)).results.map(
-  //   ({ idUser }) => idUser
-  // );
-  // await createQualification(
-  //   idClass,
-  //   (idUser = results),
-  //   (qualification = params)
-  // );
-  return;
+
+  //!idParams
+  const paramsUltimate = ResultSetHeader.insertId;
+
+  // LISTA DE ALUMNOS = (idUser)
+  const listStudent = (await getIdClassStudent(idClass)).results.map(
+    ({ idUser }) => idUser
+  );
+
+  const listParams = JSON.stringify(
+    params.map(({ item, calification, observation }) => ({
+      item,
+      calification: 0,
+      observation,
+    }))
+  );
+
+  // PROMISE ALL
+  await Promise.all(
+    listStudent.map(async (idUser) => {
+      return await pool.query(
+        `INSERT INTO qualification (idParams, idUser, qualification) VALUES (?, ?, ?) `,
+        [paramsUltimate, idUser, listParams]
+      );
+    })
+  );
+
+  // DEVOLVER LA LISTA DE PARAMS DE LA CLASE
+  return await getAllParams();
 };
 
 const getAllParams = async () => {
@@ -41,6 +60,8 @@ const getIdParams = async (idParams) => {
   if (!data.length) {
     throw Error(`El examen que usted busca no se encuentra registrado`);
   }
+  console.log(await getIdClassStudent(data[0].idClass));
+
   return data[0];
 };
 
