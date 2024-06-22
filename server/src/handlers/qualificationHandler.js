@@ -33,9 +33,6 @@ const getQualificationId = async (request, response) => {
   }
 };
 
-// TODO miguel@gmail.com
-// AYCHMI86
-
 const putQualification = (request, response) => {
   // try {
   //   const data = 1;
