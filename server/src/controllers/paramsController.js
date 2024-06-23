@@ -2,10 +2,15 @@ const pool = require("../dataBase/conexion");
 const responseData = require("../utils/response");
 const { createQualification } = require("./qualificationController");
 const { getIdClassStudent } = require("./classStudentController");
+const { getIdUser } = require("../controllers/userController");
+const { paramsList, promisseResolve } = require("./controllerData");
 
 const { allParams } = require("./controllerData");
 
-const createParams = async (idClass, dateTest, title, params) => {
+const studentsList = async (idClass) =>
+  (await getIdClassStudent(idClass)).results.map(({ idUser }) => idUser);
+
+const addParamsStudents = async (idClass, dateTest, title, params) => {
   const jsonParmas = JSON.stringify(params);
   const [ResultSetHeader] = await pool.query(
     "INSERT INTO params (idClass, dateTest, title, params) VALUES (?, ?, ?, ?)",
@@ -13,84 +18,82 @@ const createParams = async (idClass, dateTest, title, params) => {
   );
 
   //!idParams
-  const paramsUltimate = ResultSetHeader.insertId;
+  return ResultSetHeader.insertId;
+};
+
+const createParams = async (idUser, idClass, dateTest, title, params) => {
+  //!idParams
+  const paramsUltimate = await addParamsStudents(
+    idClass,
+    dateTest,
+    title,
+    params
+  );
 
   // LISTA DE ALUMNOS = (idUser)
-  const listStudent = (await getIdClassStudent(idClass)).results.map(
-    ({ idUser }) => idUser
-  );
+  const listStudent = await studentsList(idClass);
 
-  const listParams = JSON.stringify(
-    params.map(({ item, calification, observation }) => ({
-      item,
-      calification: 0,
-      observation,
-    }))
-  );
+  // LISTA DE PARAMETROS
+  const listParams = paramsList(params, "create");
 
   // PROMISE ALL
-  await Promise.all(
-    listStudent.map(async (idUser) => {
-      return await pool.query(
-        `INSERT INTO qualification (idParams, idUser, qualification) VALUES (?, ?, ?) `,
-        [paramsUltimate, idUser, listParams]
-      );
-    })
-  );
+  await promisseResolve(listStudent, paramsUltimate, listParams);
 
   // DEVOLVER LA LISTA DE PARAMS DE LA CLASE
-  return await getAllParams();
+  return await getAllParams(idUser);
 };
 
-const getAllParams = async () => {
+const getAllParams = async (idUser) => {
   const page = 1;
-  const response = await allParams();
+  const response = await allParams(idUser);
   return responseData(response, "params", page);
 };
 
-const getPageParams = async (page) => {
-  const response = await allParams();
-  return responseData(response, "params", page);
+const getIdParams = async (idUser) => {
+  return await getAllParams(idUser);
 };
 
-const getIdParams = async (idParams) => {
-  const [data] = await pool.query(`SELECT * FROM params WHERE idParams = ?`, [
-    idParams,
-  ]);
-  if (!data.length) {
-    throw Error(`El examen que usted busca no se encuentra registrado`);
-  }
-  console.log(await getIdClassStudent(data[0].idClass));
+// const getPageParams = async (page) => {
+//   const response = await allParams();
+//   return responseData(response, "params", page);
+// };
 
-  return data[0];
+const updateParams = async (
+  idParams,
+  idUser,
+  idClass,
+  dateTest,
+  title,
+  params
+) => {
+  // const jsonParams = JSON.stringify(params);
+  // await pool.query(
+  //   `UPDATE params SET dateTest = ?, title = ?, params = ? WHERE idParams = ?`,
+  //   [dateTest, title, jsonParams, idParams]
+  // );
+  // return await getIdParams(idParams);
+  
+
+  return "editarlo";
 };
 
-const updateParams = async (idParams, idClass, dateTest, title, params) => {
-  const jsonParams = JSON.stringify(params);
-  await pool.query(
-    `UPDATE params SET dateTest = ?, title = ?, params = ? WHERE idParams = ?`,
-    [dateTest, title, jsonParams, idParams]
-  );
-  return await getIdParams(idParams);
-};
-
-const removeParams = async (idParams) => {
-  if (isNaN(idParams)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
-  if (!(await getIdParams(idParams))) {
-    throw Error(`El nivel que usted quiere eliminar no existe`);
-  }
-  await pool.query(`DELETE FROM params WHERE idParams = ?`, [idParams]);
-  const infoData = await getAllParams();
-  return { infoData, state: "delete" };
-};
+// const removeParams = async (idParams) => {
+//   if (isNaN(idParams)) {
+//     throw Error(`El parametro debe ser un numero`);
+//   }
+//   if (!(await getIdParams(idParams))) {
+//     throw Error(`El nivel que usted quiere eliminar no existe`);
+//   }
+//   await pool.query(`DELETE FROM params WHERE idParams = ?`, [idParams]);
+//   const infoData = await getAllParams();
+//   return { infoData, state: "delete" };
+// };
 
 module.exports = {
   createParams,
-  getAllParams,
-  getPageParams,
   getIdParams,
+  // getAllParams,
+  // getPageParams,
   updateParams,
-  removeParams,
+  // removeParams,
 };
