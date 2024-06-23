@@ -1,26 +1,16 @@
 const {
   createParams,
-  getAllParams,
-  getPageParams,
+  // getAllParams,
+  // getPageParams,
   getIdParams,
   updateParams,
-  removeParams,
+  // removeParams,
 } = require("../controllers/paramsController");
 
 const postParams = async (request, response) => {
-  const { idClass, dateTest, title, params } = request.body;
+  const { idUser, idClass, dateTest, title, params } = request.body;
   try {
-    const data = await createParams(idClass, dateTest, title, params);
-    response.status(200).json(data);
-  } catch (error) {
-    response.status(400).json({ error: error.message });
-  }
-};
-
-const getParamsAllPage = async (request, response) => {
-  const { page } = request.query;
-  try {
-    const data = !page ? await getAllParams() : await getPageParams(page);
+    const data = await createParams(idUser, idClass, dateTest, title, params);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -28,9 +18,9 @@ const getParamsAllPage = async (request, response) => {
 };
 
 const getParamsId = async (request, response) => {
-  const { idParams } = request.params;
+  const { idUser } = request.params;
   try {
-    const data = await getIdParams(idParams);
+    const data = await getIdParams(idUser);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -38,29 +28,46 @@ const getParamsId = async (request, response) => {
 };
 
 const putParams = async (request, response) => {
-  const { idParams, idClass, dateTest, title, params } = request.body;
+  const { idParams, idUser, idClass, dateTest, title, params } = request.body;
   try {
-    const data = await updateParams(idParams, idClass, dateTest, title, params);
+    const data = await updateParams(
+      idParams,
+      idUser,
+      idClass,
+      dateTest,
+      title,
+      params
+    );
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const deleteParams = async (request, response) => {
-  const { idParams } = request.params;
-  try {
-    const data = await removeParams(idParams);
-    response.status(200).json(data);
-  } catch (error) {
-    response.status(400).json({ error: error.message });
-  }
-};
+// const getParamsAllPage = async (request, response) => {
+//   const { page } = request.query;
+//   try {
+//     const data = !page ? await getAllParams() : await getPageParams(page);
+//     response.status(200).json(data);
+//   } catch (error) {
+//     response.status(400).json({ error: error.message });
+//   }
+// };
+
+// const deleteParams = async (request, response) => {
+//   const { idParams } = request.params;
+//   try {
+//     const data = await removeParams(idParams);
+//     response.status(200).json(data);
+//   } catch (error) {
+//     response.status(400).json({ error: error.message });
+//   }
+// };
 
 module.exports = {
   postParams,
-  getParamsAllPage,
+  // getParamsAllPage,
   getParamsId,
   putParams,
-  deleteParams,
+  // deleteParams,
 };

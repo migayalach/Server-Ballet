@@ -90,6 +90,7 @@ create table qualification(
   idParams	int not null,
   idUser	int not null,
   qualification JSON not null,
+  note float default 0,
   foreign key(idParams) references params(idParams),
   foreign key(idUser) references user(idUser)
 );
