@@ -239,12 +239,32 @@ async function existClass(idClass) {
   return;
 }
 
-const allParams = async () => {
+const allParams = async (idUser) => {
   const [data] = await pool.query(
-    "SELECT p.idParams, p.idClass, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title FROM params p, class c, user u WHERE p.idClass = c.idClass AND u.idUser = c.idUser"
+    `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title FROM params p, class c, user u WHERE  u.idUser = ${idUser} AND p.idClass = c.idClass AND u.idUser = c.idUser`
   );
   return data;
 };
+
+//!PARAMS - QUALIFICATION
+const paramsList = (params, flag) =>
+  JSON.stringify(
+    params.map(({ item, calification, observation }) => ({
+      item,
+      calification: flag === "create" ? 0 : 100,
+      observation,
+    }))
+  );
+
+const promisseResolve = async (listStudent, paramsUltimate, listParams) =>
+  await Promise.all(
+    listStudent.map(async (idUser) => {
+      return await pool.query(
+        `INSERT INTO qualification (idParams, idUser, qualification) VALUES (?, ?, ?) `,
+        [paramsUltimate, idUser, listParams]
+      );
+    })
+  );
 
 module.exports = {
   selectMaxLevel,
@@ -272,4 +292,6 @@ module.exports = {
   allClass,
   existClass,
   allParams,
+  paramsList,
+  promisseResolve,
 };
