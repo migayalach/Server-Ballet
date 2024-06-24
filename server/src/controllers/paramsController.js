@@ -1,8 +1,11 @@
 const pool = require("../dataBase/conexion");
 const responseData = require("../utils/response");
-const { createQualification } = require("./qualificationController");
+const {
+  deleteQualification,
+  createQualification,
+} = require("./qualificationController");
 const { getIdClassStudent } = require("./classStudentController");
-const { getIdUser } = require("../controllers/userController");
+const { getAllClass } = require("../controllers/classController");
 const { paramsList, promisseResolve } = require("./controllerData");
 
 const { allParams } = require("./controllerData");
@@ -66,28 +69,66 @@ const updateParams = async (
   title,
   params
 ) => {
-  // const jsonParams = JSON.stringify(params);
-  // await pool.query(
-  //   `UPDATE params SET dateTest = ?, title = ?, params = ? WHERE idParams = ?`,
-  //   [dateTest, title, jsonParams, idParams]
-  // );
-  // return await getIdParams(idParams);
-  
+  const [dataParams] = await pool.query(
+    `SELECT noteFinish FROM params WHERE idParams = ?`,
+    [idParams]
+  );
 
-  return "editarlo";
+  if (!dataParams[0].noteFinish < 1) {
+    throw Error(
+      `Lo siento no puede realizar esta accion porque ya se cuenta con un promedio`
+    );
+  }
+
+  await deleteQualification(idParams);
+
+  // *MODIFICACION DE TITULO Y FECHA
+  await pool.query(
+    `UPDATE params SET dateTest = ?, title = ? WHERE idParams = ?`,
+    [dateTest, title, idParams]
+  );
+
+  const results = (await getAllClass(idUser)).results.map(
+    ({ idClass }) => idClass
+  );
+  if (!results.includes(idClass)) {
+    throw Error(`Lo siento esta clase no corresponde a este usuario`);
+  }
+
+  await pool.query(
+    `UPDATE params SET idClass = ?, params = ? WHERE idParams = ?`,
+    [idClass, JSON.stringify(params), idParams]
+  );
+
+  // LISTA DE ALUMNOS = (idUser)
+  const listStudent = await studentsList(idClass);
+
+  // LISTA DE PARAMETROS
+  const listParams = paramsList(params, "create");
+
+  // PROMISE ALL
+  await promisseResolve(listStudent, idParams, listParams);
+
+  // return await getAllClass(idUser);
+  return await getAllParams(idUser);
 };
 
-// const removeParams = async (idParams) => {
-//   if (isNaN(idParams)) {
-//     throw Error(`El parametro debe ser un numero`);
-//   }
-//   if (!(await getIdParams(idParams))) {
-//     throw Error(`El nivel que usted quiere eliminar no existe`);
-//   }
-//   await pool.query(`DELETE FROM params WHERE idParams = ?`, [idParams]);
-//   const infoData = await getAllParams();
-//   return { infoData, state: "delete" };
-// };
+const removeParams = async (idUser, idParams) => {
+  const [dataParams] = await pool.query(
+    `SELECT noteFinish FROM params WHERE idParams = ?`,
+    [idParams]
+  );
+
+  if (!dataParams[0].noteFinish < 1) {
+    throw Error(
+      `Lo siento no puede realizar esta accion porque ya se cuenta con un promedio`
+    );
+  }
+
+  await deleteQualification(idParams);
+  await pool.query(`DELETE FROM params WHERE idParams = ?`, [idParams]);
+  return await getAllParams(idUser);
+};
 
 module.exports = {
   createParams,
@@ -95,5 +136,5 @@ module.exports = {
   // getAllParams,
   // getPageParams,
   updateParams,
-  // removeParams,
+  removeParams,
 };
