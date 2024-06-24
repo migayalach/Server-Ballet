@@ -36,12 +36,6 @@ const postClass = async (request, response) => {
   }
 };
 
-
-
-
-
-
-
 const getIdClass = async (request, response) => {
   const { idClass } = request.params;
   try {
