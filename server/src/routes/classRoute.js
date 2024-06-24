@@ -12,6 +12,6 @@ classRouter.get("/", getClassAll);
 classRouter.post("/", postClass);
 classRouter.put("/", putClass);
 classRouter.delete("/:idUser/:idClass", deleteClass);
-classRouter.get("/:idClass", getIdClass);1
+classRouter.get("/:idClass", getIdClass);
 
 module.exports = classRouter;
