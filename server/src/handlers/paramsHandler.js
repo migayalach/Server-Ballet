@@ -4,7 +4,7 @@ const {
   // getPageParams,
   getIdParams,
   updateParams,
-  // removeParams,
+  removeParams,
 } = require("../controllers/paramsController");
 
 const postParams = async (request, response) => {
@@ -54,20 +54,20 @@ const putParams = async (request, response) => {
 //   }
 // };
 
-// const deleteParams = async (request, response) => {
-//   const { idParams } = request.params;
-//   try {
-//     const data = await removeParams(idParams);
-//     response.status(200).json(data);
-//   } catch (error) {
-//     response.status(400).json({ error: error.message });
-//   }
-// };
+const deleteParams = async (request, response) => {
+  const { idUser, idParams } = request.params;
+  try {
+    const data = await removeParams(idUser, idParams);
+    response.status(200).json(data);
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+};
 
 module.exports = {
   postParams,
-  // getParamsAllPage,
   getParamsId,
   putParams,
-  // deleteParams,
+  deleteParams,
+  // getParamsAllPage,
 };
