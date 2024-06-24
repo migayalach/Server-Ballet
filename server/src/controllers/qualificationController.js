@@ -31,6 +31,19 @@ const createQualification = async (idParams, idUser, arrayData) => {
     })
   );
 
+  let cutNote = 0;
+
+  for (let i = 0; i < noteFinish.length; i++) {
+    cutNote += noteFinish[i].note;
+  }
+
+  cutNote = (cutNote / noteFinish.length).toFixed(1);
+
+  await pool.query(`UPDATE params SET noteFinish = ? WHERE idParams = ?`, [
+    cutNote,
+    idParams,
+  ]);
+
   // MOSTRAR NUEVO REGISTRO CON LAS NOTAS
   return await getAllQualification(idParams, idUser);
 };
@@ -40,6 +53,7 @@ const deleteQualification = async (idParams) => {
 };
 
 const getAllQualification = async (idParams, idUser) => {
+  const page = 1;
   const { nameLevel } = await getIdUser(idUser);
   if (nameLevel === "Estudiante") {
     throw Error(`No cuenta con los permisos necesarios`);
@@ -50,12 +64,32 @@ const getAllQualification = async (idParams, idUser) => {
     `SELECT * FROM qualification WHERE idParams = ${idParams}`
   );
 
-  return data.map(({ idParams, idUser, qualification, note }) => ({
+  const response = data.map(({ idParams, idUser, qualification, note }) => ({
     idParams,
     idUser,
     qualification: JSON.parse(qualification),
     note,
   }));
+  const [paramsData] = (
+    await pool.query(`SELECT * FROM params WHERE idParams = ?`, [idParams])
+  )[0].map(({ dateTest, title, params, noteFinish }) => ({
+    dateTest,
+    title,
+    params: JSON.parse(params).map(({ item, calification, description }) => ({
+      item,
+      calification,
+      description,
+    })),
+    noteFinish,
+  }));
+
+  const { info, results } = responseData(response, "qualification", page);
+
+  return {
+    info,
+    params: paramsData,
+    results,
+  };
 };
 
 // const getIdQualificationAll = async (idParams, idUser) => {
@@ -102,5 +136,6 @@ const getAllQualification = async (idParams, idUser) => {
 module.exports = {
   getAllQualification,
   createQualification,
+  deleteQualification,
   // getIdQualificationAll,
 };
