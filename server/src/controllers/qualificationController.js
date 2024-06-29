@@ -61,15 +61,30 @@ const getAllQualification = async (idParams, idUser) => {
 
   // TRAER LISTA CON TODOS LOS ESTUDIANTES A CALIFICAR
   const [data] = await pool.query(
-    `SELECT * FROM qualification WHERE idParams = ${idParams}`
+    `SELECT q.*, u.nameUser, u.lastNameUser, u.carnetUser, e.department FROM qualification q, user u, extension e WHERE idParams = ${idParams} AND q.idUser = u.idUser AND u.idExtension = e.idExtension`
   );
 
-  const response = data.map(({ idParams, idUser, qualification, note }) => ({
-    idParams,
-    idUser,
-    qualification: JSON.parse(qualification),
-    note,
-  }));
+  const response = data.map(
+    ({
+      idParams,
+      idUser,
+      nameUser,
+      lastNameUser,
+      carnetUser,
+      department,
+      qualification,
+      note,
+    }) => ({
+      idParams,
+      idUser,
+      nameUser,
+      lastNameUser,
+      carnetUser,
+      department,
+      qualification: JSON.parse(qualification),
+      note,
+    })
+  );
   const [paramsData] = (
     await pool.query(`SELECT * FROM params WHERE idParams = ?`, [idParams])
   )[0].map(({ dateTest, title, params, noteFinish }) => ({
@@ -92,50 +107,8 @@ const getAllQualification = async (idParams, idUser) => {
   };
 };
 
-// const getIdQualificationAll = async (idParams, idUser) => {
-//   const { nameLevel } = await getIdUser(idUser);
-//   if (nameLevel === "Estudiante") {
-//     throw Error(`No cuenta con los permisos necesarios`);
-//   }
-
-//   // TRAER LISTA CON TODOS LOS ESTUDIANTES A CALIFICAR
-//   const [data] = await pool.query(
-//     `SELECT * FROM qualification WHERE idParams = ${idParams}`
-//   );
-
-//   return data.map(({ idParams, idUser, qualification, note }) => ({
-//     idParams,
-//     idUser,
-//     qualification: JSON.parse(qualification),
-//     note,
-//   }));
-
-//   // const page = 1;
-//   // const { nameLevel } = await getIdUser(idUser);
-//   // if (nameLevel === "Estudiante" || nameLevel === "Secretaria") {
-//   //   throw Error(`Lo siento usted no tiene permiso para acceder`);
-//   // }
-//   // let query =
-//   //   "SELECT p.idParams, p.idClass, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title FROM params p, class c, user u WHERE p.idClass = c.idClass AND u.idUser = c.idUser ";
-//   // if (nameLevel === "Director") {
-//   //   const [data] = await pool.query(query);
-//   //   if (!data.length) {
-//   //     throw Error`No se encontraron clases`;
-//   //   }
-//   //   return responseData(data, "qualificationList", page);
-//   // } else if (nameLevel === "Profesor") {
-//   //   query += `AND c.idUser = ${idUser}`;
-//   //   const [data] = await pool.query(query);
-//   //   if (!data.length) {
-//   //     throw Error`No se encontraron clases`;
-//   //   }
-//   //   return responseData(data, "qualificationList", page);
-//   // }
-// };
-
 module.exports = {
   getAllQualification,
   createQualification,
   deleteQualification,
-  // getIdQualificationAll,
 };
