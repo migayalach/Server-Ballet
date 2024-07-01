@@ -12,21 +12,24 @@ const noteQualification = (qualification) => {
 };
 
 const createQualification = async (idParams, idUser, arrayData) => {
-  const noteFinish = arrayData.map(({ idUser, qualification }) => ({
-    idUser,
-    qualification,
-    note: noteQualification(qualification),
-  }));
-
+  const noteFinish = arrayData.map(
+    ({ idUser, observation, note, qualification }) => ({
+      idUser,
+      qualification,
+      observation,
+      note,
+    })
+  );
+  
   // BORRAR REGISTROS ANTERIORES
   await deleteQualification(idParams);
 
   // INSERTAR A LA BASE DE DATOS
   await Promise.all(
-    noteFinish.map(async ({ idUser, qualification, note }) => {
+    noteFinish.map(async ({ idUser, qualification, observation, note }) => {
       return await pool.query(
-        `INSERT INTO qualification (idParams, idUser, qualification, note) VALUES (?, ?, ?, ?)`,
-        [idParams, idUser, JSON.stringify(qualification), note]
+        `INSERT INTO qualification (idParams, idUser, qualification, observation, note) VALUES (?, ?, ?, ?, ?)`,
+        [idParams, idUser, JSON.stringify(qualification), observation, note]
       );
     })
   );
@@ -73,6 +76,7 @@ const getAllQualification = async (idParams, idUser) => {
       carnetUser,
       department,
       qualification,
+      observation,
       note,
     }) => ({
       idParams,
@@ -82,6 +86,7 @@ const getAllQualification = async (idParams, idUser) => {
       carnetUser,
       department,
       qualification: JSON.parse(qualification),
+      observation,
       note,
     })
   );
