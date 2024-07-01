@@ -41,7 +41,6 @@ const createParams = async (idUser, idClass, dateTest, title, params) => {
 
   // PROMISE ALL
   await promisseResolve(listStudent, paramsUltimate, listParams);
-
   // DEVOLVER LA LISTA DE PARAMS DE LA CLASE
   return await getAllParams(idUser);
 };
