@@ -2,21 +2,18 @@ create database balletJessica
 
 use balletJessica
 
--- OK
 create table level(
   idLevel int auto_increment not null,
   nameLevel varchar(100) not null,
   primary key(idLevel)
 );
 
--- OK
 create table extension(
   idExtension int auto_increment not null,
   department varchar (4) unique not null,
   primary key(idExtension) 
 );
 
--- OK
 create table user(
   idUser int auto_increment not null,
   idLevel int not null,
@@ -35,7 +32,6 @@ create table user(
   foreign key(idExtension) references extension(idExtension)
 );
 
--- OK
 create table hours(
   idHours int auto_increment not null,
   startTime time not null,
@@ -45,7 +41,6 @@ create table hours(
   primary key(idHours)
 );
 
--- OK
 create table typeClass(
   idTypeClass int auto_increment not null,
   nameClass varchar(100) not null,
@@ -53,7 +48,6 @@ create table typeClass(
   primary key(idTypeClass)
 );
 
--- OK
 create table class(
   idClass int auto_increment not null,
   idHours int not null,
@@ -67,7 +61,6 @@ create table class(
   foreign key(idTypeClass) references typeClass(idTypeClass)
 );
 
--- OK
 create table student(
   idClass int not null,
   idUser int not null,
