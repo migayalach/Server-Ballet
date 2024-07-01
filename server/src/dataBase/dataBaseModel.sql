@@ -91,6 +91,7 @@ create table qualification(
   idParams	int not null,
   idUser	int not null,
   qualification JSON not null,
+  observation varchar (2500) not null default "",
   note float not null default 0,
   foreign key(idParams) references params(idParams),
   foreign key(idUser) references user(idUser)
