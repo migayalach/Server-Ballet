@@ -1,12 +1,9 @@
 const responseData = require("../utils/response");
 const { existIdLevel, repeatedLevel, allLevel } = require("./controllerData");
-const { isNumber, isString, lengthName } = require("../helpers/funcAux");
+const { isNumber } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
 
 const createLevel = async (nameLevel) => {
-  if (!lengthName(nameLevel)) {
-    throw Error(`Por favor ingrese un nombre para el nivel`);
-  }
   if (await repeatedLevel(nameLevel)) {
     throw Error(`El nombre que intenta agregar ya existe`);
   }
@@ -42,19 +39,10 @@ const getIdLevel = async (idLevel) => {
 };
 
 const updateLevel = async (idLevel, nameLevel) => {
-  if (isNumber(idLevel) || isString(idLevel)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
-  if (!lengthName(nameLevel)) {
-    throw Error(`Por favor ingrese un nombre para el nivel`);
-  }
   await getIdLevel(idLevel);
   if (await repeatedLevel(nameLevel)) {
     throw Error(`El nombre que quiere cambiar ya se encuentra registrado`);
   }
-  // if (!(await existIdLevel(idLevel))) {
-  //   throw Error(`El nivel que usted quiere modificar no existe`);
-  // }
   await pool.query(`UPDATE level SET nameLevel = ? WHERE idLevel = ?`, [
     nameLevel,
     idLevel,
@@ -63,9 +51,6 @@ const updateLevel = async (idLevel, nameLevel) => {
 };
 
 const removeLevel = async (idLevel) => {
-  if (isNumber(idLevel)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
   if (!(await existIdLevel(+idLevel))) {
     throw Error(`El nivel que usted quiere eliminar no existe`);
   }
