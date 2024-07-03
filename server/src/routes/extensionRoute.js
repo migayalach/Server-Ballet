@@ -6,10 +6,19 @@ const {
   deleteExtension,
 } = require("../handlers/extensionHandler");
 const extensionRouter = Router();
+const {
+  postExtensionMiddleware,
+  putExtensionMiddleware,
+  deleteExtensionMiddleware,
+} = require("../middlewares/extensionMiddleware");
 
-extensionRouter.post("/", postExtension);
+extensionRouter.post("/", postExtensionMiddleware, postExtension);
 extensionRouter.get("/", getExtensionAll);
-extensionRouter.put("/", putExtension);
-extensionRouter.delete("/:idExtension", deleteExtension);
+extensionRouter.put("/", putExtensionMiddleware, putExtension);
+extensionRouter.delete(
+  "/:idExtension",
+  deleteExtensionMiddleware,
+  deleteExtension
+);
 
 module.exports = extensionRouter;
