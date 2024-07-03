@@ -9,6 +9,7 @@ const {
   stateBoolean,
 } = require("../helpers/funcAux");
 const hashedPassword = require("../utils/passwordEncrypt");
+
 const {
   selectMaxLevel,
   countUser,
@@ -31,7 +32,6 @@ const createUser = async (
   carnetUser,
   photoUser
 ) => {
-  completeUser(idExtension, nameUser, lastNameUser, emailUser, carnetUser);
   if (!(await existExtension(idExtension))) {
     throw Error(`La extension que usted quiere asignar no existe`);
   }
@@ -59,10 +59,10 @@ const createUser = async (
       lastNameUser,
       emailUser,
       password,
-      addressUser,
-      dateBirthUser,
+      addressUser ? addressUser : "",
+      dateBirthUser ? dateBirthUser : null,
       carnetUser,
-      photoUser,
+      photoUser ? photoUser : "",
     ]
   );
   const userData = await getIdUser(ResultSetHeader.insertId);
