@@ -27,18 +27,10 @@ const getPageExtension = async (page) => {
 };
 
 const createExtension = async (nameExtension) => {
-  if (isNumber(nameExtension)) {
-    throw Error(`El parametro no debe ser un numero`);
-  }
-  if (!lengthName(nameExtension)) {
-    throw Error(`Por favor ingrese un nombre para la extension`);
-  }
   if (await repeatedExtension(nameExtension)) {
     throw Error(`No puedo haber extensiones repetidas`);
   }
-  if (!lengthElderForElementents(nameExtension)) {
-    throw Error(`La extension no debe ser mayor a cuatro caracteres`);
-  }
+
   await pool.query(`INSERT INTO extension (department) VALUES(?)`, [
     nameExtension,
   ]);
@@ -54,21 +46,10 @@ const getIdExtension = async (idExtension) => {
 };
 
 const updateExtension = async (idExtension, nameExtension) => {
-  if (isNaN(idExtension)) {
-    throw Error(`El parametro debe ser un numero`);
+  if ((await repeatedNameExtension(nameExtension)).length) {
+    throw Error(`No puede haber elementos repetidos`);
   }
-  if (!lengthName(nameExtension)) {
-    throw Error(`Por favor ingrese un nombre para la extension`);
-  }
-  if (!lengthElderForElementents(nameExtension)) {
-    throw Error(`La extension no debe ser mayor a cuatro caracteres`);
-  }
-  if (!isNaN(nameExtension)) {
-    throw Error(`El nombre de la extension no debe ser un numero`);
-  }
-  // if ((await repeatedNameExtension(nameExtension)).length) {
-  //   throw Error(`No puede haber elementos repetidos`);
-  // }
+
   await pool.query(
     `UPDATE extension SET department = ? WHERE idExtension = ?`,
     [nameExtension, idExtension]
