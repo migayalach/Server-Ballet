@@ -86,9 +86,6 @@ const getPageUser = async (page) => {
 
 // TODO MOSTRAR USUARIO POR ID
 const getIdUser = async (idUser) => {
-  if (isNumber(idUser)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
   const [data] = await pool.query(
     "SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.passwordUser,  s.addressUser, s.dateBirthUser,  s.carnetUser,  s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idUser = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
     [idUser]
@@ -113,13 +110,6 @@ const updateUser = async (
   carnetUser,
   stateUser
 ) => {
-  completeUser(idExtension, nameUser, lastNameUser, emailUser, carnetUser);
-  if (isNaN(idUser)) {
-    throw Error(`Por favor ingrese el identificador del usuario`);
-  }
-  if (isNaN(idLevel)) {
-    throw Error("Por favor ingrese el nivel que quiere asignar");
-  }
   if (!(await existIdLevel(idLevel))) {
     throw Error(`El nivel que usted quiere asignar no se encuentra registrado`);
   }
@@ -168,9 +158,6 @@ const updateUser = async (
 
 // TODO ELIMINAR USUARIO
 const removeUser = async (idUser) => {
-  if (isNumber(idUser)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
   await pool.query("DELETE FROM user WHERE idUser = ? ", [idUser]);
   const infoData = await getAllUser();
   return { infoData, state: "delete" };

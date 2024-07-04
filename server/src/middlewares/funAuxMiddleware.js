@@ -100,6 +100,36 @@ function regexCasting(email) {
   return { state: true };
 }
 
+function stateCase(state) {
+  if (state === 0 || state === 1 || state === true || state === false) {
+    return { state: true };
+  }
+  return {
+    state: false,
+    message: `Por favor ingrese un estado valido`,
+  };
+}
+
+function lengthString(name) {
+  if (!name.length) {
+    return {
+      state: false,
+      message: `Por favor ingrese un nombre para`,
+    };
+  }
+  return { state: true };
+}
+
+function nameString(str) {
+  if (typeof str === "string") {
+    return { state: true };
+  }
+  return {
+    state: false,
+    message: `El nombre de la clase no puede ser un numero`,
+  };
+}
+
 module.exports = {
   lengthExtension,
   dataId,
@@ -107,4 +137,7 @@ module.exports = {
   completeUser,
   lengthCarnetUser,
   regexCasting,
+  stateCase,
+  lengthString,
+  nameString,
 };
