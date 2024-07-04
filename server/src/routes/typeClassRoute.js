@@ -6,12 +6,17 @@ const {
   putTypeClass,
   deleteTypeClass,
 } = require("../handlers/typeClassHandler");
+const {
+  postTypeClassMiddleware,
+  putTypeClassMiddleware,
+  idTypeClassMiddleware,
+} = require("../middlewares/typeClassMiddleware");
 const typeClassRouter = Router();
 
-typeClassRouter.post("/", postTypeClass);
+typeClassRouter.post("/", postTypeClassMiddleware, postTypeClass);
 typeClassRouter.get("/", getTypeClassAll);
-typeClassRouter.get("/:idTypeClass", getTypeClassId);
-typeClassRouter.put("/", putTypeClass);
-typeClassRouter.delete("/:idTypeClass", deleteTypeClass);
+typeClassRouter.get("/:idTypeClass", idTypeClassMiddleware, getTypeClassId);
+typeClassRouter.put("/", putTypeClassMiddleware, putTypeClass);
+typeClassRouter.delete("/:idTypeClass", idTypeClassMiddleware, deleteTypeClass);
 
 module.exports = typeClassRouter;
