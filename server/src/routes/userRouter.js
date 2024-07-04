@@ -6,13 +6,19 @@ const {
   putUser,
   deleteUser,
 } = require("../handlers/userHandler");
-const { postUserMiddleware } = require("../middlewares/userMiddleware");
+const {
+  postUserMiddleware,
+  deleteUserMiddleware,
+  getIdUserMiddleware,
+  putUserMiddleware,
+} = require("../middlewares/userMiddleware");
+const passwordCases = require("../middlewares/passwordMiddleware");
 const userRouter = Router();
 
 userRouter.post("/", postUserMiddleware, postUser);
 userRouter.get("/", getUserAllOrPage);
-userRouter.get("/:idUser", getUserId);
-userRouter.put("/", putUser);
-userRouter.delete("/:idUser", deleteUser);
+userRouter.get("/:idUser", getIdUserMiddleware, getUserId);
+userRouter.put("/", putUserMiddleware, passwordCases, putUser);
+userRouter.delete("/:idUser", deleteUserMiddleware, deleteUser);
 
 module.exports = userRouter;
