@@ -8,12 +8,6 @@ const { isNumber, isString, lengthName } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");
 
 const createTypeClass = async (nameClass, description) => {
-  if (!isString(nameClass)) {
-    throw Error(`El nombre de la clase no puede ser numero `);
-  }
-  if (!lengthName(nameClass)) {
-    throw Error(`Por favor ingrese un nombre para la clase`);
-  }
   if (await matchNameClass(nameClass)) {
     throw Error(`Lo siento no pueden haber tipo de clases repetidas`);
   }
@@ -41,9 +35,6 @@ const getPageTypeClass = async (page) => {
 };
 
 const getIdTypeClass = async (idTypeClass) => {
-  if (isNumber(idTypeClass)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
   const [data] = await pool.query(
     "SELECT * FROM typeClass WHERE idTypeClass = ?",
     [idTypeClass]
@@ -75,9 +66,6 @@ const updateTypeClass = async (idTypeClass, nameClass, description) => {
 };
 
 const removeTypeClass = async (idTypeClass) => {
-  if (isNumber(idTypeClass)) {
-    throw Error(`El parametro debe ser un numero`);
-  }
   if (!(await existIdTypeClass(+idTypeClass))) {
     throw Error(`El tipo de clase que usted quiere eliminar no existe`);
   }
