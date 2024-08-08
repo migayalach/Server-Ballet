@@ -18,6 +18,10 @@ function URL_OPTION(option, queryId) {
       return `params?page=`;
     case "filter":
       return `filter?page=`;
+    case "attendance":
+      return `attendance?idAssistance=${queryId}&page=`;
+    case "assistance":
+      return `assistance?idClass=${queryId}&page=`;
   }
 }
 
