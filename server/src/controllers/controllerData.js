@@ -212,12 +212,13 @@ async function allClass(idUser) {
 
   const { nameLevel } = data[0];
 
-  if (nameLevel === "Estudiante") {
-    throw Error(`Perminos insuficientes`);
-  }
   let query =
     "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension";
-  if (nameLevel === "Director" || nameLevel === "Secretaria") {
+  if (
+    nameLevel === "Director" ||
+    nameLevel === "Secretaria" ||
+    nameLevel === "Estudiante"
+  ) {
     query += ` ORDER BY c.idClass`;
     const [data] = await pool.query(query);
     return data;
@@ -240,6 +241,20 @@ async function existClass(idClass) {
 }
 
 const allParams = async (idUser) => {
+  const [userInfo] = await pool.query(
+    `SELECT l.nameLevel FROM user u, level l WHERE u.idUser = ${idUser} AND u.idLevel = l.idLevel`
+  );
+
+  if (
+    userInfo[0].nameLevel === "Secretaria" ||
+    userInfo[0].nameLevel === "Director"
+  ) {
+    const [list] = await pool.query(
+      `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title, p.noteFinish FROM params p, class c, user u WHERE p.idClass = c.idClass AND u.idUser = c.idUser`
+    );
+    return list;
+  }
+
   const [data] = await pool.query(
     `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title, p.noteFinish FROM params p, class c, user u WHERE  u.idUser = ${idUser} AND p.idClass = c.idClass AND u.idUser = c.idUser`
   );
@@ -265,6 +280,37 @@ const promisseResolve = async (listStudent, paramsUltimate, listParams) =>
       );
     })
   );
+
+// ASSISTANCE
+async function existDate(date) {
+  const [data] = await pool.query(
+    `SELECT dateAssistance FROM assistance WHERE dateAssistance = ?`,
+    [date]
+  );
+  if (data.length) {
+    throw Error(`Lo siento esta fecha ya esta registrada`);
+  }
+  return;
+}
+
+async function existAssistance(idAssistance) {
+  const [data] = await pool.query(
+    `SELECT * FROM assistance WHERE idAssistance = ?`,
+    [idAssistance]
+  );
+  console.log(data);
+  if (data.length) {
+    throw Error("La fecha no se encuentra registrada");
+  }
+  return;
+}
+
+async function deleteRegAttendance(idAssistance) {
+  await pool.query(`DELETE FROM attendance WHERE idAssistance = ?`, [
+    idAssistance,
+  ]);
+  return;
+}
 
 module.exports = {
   selectMaxLevel,
@@ -294,4 +340,7 @@ module.exports = {
   allParams,
   paramsList,
   promisseResolve,
+  existDate,
+  existAssistance,
+  deleteRegAttendance,
 };
