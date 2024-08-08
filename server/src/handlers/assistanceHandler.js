@@ -1,42 +1,59 @@
-const postAssistance = (request, response) => {
+const {
+  createNewAssistance,
+  getAllIdClassLiss,
+  getPageAssistance,
+  updateDateAssistance,
+  removeAssistance,
+} = require("../controllers/assistanceController");
+
+const postNewAssistance = async (request, response) => {
+  const { idClass, dateAssistance } = request.body;
   try {
-    const data = 1;
+    const data = await createNewAssistance(idClass, dateAssistance);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getAssistanceAll = (request, response) => {
+const getAssistanceIdClass = async (request, response) => {
+  const { idClass } = request.params;
   try {
-    const data = 1;
+    const data = await getAllIdClassLiss(idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const getAssistanceId = (request, response) => {
+const getAssistancePage = async (request, response) => {
+  const { idClass, page } = request.query;
   try {
-    const data = 1;
+    const data = await getPageAssistance(idClass, page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const putAssistance = (request, response) => {
+const putAssistanceId = async (request, response) => {
+  const { idAssistance, idClass, dateAssistance } = request.body;
   try {
-    const data = 1;
+    const data = await updateDateAssistance(
+      idAssistance,
+      idClass,
+      dateAssistance
+    );
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-const deleteAssistance = (request, response) => {
+const deleteAssistance = async (request, response) => {
+  const { idClass, idAssistance } = request.params;
   try {
-    const data = 1;
+    const data = await removeAssistance(idAssistance, idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -44,9 +61,9 @@ const deleteAssistance = (request, response) => {
 };
 
 module.exports = {
-  postAssistance,
-  getAssistanceAll,
-  getAssistanceId,
-  putAssistance,
+  postNewAssistance,
+  getAssistanceIdClass,
+  getAssistancePage,
+  putAssistanceId,
   deleteAssistance,
 };
