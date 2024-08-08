@@ -89,3 +89,25 @@ create table qualification(
   foreign key(idParams) references params(idParams),
   foreign key(idUser) references user(idUser)
 );
+
+create table assistance(
+  idAssistance int auto_increment not null,
+  idClass int not null,
+  dateAssistance date not null,
+  primary key(idAssistance),
+  foreign key(idClass) references class (idClass)
+);
+
+create table attendance (
+  idUser int not null,
+  idAssistance int not null,
+  assistance boolean not null default 0,
+  foreign key(idUser) references user (idUser),
+  foreign key(idAssistance) references assistance (idAssistance)
+  -- idUser int not null,
+  -- idClass int not null,
+  -- dateAssistance date not null,
+  -- assistance JSON not null,
+  -- foreign key(idUser) references user(idUser),
+  -- foreign key(idClass) references class(idClass)
+);
