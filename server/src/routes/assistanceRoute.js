@@ -1,17 +1,17 @@
 const { Router } = require("express");
 const {
-  postAssistance,
-  getAssistanceAll,
-  getAssistanceId,
-  putAssistance,
+  postNewAssistance,
+  getAssistanceIdClass,
+  getAssistancePage,
+  putAssistanceId,
   deleteAssistance,
 } = require("../handlers/assistanceHandler");
 const assistanceRouter = Router();
 
-assistanceRouter.post("/", postAssistance);
-assistanceRouter.get("/", getAssistanceAll);
-assistanceRouter.get("/:idAssistance", getAssistanceId);
-assistanceRouter.put("/", putAssistance);
-assistanceRouter.delete("/:idAssistance", deleteAssistance);
+assistanceRouter.post("/", postNewAssistance);
+assistanceRouter.get("/:idClass", getAssistanceIdClass);
+assistanceRouter.get("/", getAssistancePage);
+assistanceRouter.put("/", putAssistanceId);
+assistanceRouter.delete("/:idClass/:idAssistance", deleteAssistance);
 
 module.exports = assistanceRouter;
