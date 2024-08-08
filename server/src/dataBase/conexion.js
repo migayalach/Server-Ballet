@@ -3,11 +3,11 @@ require("dotenv").config();
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT } = process.env;
 
 const pool = createPool({
-  host: DB_HOST || "localhost",
-  user: DB_USER || "root",
-  password: DB_PASSWORD || "",
-  port: DB_PORT || 3001,
-  database: DB_NAME || "balletJessica",
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  port: DB_PORT,
+  database: DB_NAME,
 });
 
 module.exports = pool;
