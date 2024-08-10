@@ -113,7 +113,7 @@ const createNewAssistance = async (idClass, dateAssistance) => {
     );
   }
 
-  if (await existDate(dateAssistance));
+  if (await existDate(idClass, dateAssistance));
 
   const [newAssistance] = await pool.query(
     `INSERT INTO assistance (idClass, dateAssistance) VALUES (?, ?)`,
@@ -129,12 +129,19 @@ const createNewAssistance = async (idClass, dateAssistance) => {
     })
   );
 
-  return await getAllIdClassLiss(idClass);
+  const [newClass] = await pool.query(
+    `SELECT a.idAssistance, a.idClass, a.dateAssistance FROM assistance a WHERE a.idAssistance = ? `,
+    [newAssistance.insertId]
+  );
+
+  const assistanceData = newClass[0];
+  const infoData = await getAllIdClassLiss(idClass);
+  return { assistanceData, infoData, state: "create" };
 };
 
 const updateDateAssistance = async (idAssistance, idClass, dateAssistance) => {
   await existClass(idClass);
-  if (await existDate(dateAssistance));
+  if (await existDate(idClass, dateAssistance));
 
   if (
     (
@@ -179,7 +186,8 @@ const removeAssistance = async (idAssistance, idClass) => {
     idAssistance,
   ]);
 
-  return await getAllIdClassLiss(idClass);
+  const infoData = await getAllIdClassLiss(idClass);
+  return { infoData, state: "delete" };
 };
 
 module.exports = {

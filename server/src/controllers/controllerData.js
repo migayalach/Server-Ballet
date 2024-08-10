@@ -282,10 +282,10 @@ const promisseResolve = async (listStudent, paramsUltimate, listParams) =>
   );
 
 // ASSISTANCE
-async function existDate(date) {
+async function existDate(idClass, date) {
   const [data] = await pool.query(
-    `SELECT dateAssistance FROM assistance WHERE dateAssistance = ?`,
-    [date]
+    `SELECT dateAssistance FROM assistance WHERE dateAssistance = ? AND idClass = ?`,
+    [date, idClass]
   );
   if (data.length) {
     throw Error(`Lo siento esta fecha ya esta registrada`);
@@ -298,8 +298,7 @@ async function existAssistance(idAssistance) {
     `SELECT * FROM assistance WHERE idAssistance = ?`,
     [idAssistance]
   );
-  console.log(data);
-  if (data.length) {
+  if (!data.length) {
     throw Error("La fecha no se encuentra registrada");
   }
   return;
