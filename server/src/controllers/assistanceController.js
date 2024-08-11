@@ -91,6 +91,17 @@ const getAllIdClassLiss = async (idClass) => {
   return responseData(data, "assistance", (page = 1), idClass);
 };
 
+const getIdAssisntance = async (idClass, idAssistance) => {
+  const [data] = await pool.query(
+    `SELECT idAssistance, dateAssistance FROM assistance WHERE idClass = ? AND idAssistance = ?`,
+    [idClass, idAssistance]
+  );
+  if (!data.length) {
+    throw Error(`El registro de asistencia que usted busca no existe`);
+  }
+  return data[0];
+};
+
 const getPageAssistance = async (idClass, page) => {
   const [data] = await pool.query(
     `SELECT a.idAssistance, a.idClass, a.dateAssistance FROM assistance a WHERE a.idClass = ? ORDER BY a.dateAssistance ASC`,
@@ -194,6 +205,7 @@ module.exports = {
   createNewAssistance,
   getAllIdClassLiss,
   getPageAssistance,
+  getIdAssisntance,
   updateDateAssistance,
   removeAssistance,
 };
