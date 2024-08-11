@@ -2,6 +2,7 @@ const {
   createNewAssistance,
   getAllIdClassLiss,
   getPageAssistance,
+  getIdAssisntance,
   updateDateAssistance,
   removeAssistance,
 } = require("../controllers/assistanceController");
@@ -27,9 +28,12 @@ const getAssistanceIdClass = async (request, response) => {
 };
 
 const getAssistancePage = async (request, response) => {
-  const { idClass, page } = request.query;
+  const { idClass, idAssistance, page } = request.query;
   try {
-    const data = await getPageAssistance(idClass, page);
+    const data = idAssistance
+      ? await getIdAssisntance(idClass, idAssistance)
+      : await getPageAssistance(idClass, page);
+
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
