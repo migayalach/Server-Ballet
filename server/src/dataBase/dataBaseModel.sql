@@ -104,10 +104,23 @@ create table attendance (
   assistance boolean not null default 0,
   foreign key(idUser) references user (idUser),
   foreign key(idAssistance) references assistance (idAssistance)
-  -- idUser int not null,
-  -- idClass int not null,
-  -- dateAssistance date not null,
-  -- assistance JSON not null,
-  -- foreign key(idUser) references user(idUser),
-  -- foreign key(idClass) references class(idClass)
+);
+
+create table listEvents(
+  idListEvent int auto_increment not null,
+  dateNews date not null,
+  body text not null,
+  urlPicture text not null,
+  primary key(idListEvent)
+);
+
+create table sendContact (
+  idContact int auto_increment not null,
+  dateContact date not null,
+  nameContact varchar(255) not null,
+  emailContact varchar(255) not null,
+  phoneContact int not null,
+  stateContact boolean default true not null,
+  feedback varchar(512) not null,
+  primary key(idContact)
 );
