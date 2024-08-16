@@ -1,17 +1,36 @@
+const pool = require("../dataBase/conexion");
+const responseData = require("../utils/response");
+
 const createListEvent = async (dateNews, body, urlPicture) => {
-  return `${dateNews} - ${body} - ${urlPicture}`;
+  await pool.query(
+    `INSERT INTO listEvents (dateNews, body, urlPicture) VALUES (?, ?, ?)`,
+    [dateNews, body, urlPicture]
+  );
+  return await getAllListEvent();
 };
 
 const getAllListEvent = async () => {
-  return "I'm get all";
+  const [data] = await pool.query(
+    `SELECT * FROM listEvents ORDER BY dateNews DESC`
+  );
+  if (!data.length) {
+    throw Error(`Lo siento no hay eventos programados`);
+  }
+  return responseData(data, "list", (page = 1));
 };
 
 const getPageListEvent = async (page) => {
+  throw Error(`Lo siento no hay eventos programados`);
+
   return `${page}`;
 };
 
 const getIdListEvent = async (idListEvent) => {
-  return `${idListEvent}`;
+  const [data] = await pool.query(
+    `SELECT * FROM listEvents WHERE idListEvent = ?`,
+    [idListEvent]
+  );
+  return data;
 };
 
 const updateListEvent = async (idListEvent, dateNews, body, urlPicture) => {
