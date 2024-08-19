@@ -6,11 +6,17 @@ const {
   putListContact,
 } = require("../handlers/contactHandler");
 
+const {
+  validateContact,
+  validateIdContact,
+  validateResContact,
+} = require("../middlewares/contactMiddleware");
+
 const contactRouter = Router();
 
-contactRouter.post("/", postListContact);
+contactRouter.post("/", validateContact, postListContact);
 contactRouter.get("/", getListContactAll);
-contactRouter.get("/:idContact", getListContact);
-contactRouter.put("/", putListContact);
+contactRouter.get("/:idContact", validateIdContact, getListContact);
+contactRouter.put("/", validateResContact, putListContact);
 
 module.exports = contactRouter;

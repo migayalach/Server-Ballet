@@ -124,7 +124,7 @@ create table sendContact (
   nameContact varchar(255) not null,
   emailContact varchar(255) not null,
   phoneContact int not null,
-  stateContact boolean default true not null,
-  feedback varchar(512),
+  stateContact boolean default false not null,
+  feedback varchar(512) default "" not null,
   primary key(idContact)
 );
