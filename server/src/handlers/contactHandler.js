@@ -7,10 +7,9 @@ const {
 } = require("../controllers/contactController");
 
 const postListContact = async (request, response) => {
-  const { dateContact, nameContact, emailContact, phoneContact } = request.body;
+  const { nameContact, emailContact, phoneContact } = request.body;
   try {
     const data = await createContact(
-      dateContact,
       nameContact,
       emailContact,
       phoneContact
