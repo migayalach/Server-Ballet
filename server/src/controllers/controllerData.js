@@ -311,6 +311,14 @@ async function deleteRegAttendance(idAssistance) {
   return;
 }
 
+//LIST-EVENT
+async function allListEvent() {
+  const [data] = await pool.query(
+    `SELECT l.idListEvent, l.idHours, l.dateNews, l.title, l.body, h.startTime, h.endTime, l.stateEvent, l.urlPicture FROM listEvents l, hours h WHERE l.idHours = h.idHours ORDER BY dateNews DESC`
+  );
+  return data;
+}
+
 module.exports = {
   selectMaxLevel,
   allLevel,
@@ -342,4 +350,5 @@ module.exports = {
   existDate,
   existAssistance,
   deleteRegAttendance,
+  allListEvent,
 };

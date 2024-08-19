@@ -16,6 +16,7 @@ const qualificationRouter = require("./qualificationRoute");
 const assistanceRouter = require("./assistanceRoute");
 const attendanceRouter = require("./_attendanceRoute");
 const listEventRouter = require("./listEventRoute");
+const sendContactRouter = require("./contactDataRoute");
 // const paymentRouter = require("./paymentRoute");
 
 // ENTRY POINT'S
@@ -33,6 +34,7 @@ mainRouter.use("/qualification", qualificationRouter);
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
 mainRouter.use("/listEvents", listEventRouter);
+mainRouter.use("/contact", sendContactRouter);
 // mainRouter.use("/payment", paymentRouter);
 
 module.exports = mainRouter;
