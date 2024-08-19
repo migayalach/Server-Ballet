@@ -319,6 +319,25 @@ async function allListEvent() {
   return data;
 }
 
+// CONTACT
+async function getContactAll() {
+  const [data] = await pool.query(
+    `SELECT * FROM sendContact ORDER BY stateContact = FALSE DESC`
+  );
+  return data;
+}
+
+async function existContact(idContact) {
+  const [data] = await pool.query(
+    `SELECT nameContact FROM sendContact WHERE idContact = ?`,
+    [idContact]
+  );
+  if (!data.length) {
+    return false;
+  }
+  return true;
+}
+
 module.exports = {
   selectMaxLevel,
   allLevel,
@@ -351,4 +370,6 @@ module.exports = {
   existAssistance,
   deleteRegAttendance,
   allListEvent,
+  getContactAll,
+  existContact
 };
