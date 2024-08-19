@@ -16,7 +16,7 @@ const qualificationRouter = require("./qualificationRoute");
 const assistanceRouter = require("./assistanceRoute");
 const attendanceRouter = require("./_attendanceRoute");
 const listEventRouter = require("./listEventRoute");
-const sendContactRouter = require("./contactDataRoute");
+const sendContactRouter = require("./contactDataRoute"); //OK
 // const paymentRouter = require("./paymentRoute");
 
 // ENTRY POINT'S
