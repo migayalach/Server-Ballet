@@ -23,7 +23,9 @@ function URL_OPTION(option, queryId) {
     case "assistance":
       return `assistance?idClass=${queryId}&page=`;
     case "listEvents":
-      return `listEvents?page=`
+      return `listEvents?page=`;
+    case "contact":
+      return `contact?page=`;
   }
 }
 
