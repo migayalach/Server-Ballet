@@ -49,7 +49,7 @@ const updateListEvent = async (
     throw Error(`No se encuentro la hora seleccionada`);
   }
   await pool.query(
-    `UPDATE listEvents SET idHours= ?, dateNews = ?, title = ?, body = ?, stateEvent = ?, urlPicture = ? WHERE idListEvent = ?`,
+    `UPDATE listEvents SET idHours = ?, dateNews = ?, title = ?, body = ?, stateEvent = ?, urlPicture = ? WHERE idListEvent = ?`,
     [idHours, dateNews, title, body, stateEvent, urlPicture, idListEvent]
   );
   return await getIdListEvent(idListEvent);
