@@ -1,4 +1,10 @@
 const { Router } = require("express");
+
+const {
+  validatePostAttendance,
+  validateGetIdAttendance,
+} = require("../middlewares/attendanceMiddleware");
+
 const {
   postAttendance,
   getAllAttendanceDate,
@@ -7,8 +13,12 @@ const {
 
 const attendanceRouter = Router();
 
-attendanceRouter.post("/", postAttendance);
-attendanceRouter.get("/:idAssistance/:flag?", getAllAttendanceDate);
+attendanceRouter.post("/", validatePostAttendance, postAttendance);
+attendanceRouter.get(
+  "/:idAssistance/:flag?",
+  validateGetIdAttendance,
+  getAllAttendanceDate
+);
 attendanceRouter.get("/", getAttendancePage);
 
 module.exports = attendanceRouter;
