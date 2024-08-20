@@ -1,5 +1,12 @@
 const { Router } = require("express");
 const {
+  validatePostParams,
+  validateIdParams,
+  validateUpdateParams,
+  validateDeleteParams,
+} = require("../middlewares/paramsMiddleware");
+
+const {
   postParams,
   getParamsId,
   deleteParams,
@@ -9,10 +16,10 @@ const {
 
 const paramsRouter = Router();
 
-paramsRouter.post("/", postParams);                       // OK
-paramsRouter.get("/:idUser", getParamsId);                // OK
-paramsRouter.put("/", putParams);                         // OK
-paramsRouter.delete("/:idUser/:idParams", deleteParams);  // OK
+paramsRouter.post("/", validatePostParams, postParams);
+paramsRouter.get("/:idUser", validateIdParams, getParamsId);
+paramsRouter.put("/", validateUpdateParams, putParams);
+paramsRouter.delete("/:idUser/:idParams", validateDeleteParams, deleteParams);
 // paramsRouter.get("/", getParamsAllPage);
 
 module.exports = paramsRouter;
