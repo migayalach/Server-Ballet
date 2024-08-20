@@ -1,5 +1,10 @@
 const { Router } = require("express");
 const {
+  validateList,
+  validateIdContact,
+  validateResContact,
+} = require("../middlewares/listEventMiddleware");
+const {
   postListEvent,
   getListEventAll,
   getListEvent,
@@ -8,9 +13,9 @@ const {
 
 const listEventRouter = Router();
 
-listEventRouter.post("/", postListEvent);
+listEventRouter.post("/", validateList, postListEvent);
 listEventRouter.get("/", getListEventAll);
-listEventRouter.get("/:idListEvent", getListEvent);
-listEventRouter.put("/", putListEvent);
+listEventRouter.get("/:idListEvent", validateIdContact, getListEvent);
+listEventRouter.put("/", validateResContact, putListEvent);
 
 module.exports = listEventRouter;
