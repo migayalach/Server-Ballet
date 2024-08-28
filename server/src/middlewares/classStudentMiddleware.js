@@ -2,7 +2,6 @@ const { dataId } = require("./funAuxMiddleware");
 
 const validategetIdClassStu = (request, response, next) => {
   const { idClass } = request.params;
-
   if (!dataId(+idClass).state) {
     return response
       .status(400)
@@ -14,7 +13,6 @@ const validategetIdClassStu = (request, response, next) => {
 
 const validatePostClassStu = (request, response, next) => {
   const { idClass, idUser } = request.body;
-
   if (!dataId(+idClass).state) {
     return response
       .status(400)
@@ -32,7 +30,7 @@ const validatePostClassStu = (request, response, next) => {
 
 const validateDeleteClassStu = (request, response, next) => {
   const { idClass, idUser } = request.params;
-
+  
   if (!dataId(+idClass).state) {
     return response
       .status(400)
