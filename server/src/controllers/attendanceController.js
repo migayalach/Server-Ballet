@@ -6,6 +6,7 @@ const addAttendance = async (idAssistance, list) => {
     `SELECT * FROM assistance WHERE idAssistance = ?`,
     [idAssistance]
   );
+
   if (!data.length) {
     throw Error("El registro no existe");
   }
