@@ -2,6 +2,7 @@ const { dataId } = require("./funAuxMiddleware");
 
 const validatePostParams = (request, response, next) => {
   const { idUser, idClass, dateTest, title, params } = request.body;
+
   if (!dataId(+idUser).state) {
     return response
       .status(400)
