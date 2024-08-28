@@ -19,12 +19,12 @@ const assistanceRouter = Router();
 
 assistanceRouter.post("/", validatePostAssistance, postNewAssistance);
 assistanceRouter.get("/:idClass", validateIdAssistance, getAssistanceIdClass);
-assistanceRouter.get("/", getAssistancePage);
 assistanceRouter.put("/", validateUpdateAssistance, putAssistanceId);
 assistanceRouter.delete(
   "/:idClass/:idAssistance",
   validateDeleteAssistance,
   deleteAssistance
 );
+assistanceRouter.get("/", getAssistancePage);
 
 module.exports = assistanceRouter;
