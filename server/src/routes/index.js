@@ -2,22 +2,20 @@ const { Router } = require("express");
 const mainRouter = Router();
 
 // ROUTES
-const loginRouter = require("./loginRoute"); //OK
-const levelRouter = require("./levelRoute"); //OK
-const extensionRouter = require("./extensionRoute"); //OK
-const userRouter = require("./userRouter"); //OK
-const typeClassRouter = require("./typeClassRoute"); //OK
-
-const hoursRouter = require("./hoursRoute"); //O
-const classRouter = require("./classRoute"); //O
-const classStudentRouter = require("./classStudentRoute");//O
-const paramsRouter = require("./paramsRoute"); //O
-const qualificationRouter = require("./qualificationRoute"); //O
-const assistanceRouter = require("./assistanceRoute"); //O
-const attendanceRouter = require("./_attendanceRoute"); //O
-
-const listEventRouter = require("./listEventRoute"); //OK
-const sendContactRouter = require("./contactDataRoute"); //OK
+const loginRouter = require("./loginRoute");
+const levelRouter = require("./levelRoute");
+const extensionRouter = require("./extensionRoute");
+const userRouter = require("./userRouter");
+const typeClassRouter = require("./typeClassRoute");
+const hoursRouter = require("./hoursRoute");
+const classRouter = require("./classRoute");
+const classStudentRouter = require("./classStudentRoute");
+const paramsRouter = require("./paramsRoute");
+const qualificationRouter = require("./qualificationRoute");
+const assistanceRouter = require("./assistanceRoute");
+const attendanceRouter = require("./_attendanceRoute");
+const listEventRouter = require("./listEventRoute");
+const sendContactRouter = require("./contactDataRoute");
 const filterRouter = require("./filterRoute");
 
 // ENTRY POINT'S
