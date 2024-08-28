@@ -101,7 +101,7 @@ function regexCasting(email) {
 }
 
 function stateCase(state) {
-  if (state === 0 || state === 1 || state === true || state === false) {
+  if (+state === 0 || +state === 1 || state === true || state === false) {
     return { state: true };
   }
   return {
