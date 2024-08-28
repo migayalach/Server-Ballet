@@ -14,12 +14,13 @@ const {
   // getParamsAllPage,
 } = require("../handlers/paramsHandler");
 
+
 const paramsRouter = Router();
 
 paramsRouter.post("/", validatePostParams, postParams);
 paramsRouter.get("/:idUser", validateIdParams, getParamsId);
-paramsRouter.put("/", validateUpdateParams, putParams);
 paramsRouter.delete("/:idUser/:idParams", validateDeleteParams, deleteParams);
+paramsRouter.put("/", validateUpdateParams, putParams);
 // paramsRouter.get("/", getParamsAllPage);
 
 module.exports = paramsRouter;

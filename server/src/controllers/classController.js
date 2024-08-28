@@ -23,20 +23,20 @@ const createClass = async (
   idTypeClass,
   parallel
 ) => {
-  if (isNaN(idHours) || isNaN(idUser) || isNaN(idTypeClass)) {
+  if (isNaN(+idHours) || isNaN(+idUser) || isNaN(+idTypeClass)) {
     throw Error(`Por favor ingrese los parametros requeridos`);
   }
-  if (isString(idHours) || isString(idUser) || isString(idTypeClass)) {
+  if (isString(+idHours) || isString(+idUser) || isString(+idTypeClass)) {
     throw Error(`Por favor ingrese los parametros requeridos`);
   }
   if (!isString(parallel) || !lengthName(parallel)) {
     throw Error(`Por favor asigne un paralelo a esta clase`);
   }
-  if (!(await existIdHours(idHours))) {
+  if (!(await existIdHours(+idHours))) {
     throw Error(`La hora que intensa asignar no se encuentra disponible`);
   }
   await existUser(idUser);
-  if (!(await existIdTypeClass(idTypeClass))) {
+  if (!(await existIdTypeClass(+idTypeClass))) {
     throw Error(
       `Lo siento el tipo de clase que intenta seleccionar no se encutra disponible`
     );
@@ -89,27 +89,19 @@ const updateClass = async (
   parallel,
   stateClass
 ) => {
-  // if (
-  //   isNaN(idClass) ||
-  //   isNaN(idHours) ||
-  //   isNaN(idUser) ||
-  //   isNaN(idTypeClass)
-  // ) {
-  //   throw Error(`Por favor ingrese los parametros requeridos`);
-  // }
-  if (isString(idHours) || isString(idUser) || isString(idTypeClass)) {
+  if (isString(+idHours) || isString(+idUser) || isString(+idTypeClass)) {
     throw Error(`Por favor ingrese los parametros requeridos`);
   }
   if (!isString(parallel) || !lengthName(parallel)) {
     throw Error(`Por favor asigne un paralelo a esta clase`);
   }
   // stateBoolean(stateClass);
-  await existClass(idClass);
-  if (!(await existIdHours(idHours))) {
+  await existClass(+idClass);
+  if (!(await existIdHours(+idHours))) {
     throw Error(`La hora que intensa asignar no se encuentra disponible`);
   }
-  await existUser(idUser);
-  if (!(await existIdTypeClass(idTypeClass))) {
+  await existUser(+idUser);
+  if (!(await existIdTypeClass(+idTypeClass))) {
     throw Error(
       `Lo siento el tipo de clase que intenta seleccionar no se encutra disponible`
     );

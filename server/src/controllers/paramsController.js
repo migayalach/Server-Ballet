@@ -25,6 +25,17 @@ const addParamsStudents = async (idClass, dateTest, title, params) => {
 };
 
 const createParams = async (idUser, idClass, dateTest, title, params) => {
+  const [existTitle] = await pool.query(
+    `SELECT title FROM params WHERE title = ? AND idClass = ?`,
+    [title, idClass]
+  );
+
+  if (existTitle.length) {
+    throw Error(
+      `Este titulo ya esta registrado como evaluacion para este curso`
+    );
+  }
+
   //!idParams
   const paramsUltimate = await addParamsStudents(
     idClass,
@@ -90,7 +101,8 @@ const updateParams = async (
   const results = (await getAllClass(idUser)).results.map(
     ({ idClass }) => idClass
   );
-  if (!results.includes(idClass)) {
+
+  if (!results.includes(+idClass)) {
     throw Error(`Lo siento esta clase no corresponde a este usuario`);
   }
 

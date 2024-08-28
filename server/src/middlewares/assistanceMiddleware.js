@@ -2,7 +2,6 @@ const { dataId } = require("./funAuxMiddleware");
 
 const validatePostAssistance = (request, response, next) => {
   const { idClass, dateAssistance } = request.body;
-
   if (!dataId(+idClass).state) {
     return response
       .status(400)

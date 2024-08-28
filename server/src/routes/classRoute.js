@@ -10,11 +10,13 @@ const {
   postClassMiddleware,
   putClassMiddleware,
   getIdClassMiddleware,
+  getPageClassQuery,
   deleteClassMiddleware,
+  paramsQuery,
 } = require("../middlewares/classMiddleware");
 const classRouter = Router();
 
-classRouter.get("/", getClassAll);
+classRouter.get("/", paramsQuery, getClassAll);
 classRouter.post("/", postClassMiddleware, postClass);
 classRouter.put("/", putClassMiddleware, putClass);
 classRouter.delete("/:idUser/:idClass", deleteClassMiddleware, deleteClass);
