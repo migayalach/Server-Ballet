@@ -7,8 +7,6 @@ const {
 
 const postClassMiddleware = (request, response, next) => {
   const { idUserCreate, idHours, idUser, idTypeClass, parallel } = request.body;
-
-  // TODO veficiar este parametro ya que trae todas las clases del usuario
   const idUserAllClass = dataId(+idUserCreate);
   if (!idUserAllClass.state) {
     return response.status(400).json({
@@ -53,7 +51,7 @@ const postClassMiddleware = (request, response, next) => {
 const putClassMiddleware = (request, response, next) => {
   const { idClass, idHours, idUser, idTypeClass, parallel, stateClass } =
     request.body;
-
+  
   const classId = dataId(+idClass);
   if (!classId.state) {
     return response.status(400).json({
@@ -109,6 +107,15 @@ const getIdClassMiddleware = (request, response, next) => {
   next();
 };
 
+const getPageClassQuery = (request, response, next) => {
+  const { page } = request.params;
+  const pageNum = dataId(+page);
+  if (!pageNum.state) {
+    return response.status(400).json({ message: typeId.message });
+  }
+  next();
+};
+
 const deleteClassMiddleware = (request, response, next) => {
   const { idUser, idClass } = request.params;
   const typeIdUser = dataId(+idUser);
@@ -123,9 +130,31 @@ const deleteClassMiddleware = (request, response, next) => {
   next();
 };
 
+const paramsQuery = (request, response, next) => {
+  const { page, idUser } = request.query;
+  if (!page && idUser) {
+    const typeId = dataId(+idUser);
+    if (!typeId.state) {
+      return response.status(400).json({ message: typeId.message });
+    }
+  } else if (page && idUser) {
+    const typeId = dataId(+idUser);
+    if (!typeId.state) {
+      return response.status(400).json({ message: typeId.message });
+    }
+    const pageNum = dataId(+page);
+    if (!pageNum.state) {
+      return response.status(400).json({ message: pageNum.message });
+    }
+  }
+  next();
+};
+
 module.exports = {
   postClassMiddleware,
   putClassMiddleware,
   getIdClassMiddleware,
+  getPageClassQuery,
   deleteClassMiddleware,
+  paramsQuery,
 };
