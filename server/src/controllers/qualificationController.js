@@ -20,7 +20,7 @@ const createQualification = async (idParams, idUser, arrayData) => {
       note,
     })
   );
-  
+
   // BORRAR REGISTROS ANTERIORES
   await deleteQualification(idParams);
 
