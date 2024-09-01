@@ -6,13 +6,17 @@ const {
 } = require("../controllers/controllerData");
 
 const createContact = async (nameContact, emailContact, phoneContact) => {
-  const [ResultSetHeader] = await pool.query(
+  const [data] = await pool.query(`SELECT emailContact FROM sendContact WHERE emailContact = ?`, [emailContact]);
+  
+  if (data.length) {
+    throw Error(`Este email ya se encuentra registrado!`);
+  }
+
+  await pool.query(
     `INSERT INTO sendContact (dateContact, nameContact, emailContact, phoneContact) VALUES (CURRENT_DATE, ?, ?, ?)`,
     [nameContact, emailContact, phoneContact]
   );
-  if (!ResultSetHeader) {
-    throw Error(`No se pudo registrar`);
-  }
+
   return { message: "Registrado con exito", state: true };
 };
 
