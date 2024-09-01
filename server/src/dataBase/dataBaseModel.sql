@@ -121,7 +121,7 @@ create table listEvents(
 create table sendContact (
   idContact int auto_increment not null,
   dateContact date not null,
-  nameContact varchar(255) not null,
+  nameContact varchar(255) unique not null,
   emailContact varchar(255) not null,
   phoneContact int not null,
   stateContact boolean default false not null,
