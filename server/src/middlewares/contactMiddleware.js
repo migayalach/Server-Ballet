@@ -4,6 +4,7 @@ const { emailRegex } = require("../helpers/regex");
 
 const validateContact = (request, response, next) => {
   const { nameContact, emailContact, phoneContact } = request.body;
+
   if (!nameContact) {
     return response.status(400).json({
       message: `Por favor introduzca su nombre completo`,
@@ -21,6 +22,7 @@ const validateContact = (request, response, next) => {
       message: `Por favor introduzca su numero de celular`,
     });
   }
+  
   next();
 };
 
