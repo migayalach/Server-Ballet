@@ -1,4 +1,5 @@
 const responseData = require("../utils/response");
+const responseFilterData = require("../utils/filter/responseFilter");
 const { getAllLevel } = require("../controllers/levelController");
 const { getIdUser } = require("./userController");
 const pool = require("../dataBase/conexion");
@@ -193,4 +194,14 @@ const getInfoIdUser = async (idUser) => {
   }
 };
 
-module.exports = { filterUser, filterAll, getInfoIdUser };
+// ************************************************************************************ //
+const sendFilter = async (flag, from, to, stateContact, page) => { 
+  const [data] = await pool.query(
+    `SELECT * FROM sendContact WHERE dateContact BETWEEN ? AND ? AND stateContact = ${stateContact} ORDER BY dateContact DESC`,
+    [from, to]
+  );
+  const queryData = { from, to, stateContact }; 
+  return responseFilterData(flag, data, page, queryData);
+};
+
+module.exports = { filterUser, filterAll, getInfoIdUser, sendFilter };

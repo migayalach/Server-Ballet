@@ -24,7 +24,7 @@ function URL_OPTION(option, queryId) {
       return `assistance?idClass=${queryId}&page=`;
     case "listEvents":
       return `listEvents?page=`;
-    case "contact":
+    case "contact":      
       return `contact?page=`;
   }
 }
