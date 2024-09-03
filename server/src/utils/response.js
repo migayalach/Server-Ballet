@@ -1,6 +1,7 @@
 const { isNumber } = require("../helpers/funcAux");
 const { pagesCurrent, pageCurrent } = require("./currentPages");
 const { nextPage, prevPage } = require("./pageNavegation");
+
 let pages = 0;
 const elementPage = 20;
 
