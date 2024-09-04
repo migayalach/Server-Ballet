@@ -28,9 +28,14 @@ const getFilterUser = async (request, response) => {
   try {
     switch (flag) {
       case "send":
-        const data = await sendFilter(flag, from, to, stateContact, page);
+        const data = await sendFilter(
+          flag,
+          from,
+          to,
+          stateContact,
+          (numberPage = page ? page : 1)
+        );
         return response.status(200).json(data);
-
       default:
         break;
     }
