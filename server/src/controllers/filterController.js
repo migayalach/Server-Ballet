@@ -195,7 +195,7 @@ const getInfoIdUser = async (idUser) => {
 };
 
 // ************************************************************************************ //
-const sendFilter = async (flag, from, to, stateContact, page) => { 
+const sendFilter = async (flag, from, to, stateContact, page) => {   
   const [data] = await pool.query(
     `SELECT * FROM sendContact WHERE dateContact BETWEEN ? AND ? AND stateContact = ${stateContact} ORDER BY dateContact DESC`,
     [from, to]
