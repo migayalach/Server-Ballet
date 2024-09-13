@@ -7,6 +7,7 @@ const {
   removeTypeClass,
 } = require("../controllers/typeClassController");
 
+// TODO: CREAR UN NUEVO TIPO DE CLASE UTILIZANDO 'nameClass, description' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postTypeClass = async (request, response) => {
   const { nameClass, description } = request.body;
   try {
@@ -17,6 +18,7 @@ const postTypeClass = async (request, response) => {
   }
 };
 
+// TODO: RETORNA LA LISTA COMPLETA DE LOS TIPOS DE CLASE O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getTypeClassAll = async (request, response) => {
   const { page } = request.query;
   try {
@@ -27,6 +29,7 @@ const getTypeClassAll = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR EL TIPO DE CLASE BUSCADA POR 'idTypeClass' EN LOS PARÁMETROS DE LA RUTA
 const getTypeClassId = async (request, response) => {
   const { idTypeClass } = request.params;
   try {
@@ -37,6 +40,7 @@ const getTypeClassId = async (request, response) => {
   }
 };
 
+// TODO: EDITA UN TIPO DE CLASE UTILIZANDO 'idTypeClass, nameClass, description' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putTypeClass = async (request, response) => {
   const { idTypeClass, nameClass, description } = request.body;
   try {
@@ -47,6 +51,7 @@ const putTypeClass = async (request, response) => {
   }
 };
 
+// TODO: ELIMINA EL TIPO DE CLASE BUSCADO POR 'idTypeClass' PROPORCIONADO POR EL PARÁMETRO DE LA RUTA
 const deleteTypeClass = async (request, response) => {
   const { idTypeClass } = request.params;
   try {
