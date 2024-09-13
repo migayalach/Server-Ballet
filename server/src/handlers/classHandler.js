@@ -2,12 +2,12 @@ const {
   createClass,
   getAllClass,
   getByIdClass,
-  getAllClassId,
   getPageClass,
   updateClass,
   removeClass,
 } = require("../controllers/classController");
 
+// TODO: RETORNA LA LISTA COMPLETA DE CLASES O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getClassAll = async (request, response) => {
   const { page, idUser } = request.query;
   try {
@@ -20,6 +20,18 @@ const getClassAll = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR LA CLASE BUSCADA POR 'idClass' EN LOS PARÁMETROS DE LA RUTA
+const getIdClass = async (request, response) => {
+  const { idClass } = request.params;
+  try {
+    const data = await getByIdClass(idClass);
+    response.status(200).json(data);
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+};
+
+// TODO: CREAR UNA NUEVA CLASE UTILIZANDO 'idUserCreate, idHours, idUser, idTypeClass, parallel' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postClass = async (request, response) => {
   const { idUserCreate, idHours, idUser, idTypeClass, parallel } = request.body;
   try {
@@ -36,16 +48,7 @@ const postClass = async (request, response) => {
   }
 };
 
-const getIdClass = async (request, response) => {
-  const { idClass } = request.params;
-  try {
-    const data = await getByIdClass(idClass);
-    response.status(200).json(data);
-  } catch (error) {
-    response.status(400).json({ error: error.message });
-  }
-};
-
+// TODO: EDITA UNA CLASE UTILIZANDO 'idClass, idHours, idUser, idTypeClass, parallel, stateClass' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putClass = async (request, response) => {
   const { idClass, idHours, idUser, idTypeClass, parallel, stateClass } =
     request.body;
@@ -64,6 +67,7 @@ const putClass = async (request, response) => {
   }
 };
 
+// TODO: ELIMINA UNA CLASE BUSCADO POR 'idUser, idClass' PROPORCIONADO POR EL PARÁMETRO DE LA RUTA
 const deleteClass = async (request, response) => {
   const { idUser, idClass } = request.params;
   try {
