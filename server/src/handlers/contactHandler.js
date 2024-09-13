@@ -6,6 +6,7 @@ const {
   updateContact,
 } = require("../controllers/contactController");
 
+// TODO: CREAR UN NUEVO CONTACTO UTILIZANDO 'nameContact, emailContact, phoneContact' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postListContact = async (request, response) => {
   const { nameContact, emailContact, phoneContact } = request.body;
   try {
@@ -20,6 +21,7 @@ const postListContact = async (request, response) => {
   }
 };
 
+// TODO: RETORNA LA LISTA COMPLETA DE GENTE QUE DESEA SER CONTACTADA O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getListContactAll = async (request, response) => {
   const { page } = request.query;
   try {
@@ -30,6 +32,7 @@ const getListContactAll = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR EL CONTACTO BUSCADO POR 'idContact' EN LOS PARÁMETROS DE LA RUTA
 const getListContact = async (request, response) => {
   const { idContact } = request.params;
   try {
@@ -40,6 +43,7 @@ const getListContact = async (request, response) => {
   }
 };
 
+// TODO: EDITA UN CONTACTO UTILIZANDO 'idContact, stateContact, feedback' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putListContact = async (request, response) => {
   const { idContact, stateContact, feedback } = request.body;
   try {
