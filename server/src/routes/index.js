@@ -19,20 +19,21 @@ const sendContactRouter = require("./contactDataRoute");
 const filterRouter = require("./filterRoute");
 
 // ENTRY POINT'S
-mainRouter.use("/level", levelRouter);
-mainRouter.use("/extension", extensionRouter);
-mainRouter.use("/user", userRouter);
-mainRouter.use("/typeClass", typeClassRouter);
-mainRouter.use("/hours", hoursRouter);
-mainRouter.use("/class", classRouter);
-mainRouter.use("/login", loginRouter);
-mainRouter.use("/classStudent", classStudentRouter);
+mainRouter.use("/level", levelRouter);                  //OK
+mainRouter.use("/extension", extensionRouter);          //OK
+mainRouter.use("/typeClass", typeClassRouter);          //OK
+mainRouter.use("/hours", hoursRouter);                  //OK
+mainRouter.use("/login", loginRouter);                  //OK
+mainRouter.use("/contact", sendContactRouter);          //OK
+mainRouter.use("/listEvents", listEventRouter);         //OK
+mainRouter.use("/user", userRouter);                    //OK
+mainRouter.use("/class", classRouter);                  //OK
+mainRouter.use("/classStudent", classStudentRouter);    //OK
 mainRouter.use("/params", paramsRouter);
 mainRouter.use("/qualification", qualificationRouter);
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
-mainRouter.use("/listEvents", listEventRouter);
-mainRouter.use("/contact", sendContactRouter);
-mainRouter.use("/filter", filterRouter);
+// mainRouter.use("/filter", filterRouter);
 
 module.exports = mainRouter;
+ 
