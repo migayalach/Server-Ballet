@@ -2,11 +2,11 @@ const {
   createClassStudent,
   getPageClassStudent,
   getIdClassStudent,
-  removeClassStudent,
-  updateStudent,
+  removeClassStudent,s
 } = require("../controllers/classStudentController");
 
-const getClassStudentAll = async (request, response) => {
+// TODO: RETORNA LA LISTA COMPLETA DE ESTUDIANTES Y EL PAGINADO, SE NECESITAN 'idClass  y page'
+const getClassStudentAll = async (request, response) => { 
   const { idClass, page } = request.query;
   try {
     const data = await getPageClassStudent(idClass, page);
@@ -16,6 +16,7 @@ const getClassStudentAll = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR LA LISTA DE ALUMNOS BUSCADO POR 'idClass' EN LOS PARÁMETROS DE LA RUTA
 const getClassStudentId = async (request, response) => {
   const { idClass } = request.params;
   try {
@@ -26,6 +27,7 @@ const getClassStudentId = async (request, response) => {
   }
 };
 
+// TODO: INSCRIBE UN NUEVO ALUMNO A UNA CLASE UTLIZANDO 'idClass, idUser' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postClassStudent = async (request, response) => {
   const { idClass, idUser } = request.body;
   try {
@@ -36,6 +38,7 @@ const postClassStudent = async (request, response) => {
   }
 };
 
+// TODO: ELIMINA UN ALUMNO DE LA CLASE  BUSCADO POR 'idClass, idUser' PROPORCIONADO POR EL PARÁMETRO DE LA RUTA
 const deleteClassStudent = async (request, response) => {
   const { idClass, idUser } = request.params;
   try {
@@ -46,40 +49,9 @@ const deleteClassStudent = async (request, response) => {
   }
 };
 
-// const putStudent = async (request, response) => {
-//   // const {
-//   //   idStudent,
-//   //   idExtension,
-//   //   nameStudent,
-//   //   lastNameStudent,
-//   //   emailStudent,
-//   //   carnetStudent,
-//   //   addressStudent,
-//   //   dateBirthStudent,
-//   //   stateStudent,
-//   // } = request.body;
-//   // try {
-//   //   const data = await updateStudent(
-//   //     idStudent,
-//   //     idExtension,
-//   //     nameStudent,
-//   //     lastNameStudent,
-//   //     emailStudent,
-//   //     +carnetStudent,
-//   //     addressStudent,
-//   //     dateBirthStudent,
-//   //     stateStudent
-//   //   );
-//   //   response.status(200).json(data);
-//   // } catch (error) {
-//   //   response.status(400).json({ error: error.message });
-//   // }
-// };
-
 module.exports = {
   getClassStudentAll,
   getClassStudentId,
   postClassStudent,
   deleteClassStudent,
-  // putStudent,
 };

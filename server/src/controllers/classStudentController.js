@@ -1,22 +1,7 @@
 const pool = require("../dataBase/conexion");
-const {
-  existExtension,
-  matchCarnetStudent,
-  nameLevelData,
-  matchEmail,
-  allStudent,
-  existUser,
-  existClass,
-} = require("./controllerData");
+const { existUser, existClass } = require("./controllerData");
 const responseData = require("../utils/response");
-const {
-  isNumber,
-  lengthName,
-  isString,
-  codeStaffStudent,
-  completeStaffStudent,
-  stateBoolean,
-} = require("../helpers/funcAux");
+const { isNumber } = require("../helpers/funcAux");
 
 const allClassStudent = async (idClass) => {
   const [data] = await pool.query(
@@ -75,56 +60,9 @@ const removeClassStudent = async (idClass, idUser) => {
   return await getIdClassStudent(idClass);
 };
 
-// TODO EN ESTE APARTADO SE AGREGARA NOTAS, ASISTENCIA Y CALIFICACIONES O ESTADO
-const updateStudent = async (
-  idStudent,
-  idExtension,
-  nameStudent,
-  lastNameStudent,
-  emailStudent,
-  carnetStudent,
-  addressStudent,
-  dateBirthStudent,
-  stateStudent
-) => {
-  //   completeStaffStudent(
-  //     idExtension,
-  //     nameStudent,
-  //     lastNameStudent,
-  //     emailStudent,
-  //     carnetStudent
-  //   );
-  //   await getIdStudent(idStudent);
-  //   if (!isString(addressStudent) || !lengthName(addressStudent)) {
-  //     throw Error(`Por favor ingrese la direccion del estudiante`);
-  //   }
-  //   if (!isString(dateBirthStudent) || !lengthName(dateBirthStudent)) {
-  //     throw Error(`Por favor ingrese la fecha de nacimiento`);
-  //   }
-  //   const code = codeStaffStudent(lastNameStudent, nameStudent, carnetStudent);
-  //   await pool.query(
-  //     "UPDATE student SET idExtension = ?, nameStudent = ?, lastNameStudent = ?, emailStudent = ?, carnetStudent = ?, addressStudent = ?, dateBirthStudent = ?, stateStudent = ?, codeStudent = ?  WHERE idStudent = ?",
-  //     [
-  //       idExtension,
-  //       nameStudent,
-  //       lastNameStudent,
-  //       emailStudent,
-  //       carnetStudent,
-  //       addressStudent,
-  //       dateBirthStudent,
-  //       stateStudent,
-  //       code,
-  //       idStudent,
-  //     ]
-  //   );
-  //   return await getIdStudent(idStudent);
-};
-
-
 module.exports = {
   getPageClassStudent,
   createClassStudent,
   getIdClassStudent,
-  updateStudent,
   removeClassStudent,
 };

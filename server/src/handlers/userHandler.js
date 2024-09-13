@@ -7,6 +7,7 @@ const {
   removeUser,
 } = require("../controllers/userController");
 
+// TODO: CREAR UN NUEVO USUARIO UTILIZANDO 'idLevel, idExtension, nameUser, lastNameUser, emailUser, addressUser, dateBirthUser, carnetUser, photoUser' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postUser = async (request, response) => {
   const {
     idLevel,
@@ -37,6 +38,7 @@ const postUser = async (request, response) => {
   }
 };
 
+// TODO: RETORNA LA LISTA COMPLETA DE USUARIOS O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getUserAllOrPage = async (request, response) => {
   const { page } = request.query;
   try {
@@ -47,6 +49,7 @@ const getUserAllOrPage = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR EL USUARIO BUSCADO POR 'idUser' EN LOS PARÁMETROS DE LA RUTA
 const getUserId = async (request, response) => {
   const { idUser } = request.params;
   try {
@@ -57,6 +60,7 @@ const getUserId = async (request, response) => {
   }
 };
 
+// TODO: EDITA UN USUARIO UTILIZANDO 'idUser, idLevel, idExtension, nameUser, lastNameUser, emailUser, passwordUser, addressUser, dateBirthUser, carnetUser, stateUser' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putUser = async (request, response) => {
   const {
     idUser,
@@ -83,7 +87,7 @@ const putUser = async (request, response) => {
       addressUser,
       dateBirthUser,
       +carnetUser,
-      stateUser,
+      stateUser
     );
     response.status(200).json(data);
   } catch (error) {
@@ -91,6 +95,7 @@ const putUser = async (request, response) => {
   }
 };
 
+// TODO: ELIMINA EL USUARIO BUSCADO POR 'idUser' PROPORCIONADO POR EL PARÁMETRO DE LA RUTA
 const deleteUser = async (request, response) => {
   const { idUser } = request.params;
   try {

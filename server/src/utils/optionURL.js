@@ -8,21 +8,25 @@ function URL_OPTION(option, queryId) {
       return `hours?page=`;
     case "typeClass":
       return `typeClass?page=`;
-    case "classStudent":
+    
+      case "classStudent":
       return `classStudent?idClass=${queryId}&page=`;
     case "user":
       return `user?page=`;
     case "class":
       return `class?idUser=${queryId}&page=`;
-    case "params":
+    
+      case "params":
       return `params?page=`;
+
     case "filter":
       return `filter?page=`;
-    case "attendance":
+      case "attendance":
       return `attendance?idAssistance=${queryId}&page=`;
     case "assistance":
       return `assistance?idClass=${queryId}&page=`;
-    case "listEvents":
+    
+      case "listEvents":
       return `listEvents?page=`;
     case "contact":      
       return `contact?page=`;

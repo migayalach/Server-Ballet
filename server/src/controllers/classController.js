@@ -120,7 +120,19 @@ const removeClass = async (idUser, idClass) => {
     throw Error(`El parametro debe ser un numero`);
   }
   await existClass(idClass);
+  const [count] = await pool.query(
+    `SELECT count(s.idClass) AS students FROM class c, student s WHERE c.idClass = s.idClass AND  s.idClass = ?`,
+    [idClass]
+  );
+
+  if (count[0].students > 0) {
+    throw Error(
+      `Esta clase no puede ser eliminada ya que actualmente cuenta con alumnos`
+    );
+  }
+
   await pool.query("DELETE FROM class WHERE idClass = ? ", [idClass]);
+
   const infoData = await getAllClass(idUser);
   return { infoData, state: "delete" };
 };

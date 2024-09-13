@@ -7,6 +7,7 @@ const {
   removeHours,
 } = require("../controllers/hoursController");
 
+// TODO: CREAR UNA NUEVA HORA UTILIZANDO 'startTime, endTime, totalTime' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postHours = async (request, response) => {
   const { startTime, endTime, totalTime } = request.body;
   try {
@@ -17,6 +18,7 @@ const postHours = async (request, response) => {
   }
 };
 
+// TODO: RETORNA LA LISTA COMPLETA DE LAS HORAS O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getHoursAllPage = async (request, response) => {
   const { page } = request.query;
   try {
@@ -27,6 +29,7 @@ const getHoursAllPage = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR LA HORA BUSCADA POR 'idHours' EN LOS PARÁMETROS DE LA RUTA
 const getHoursId = async (request, response) => {
   const { idHours } = request.params;
   try {
@@ -37,6 +40,7 @@ const getHoursId = async (request, response) => {
   }
 };
 
+// TODO: EDITA UNA HORA UTILIZANDO 'idHours, startTime, endTime, totalTime, stateHours' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putHours = async (request, response) => {
   const { idHours, startTime, endTime, totalTime, stateHours } = request.body;
   try {
@@ -53,6 +57,7 @@ const putHours = async (request, response) => {
   }
 };
 
+// TODO: ELIMINA LA HORA BUSCADA POR 'idHours' PROPORCIONADO POR EL PARÁMETRO DE LA RUTA
 const deleteHours = async (request, response) => {
   const { idHours } = request.params;
   try {

@@ -11,7 +11,6 @@ const {
   getClassStudentId,
   postClassStudent,
   deleteClassStudent,
-  putStudent,
 } = require("../handlers/classStudentHandler");
 
 const classStudentRoute = Router();

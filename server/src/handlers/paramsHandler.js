@@ -15,7 +15,7 @@ const postParams = async (request, response) => {
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
-};
+}; 
 
 const getParamsId = async (request, response) => {
   const { idUser } = request.params;
