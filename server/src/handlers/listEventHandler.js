@@ -6,6 +6,7 @@ const {
   updateListEvent,
 } = require("../controllers/listEventController");
 
+// TODO: CREAR UN NUEVO EVENTO UTILIZANDO 'idHours, dateNews, title, body, urlPicture' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postListEvent = async (request, response) => {
   const { idHours, dateNews, title, body, urlPicture } = request.body;
   try {
@@ -22,6 +23,7 @@ const postListEvent = async (request, response) => {
   }
 };
 
+// TODO: RETORNA LA LISTA COMPLETA DE EVENTOS O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getListEventAll = async (request, response) => {
   const { page } = request.query;
   try {
@@ -32,6 +34,7 @@ const getListEventAll = async (request, response) => {
   }
 };
 
+// TODO: RETORNAR EL EVENTO BUSCADO POR 'idListEvent' EN LOS PARÁMETROS DE LA RUTA
 const getListEvent = async (request, response) => {
   const { idListEvent } = request.params;
   try {
@@ -42,6 +45,7 @@ const getListEvent = async (request, response) => {
   }
 };
 
+// TODO: EDITA UN EVENTO UTILIZANDO 'idListEvent, idHours, dateNews, title, body, stateEvent, urlPicture,' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putListEvent = async (request, response) => {
   const {
     idListEvent,
