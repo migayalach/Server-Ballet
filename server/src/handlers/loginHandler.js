@@ -1,5 +1,6 @@
 const loginAccess = require("../controllers/loginController");
 
+// TODO: PROPORCIONAR 'email y password' EN EL CUERPO DE LA SOLICITUD PARA ACCEDER A LA SESIÓN
 const accessLogin = async (request, response) => {
   const { email, password } = request.body;
   try {
