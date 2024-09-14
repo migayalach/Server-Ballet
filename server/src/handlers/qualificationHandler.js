@@ -1,7 +1,6 @@
 const {
   createQualification,
   getAllQualification,
-  // getIdQualificationAll,
 } = require("../controllers/../controllers/qualificationController");
 
 const postQualification = async (request, response) => {
@@ -14,28 +13,19 @@ const postQualification = async (request, response) => {
   }
 };
 
+// TODO: RETORNA LA LISTA COMPLETA DE CALIFICACIONES PROPORCIONANDO LOS PARAMETROS DE CONSULTA 'idParams, idUser, page'
 const getQualificationAll = async (request, response) => {
-  const { idParams, idUser } = request.query;
+  const { idParams, idUser, page } = request.query;
+  const current = page === undefined ? 1 : page;
   try {
-    const data = await getAllQualification(idParams, idUser);
+    const data = await getAllQualification(idParams, idUser, current);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-// const getQualificationId = async (request, response) => {
-//   const { idParams, idUser } = request.params;
-//   try {
-//     const data = await getIdQualificationAll(idParams, idUser);
-//     response.status(200).json(data);
-//   } catch (error) {
-//     response.status(400).json({ error: error.message });
-//   }
-// };
-
 module.exports = {
   getQualificationAll,
   postQualification,
-  // getQualificationId,
 };

@@ -48,15 +48,14 @@ const createQualification = async (idParams, idUser, arrayData) => {
   ]);
 
   // MOSTRAR NUEVO REGISTRO CON LAS NOTAS
-  return await getAllQualification(idParams, idUser);
+  return await getAllQualification(idParams, idUser, (page = 1));
 };
 
 const deleteQualification = async (idParams) => {
   await pool.query(`DELETE FROM qualification WHERE idParams = ${idParams}`);
 };
 
-const getAllQualification = async (idParams, idUser) => {
-  const page = 1;
+const getAllQualification = async (idParams, idUser, page) => {
   const { nameLevel } = await getIdUser(idUser);
   if (nameLevel === "Estudiante") {
     throw Error(`No cuenta con los permisos necesarios`);
@@ -102,9 +101,12 @@ const getAllQualification = async (idParams, idUser) => {
     })),
     noteFinish,
   }));
-  
-  const { info, results } = responseData(response, "qualification", page, idParams);
-  
+
+  const { info, results } = responseData(response, "qualification", page, {
+    idParams,
+    idUser,
+  });
+
   return {
     info,
     params: paramsData,

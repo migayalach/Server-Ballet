@@ -1,6 +1,6 @@
 function URL_OPTION(option, queryId) {
-  console.log(option);
-  
+  // console.log(option, queryId);
+
   switch (option) {
     case "level":
       return `level?page=`;
@@ -19,11 +19,10 @@ function URL_OPTION(option, queryId) {
       return `class?idUser=${queryId}&page=`;
     case "params":
       return `params?idUser=${queryId}&page=`;
-    case "qualification": 
-      return `qualification?idParams=${idParams}&page=`;
 
     case "filter":
       return `filter?page=`;
+
     case "attendance":
       return `attendance?idAssistance=${queryId}&page=`;
     case "assistance":
