@@ -29,8 +29,8 @@ mainRouter.use("/listEvents", listEventRouter);         //OK
 mainRouter.use("/user", userRouter);                    //OK
 mainRouter.use("/class", classRouter);                  //OK
 mainRouter.use("/classStudent", classStudentRouter);    //OK
-mainRouter.use("/params", paramsRouter);
-mainRouter.use("/qualification", qualificationRouter);
+mainRouter.use("/params", paramsRouter);                //OK
+mainRouter.use("/qualification", qualificationRouter);  //
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
 // mainRouter.use("/filter", filterRouter);
