@@ -65,4 +65,5 @@ module.exports = {
   createClassStudent,
   getIdClassStudent,
   removeClassStudent,
+  allClassStudent
 };
