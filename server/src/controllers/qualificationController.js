@@ -64,7 +64,7 @@ const getAllQualification = async (idParams, idUser) => {
 
   // TRAER LISTA CON TODOS LOS ESTUDIANTES A CALIFICAR
   const [data] = await pool.query(
-    `SELECT q.*, u.nameUser, u.lastNameUser, u.carnetUser, e.department FROM qualification q, user u, extension e WHERE idParams = ${idParams} AND q.idUser = u.idUser AND u.idExtension = e.idExtension`
+    `SELECT q.*, u.nameUser, u.lastNameUser, u.carnetUser, e.department FROM qualification q, user u, extension e WHERE q.idParams = ${idParams} AND q.idUser = u.idUser AND u.idExtension = e.idExtension`
   );
 
   const response = data.map(
@@ -102,9 +102,9 @@ const getAllQualification = async (idParams, idUser) => {
     })),
     noteFinish,
   }));
-
-  const { info, results } = responseData(response, "qualification", page);
-
+  
+  const { info, results } = responseData(response, "qualification", page, idParams);
+  
   return {
     info,
     params: paramsData,

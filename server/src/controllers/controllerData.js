@@ -258,6 +258,7 @@ const allParams = async (idUser) => {
   const [data] = await pool.query(
     `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title, p.noteFinish FROM params p, class c, user u WHERE  u.idUser = ${idUser} AND p.idClass = c.idClass AND u.idUser = c.idUser`
   );
+   
   return data;
 };
 
