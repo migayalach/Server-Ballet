@@ -1,17 +1,20 @@
 const pool = require("../dataBase/conexion");
 const responseData = require("../utils/response");
+const { deleteQualification } = require("./qualificationController");
 const {
-  deleteQualification,
-  createQualification,
-} = require("./qualificationController");
-const { getIdClassStudent } = require("./classStudentController");
+  getIdClassStudent,
+  allClassStudent,
+} = require("./classStudentController");
 const { getAllClass } = require("../controllers/classController");
 const { paramsList, promisseResolve } = require("./controllerData");
 
 const { allParams } = require("./controllerData");
 
 const studentsList = async (idClass) =>
-  (await getIdClassStudent(idClass)).results.map(({ idUser }) => idUser);
+  (await allClassStudent(idClass)).map(({ idUser }) => idUser);
+
+// (await allClassStudent(idClass)).results.map(({ idUser }) => idUser);
+// (await getIdClassStudent(idClass)).results.map(({ idUser }) => idUser);
 
 const addParamsStudents = async (idClass, dateTest, title, params) => {
   const jsonParmas = JSON.stringify(params);
@@ -59,17 +62,17 @@ const createParams = async (idUser, idClass, dateTest, title, params) => {
 const getAllParams = async (idUser) => {
   const page = 1;
   const response = await allParams(idUser);
-  return responseData(response, "params", page);
+  return responseData(response, "params", page, idUser);
 };
 
 const getIdParams = async (idUser) => {
   return await getAllParams(idUser);
 };
 
-// const getPageParams = async (page) => {
-//   const response = await allParams();
-//   return responseData(response, "params", page);
-// };
+const getPageParams = async (idUser, page) => {
+  const response = await allParams(idUser);
+  return responseData(response, "params", page, idUser);
+};
 
 const updateParams = async (
   idParams,
@@ -144,8 +147,7 @@ const removeParams = async (idUser, idParams) => {
 module.exports = {
   createParams,
   getIdParams,
-  // getAllParams,
-  // getPageParams,
+  getPageParams,
   updateParams,
   removeParams,
 };
