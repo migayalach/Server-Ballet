@@ -10,7 +10,6 @@ function URL_OPTION(option, queryId) {
       return `hours?page=`;
     case "typeClass":
       return `typeClass?page=`;
-
     case "classStudent":
       return `classStudent?idClass=${queryId}&page=`;
     case "user":
@@ -19,19 +18,17 @@ function URL_OPTION(option, queryId) {
       return `class?idUser=${queryId}&page=`;
     case "params":
       return `params?idUser=${queryId}&page=`;
-
-    case "filter":
-      return `filter?page=`;
-
-    case "attendance":
-      return `attendance?idAssistance=${queryId}&page=`;
-    case "assistance":
-      return `assistance?idClass=${queryId}&page=`;
-
     case "listEvents":
       return `listEvents?page=`;
     case "contact":
       return `contact?page=`;
+
+    // case "filter":
+    //   return `filter?page=`;
+    case "attendance":
+      return `attendance?idAssistance=${queryId}&page=`;
+    case "assistance":
+      return `assistance?idClass=${queryId}&page=`;
   }
 }
 

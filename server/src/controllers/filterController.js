@@ -1,5 +1,5 @@
 const responseData = require("../utils/response");
-const responseFilterData = require("../utils/filter/responseFilter");
+// const responseFilterData = require("../utils/filter/responseFilter");
 const { getAllLevel } = require("../controllers/levelController");
 const { getIdUser } = require("./userController");
 const pool = require("../dataBase/conexion");
