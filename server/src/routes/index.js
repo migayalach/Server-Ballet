@@ -30,9 +30,11 @@ mainRouter.use("/user", userRouter);                    //OK
 mainRouter.use("/class", classRouter);                  //OK
 mainRouter.use("/classStudent", classStudentRouter);    //OK
 mainRouter.use("/params", paramsRouter);                //OK
+
 mainRouter.use("/qualification", qualificationRouter);  //PROBAR CON EL FRONTEND *POR EL ATRUBUTO PAGE
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
+
 // mainRouter.use("/filter", filterRouter);
 
 module.exports = mainRouter;
