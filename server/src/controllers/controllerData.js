@@ -258,7 +258,7 @@ const allParams = async (idUser) => {
   const [data] = await pool.query(
     `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title, p.noteFinish FROM params p, class c, user u WHERE  u.idUser = ${idUser} AND p.idClass = c.idClass AND u.idUser = c.idUser`
   );
-   
+
   return data;
 };
 
@@ -315,7 +315,7 @@ async function deleteRegAttendance(idAssistance) {
 //LIST-EVENT
 async function allListEvent() {
   const [data] = await pool.query(
-    `SELECT l.idListEvent, l.idHours, l.dateNews, l.title, l.body, h.startTime, h.endTime, l.stateEvent, l.urlPicture FROM listEvents l, hours h WHERE l.idHours = h.idHours ORDER BY dateNews DESC`
+    `SELECT l.idListEvent, l.hourEvent, l.dateNews, l.title, l.body, l.stateEvent, l.urlPicture FROM listEvents l WHERE 1 ORDER BY dateNews DESC`
   );
   return data;
 }
@@ -372,5 +372,5 @@ module.exports = {
   deleteRegAttendance,
   allListEvent,
   getContactAll,
-  existContact
+  existContact,
 };

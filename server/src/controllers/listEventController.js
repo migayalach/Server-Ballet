@@ -2,13 +2,10 @@ const pool = require("../dataBase/conexion");
 const { existIdHours, allListEvent } = require("./controllerData");
 const responseData = require("../utils/response");
 
-const createListEvent = async (idHours, dateNews, title, body, urlPicture) => {
-  if (!(await existIdHours(idHours))) {
-    throw Error(`No se encuentro la hora seleccionada`);
-  }
+const createListEvent = async (hour, dateNews, title, body, urlPicture) => {
   const [ResultSetHeader] = await pool.query(
-    `INSERT INTO listEvents (idHours, dateNews, title, body, urlPicture) VALUES (?, ?, ?, ?, ?)`,
-    [idHours, dateNews, title, body, urlPicture]
+    `INSERT INTO listEvents (hourEvent, dateNews, title, body, urlPicture) VALUES (?, ?, ?, ?, ?)`,
+    [hour, dateNews, title, body, urlPicture]
   );
   const listEventData = await getIdListEvent(ResultSetHeader.insertId);
   const infoData = await getAllListEvent();
@@ -30,7 +27,7 @@ const getPageListEvent = async (page) => {
 
 const getIdListEvent = async (idListEvent) => {
   const [data] = await pool.query(
-    `SELECT l.idListEvent, l.idHours, l.dateNews, l.title, l.body, h.startTime, h.endTime, l.stateEvent, l.urlPicture FROM listEvents l, hours h WHERE l.idHours = h.idHours AND l.idListEvent = ?`,
+    `SELECT l.idListEvent, l.hourEvent, l.dateNews, l.title, l.body, l.stateEvent, l.urlPicture FROM listEvents l WHERE l.idListEvent = ?`,
     [idListEvent]
   );
   return data;
@@ -38,19 +35,19 @@ const getIdListEvent = async (idListEvent) => {
 
 const updateListEvent = async (
   idListEvent,
-  idHours,
+  hour,
   dateNews,
   title,
   body,
   stateEvent,
   urlPicture
 ) => {
-  if (!(await existIdHours(idHours))) {
-    throw Error(`No se encuentro la hora seleccionada`);
+  if (!(await getIdListEvent(idListEvent)).length) {
+    throw Error(`El evento que quieres modificar no esta registrado`);
   }
   await pool.query(
-    `UPDATE listEvents SET idHours = ?, dateNews = ?, title = ?, body = ?, stateEvent = ?, urlPicture = ? WHERE idListEvent = ?`,
-    [idHours, dateNews, title, body, stateEvent, urlPicture, idListEvent]
+    `UPDATE listEvents SET hourEvent = ?, dateNews = ?, title = ?, body = ?, stateEvent = ?, urlPicture = ? WHERE idListEvent = ?`,
+    [hour, dateNews, title, body, stateEvent, urlPicture, idListEvent]
   );
   return await getIdListEvent(idListEvent);
 };

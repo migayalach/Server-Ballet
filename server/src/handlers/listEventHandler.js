@@ -6,17 +6,11 @@ const {
   updateListEvent,
 } = require("../controllers/listEventController");
 
-// TODO: CREAR UN NUEVO EVENTO UTILIZANDO 'idHours, dateNews, title, body, urlPicture' PROPORCIONADO POR EL BODY DE LA SOLICITUD
+// TODO: CREAR UN NUEVO EVENTO UTILIZANDO 'hour, dateNews, title, body, urlPicture' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postListEvent = async (request, response) => {
-  const { idHours, dateNews, title, body, urlPicture } = request.body;
+  const { hour, dateNews, title, body, urlPicture } = request.body;
   try {
-    const data = await createListEvent(
-      idHours,
-      dateNews,
-      title,
-      body,
-      urlPicture
-    );
+    const data = await createListEvent(hour, dateNews, title, body, urlPicture);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -45,22 +39,15 @@ const getListEvent = async (request, response) => {
   }
 };
 
-// TODO: EDITA UN EVENTO UTILIZANDO 'idListEvent, idHours, dateNews, title, body, stateEvent, urlPicture,' PROPORCIONADO POR EL BODY DE LA SOLICITUD
+// TODO: EDITA UN EVENTO UTILIZANDO 'idListEvent, hour, dateNews, title, body, stateEvent, urlPicture,' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putListEvent = async (request, response) => {
-  const {
-    idListEvent,
-    idHours,
-    dateNews,
-    title,
-    body,
-    stateEvent,
-    urlPicture,
-  } = request.body;
+  const { idListEvent, hour, dateNews, title, body, stateEvent, urlPicture } =
+    request.body;
 
   try {
     const data = await updateListEvent(
       idListEvent,
-      idHours,
+      hour,
       dateNews,
       title,
       body,

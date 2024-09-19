@@ -1,11 +1,15 @@
 const { dataId, stateCase } = require("./funAuxMiddleware");
 
 const validateList = (request, response, next) => {
-  const { idHours, dateNews, title, body, urlPicture } = request.body;
-  if (!dataId(+idHours).state) {
+  const { hour, dateNews, title, body, urlPicture } = request.body;
+  if (!hour.length) {
     return response
       .status(400)
       .json({ message: `Por favor ingrese una hora valida` });
+  }
+
+  if (hour.length > 8) {
+    return response.status(400).json({ message: `Error al asignar horas` });
   }
 
   if (!dateNews.length) {
@@ -46,8 +50,7 @@ const validateIdContact = (request, response, next) => {
 };
 
 const validateResContact = (request, response, next) => {
-  const { idListEvent, idHours, dateNews, title, body, stateEvent } =
-    request.body;
+  const { idListEvent, hour, dateNews, title, body, stateEvent } = request.body;
 
   if (!dataId(+idListEvent).state) {
     return response
@@ -55,10 +58,14 @@ const validateResContact = (request, response, next) => {
       .json({ message: `Por favor ingrese un evento registrado` });
   }
 
-  if (!dataId(+idHours).state) {
+  if (!hour.length) {
     return response
       .status(400)
       .json({ message: `Por favor ingrese una hora valida` });
+  }
+
+  if (hour.length > 8) {
+    return response.status(400).json({ message: `Error al asignar horas` });
   }
 
   if (!dateNews.length) {
