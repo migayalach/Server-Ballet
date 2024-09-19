@@ -108,14 +108,13 @@ create table attendance (
 
 create table listEvents(
   idListEvent int auto_increment not null,
-  idHours int not null,
+  hourEvent time not null,
   dateNews date not null,
   title varchar (255) not null,
   body text not null,
   urlPicture text not null,
   stateEvent boolean default true not null,
   primary key(idListEvent)
-  foreign key(idHours) references hours(idHours),
 );
 
 create table sendContact (
