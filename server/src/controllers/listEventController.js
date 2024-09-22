@@ -49,7 +49,31 @@ const updateListEvent = async (
     `UPDATE listEvents SET hourEvent = ?, dateNews = ?, title = ?, body = ?, stateEvent = ?, urlPicture = ? WHERE idListEvent = ?`,
     [hour, dateNews, title, body, stateEvent, urlPicture, idListEvent]
   );
-  return await getIdListEvent(idListEvent);
+  const infoData = await getIdListEvent(idListEvent);
+  return {
+    infoData,
+    state: "edit",
+  };
+};
+
+const removeListEvent = async (idListEvent) => {
+  const [data] = await getIdListEvent(idListEvent);
+
+  if (!data) {
+    throw Error("El evento buscado no existe!");
+  }
+
+  const dateCurrently = new Date().toISOString().slice(0, 10);
+  const dateDB = data.dateNews.toISOString().slice(0, 10);
+
+  if (dateDB > dateCurrently) {
+    await pool.query(`DELETE FROM listEvents WHERE idListEvent = ?`, [
+      idListEvent,
+    ]);
+    return { state: "delete" };
+  } else if (dateDB <= dateCurrently) {
+    throw Error(`Este evento no puede ser eliminado!`);
+  }
 };
 
 module.exports = {
@@ -58,4 +82,5 @@ module.exports = {
   getPageListEvent,
   getIdListEvent,
   updateListEvent,
+  removeListEvent,
 };

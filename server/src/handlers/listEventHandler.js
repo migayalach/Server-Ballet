@@ -4,6 +4,7 @@ const {
   getPageListEvent,
   getIdListEvent,
   updateListEvent,
+  removeListEvent,
 } = require("../controllers/listEventController");
 
 // TODO: CREAR UN NUEVO EVENTO UTILIZANDO 'hour, dateNews, title, body, urlPicture' PROPORCIONADO POR EL BODY DE LA SOLICITUD
@@ -60,9 +61,20 @@ const putListEvent = async (request, response) => {
   }
 };
 
+const deleteListEvent = async (request, response) => {
+  const { idListEvent } = request.params;
+  try {
+    const data = await removeListEvent(idListEvent);
+    response.status(200).json(data);
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   postListEvent,
   getListEventAll,
   getListEvent,
   putListEvent,
+  deleteListEvent,
 };
