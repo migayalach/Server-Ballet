@@ -9,7 +9,7 @@ const {
 
 // TODO: RETORNA LA LISTA COMPLETA DE CLASES O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'page'
 const getClassAll = async (request, response) => {
-  const { page, idUser } = request.query;
+  const { page, idUser } = request.query; 
   try {
     const data = !page
       ? await getAllClass(idUser)
