@@ -212,13 +212,15 @@ async function allClass(idUser) {
 
   const { nameLevel } = data[0];
 
+  if (nameLevel === "Estudiante") {
+    let query = `SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e, student st WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension AND st.idClass = c.idClass AND st.idUser = ${idUser} ORDER BY c.idClass`;
+    const [data] = await pool.query(query);
+    return data;
+  }
+
   let query =
     "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension";
-  if (
-    nameLevel === "Director" ||
-    nameLevel === "Secretaria" ||
-    nameLevel === "Estudiante"
-  ) {
+  if (nameLevel === "Director" || nameLevel === "Secretaria") {
     query += ` ORDER BY c.idClass`;
     const [data] = await pool.query(query);
     return data;
