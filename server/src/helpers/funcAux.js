@@ -57,13 +57,13 @@ function dateComplete(startTime, endTime, totalTime) {
   throw Error(`Por favor ingrese las horas solicitadas`);
 }
 
-function codeUser(lastName, name, carnet) {
-  const nameLast = lastName.split(" ");
-  const codeUser = `${nameLast[0].slice(0, 2)}${nameLast[1].slice(
-    0,
-    2
-  )}${name.slice(0, 2)}${carnet.toString().slice(0, 2)}`.toUpperCase();
-  return codeUser;
+function codeUser(nameUser, lastNameUser, carnetUser) {
+  const name = nameUser.split(" ", 1);
+  const [first, second] = lastNameUser.split(" ");
+  const firstLastName = first[0];
+  const secondLastName = second[0];
+  const carnet = carnetUser.toString().slice(0, 3);
+  return `${name}${firstLastName}${secondLastName}.${carnet}`;
 }
 
 function completeUser(idExtension, name, lastName, email, carnet) {
