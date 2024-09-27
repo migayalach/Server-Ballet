@@ -30,6 +30,7 @@ const createUser = async (
   addressUser,
   dateBirthUser,
   carnetUser,
+  numberPhone,
   photoUser
 ) => {
   if (!(await existExtension(idExtension))) {
@@ -51,7 +52,7 @@ const createUser = async (
     level = idLevel;
   }
   const [ResultSetHeader] = await pool.query(
-    "INSERT INTO user (idLevel, idExtension, nameUser, lastNameUser, emailUser, passwordUser, addressUser, dateBirthUser, carnetUser, photoUser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO user (idLevel, idExtension, nameUser, lastNameUser, emailUser, passwordUser, addressUser, dateBirthUser, carnetUser, numberPhone, photoUser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       level,
       idExtension,
@@ -62,6 +63,7 @@ const createUser = async (
       addressUser ? addressUser : "",
       dateBirthUser ? dateBirthUser : null,
       carnetUser,
+      numberPhone,
       photoUser ? photoUser : "",
     ]
   );
@@ -108,6 +110,7 @@ const updateUser = async (
   addressUser,
   dateBirthUser,
   carnetUser,
+  numberPhone,
   stateUser
 ) => {
   if (!(await existIdLevel(idLevel))) {
@@ -119,7 +122,7 @@ const updateUser = async (
   }
   if (!passwordUser) {
     await pool.query(
-      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, stateUser = ? WHERE idUser = ?",
+      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ? WHERE idUser = ?",
       [
         idLevel,
         idExtension,
@@ -129,6 +132,7 @@ const updateUser = async (
         addressUser,
         dateBirthUser,
         carnetUser,
+        numberPhone,
         stateUser,
         idUser,
       ]
@@ -137,7 +141,7 @@ const updateUser = async (
   } else if (passwordUser.length >= 8) {
     const password = await hashedPassword(passwordUser);
     await pool.query(
-      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, passwordUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, stateUser = ? WHERE idUser = ?",
+      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, passwordUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ? WHERE idUser = ?",
       [
         idLevel,
         idExtension,
@@ -148,6 +152,7 @@ const updateUser = async (
         addressUser,
         dateBirthUser,
         carnetUser,
+        numberPhone,
         stateUser,
         idUser,
       ]
