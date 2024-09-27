@@ -6,7 +6,6 @@ let pages = 0;
 const elementPage = 20;
 
 function responseData(results, url, page, queryId) {
-  //  console.log(url, page, queryId);
   if (isNumber(page)) {
     throw Error(`There is nothing here`);
   } else if (isNaN(page)) {
