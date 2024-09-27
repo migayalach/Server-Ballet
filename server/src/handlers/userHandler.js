@@ -18,6 +18,7 @@ const postUser = async (request, response) => {
     addressUser,
     dateBirthUser,
     carnetUser,
+    numberPhone,
     photoUser,
   } = request.body;
   try {
@@ -30,6 +31,7 @@ const postUser = async (request, response) => {
       addressUser,
       dateBirthUser,
       +carnetUser,
+      +numberPhone,
       photoUser
     );
     response.status(200).json(data);
@@ -73,6 +75,7 @@ const putUser = async (request, response) => {
     addressUser,
     dateBirthUser,
     carnetUser,
+    numberPhone,
     stateUser,
   } = request.body;
   try {
@@ -87,6 +90,7 @@ const putUser = async (request, response) => {
       addressUser,
       dateBirthUser,
       +carnetUser,
+      +numberPhone,
       stateUser
     );
     response.status(200).json(data);
