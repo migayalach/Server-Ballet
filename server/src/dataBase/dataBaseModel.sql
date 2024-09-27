@@ -25,6 +25,7 @@ create table user(
   addressUser varchar(500) default "",
   dateBirthUser date default null,
   carnetUser int unique not null,
+  numberPhone int not null,
   photoUser text default "",
   stateUser boolean default true not null,
   primary key(idUser),

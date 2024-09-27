@@ -74,6 +74,17 @@ const removeHours = async (idHours) => {
   if (!(await existIdHours(+idHours))) {
     throw Error(`El nivel que usted quiere eliminar no existe`);
   }
+
+  const [data] = await pool.query(
+    `SELECT * FROM hours h, class c WHERE h.idHours = c.idHours AND c.idHours = ${idHours}`
+  );
+
+  if (data.length) {
+    throw Error(
+      `Esta hora no puede ser eliminada ya que se encuentra vinculada a una clase.`
+    );
+  }
+
   await pool.query(`DELETE FROM hours WHERE idHours = ?`, [idHours]);
   const infoData = await getAllHours();
   return { infoData, state: "delete" };
