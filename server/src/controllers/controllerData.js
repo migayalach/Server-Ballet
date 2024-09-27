@@ -175,7 +175,7 @@ async function matchCarnetStaff(carnetStaff) {
 }
 
 async function allUser() {
-  const [data] = await pool.query("SELECT * FROM user");
+  const [data] = await pool.query("SELECT idUser, idLevel, idExtension, nameUser, lastNameUser, emailUser, addressUser, dateBirthUser, carnetUser, numberPhone, photoUser, stateUser FROM user");
   return data;
 }
 
@@ -341,6 +341,14 @@ async function existContact(idContact) {
   return true;
 }
 
+async function nameLevelInfo (idLevel) {
+  const [data] = await pool.query(
+    `SELECT nameLevel FROM level WHERE idLevel = ?`,
+    [idLevel]
+  );
+  return data[0].nameLevel;
+}
+
 module.exports = {
   selectMaxLevel,
   allLevel,
@@ -375,4 +383,5 @@ module.exports = {
   allListEvent,
   getContactAll,
   existContact,
+  nameLevelInfo
 };
