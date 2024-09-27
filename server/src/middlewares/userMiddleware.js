@@ -13,6 +13,7 @@ const postUserMiddleware = (request, response, next) => {
     nameUser,
     lastNameUser,
     emailUser,
+    numberPhone,
     carnetUser,
   } = request.body;
   if (!dataId(idLevel).state) {
@@ -31,6 +32,12 @@ const postUserMiddleware = (request, response, next) => {
     return response
       .status(400)
       .json({ message: `Por favor ingrese un carnet` });
+  }
+
+  if (!dataId(+numberPhone).state) {
+    return response
+      .status(400)
+      .json({ message: `Ingrese un numero de contacto!` });
   }
 
   const constCarnet = lengthCarnetUser(carnetUser);
@@ -60,6 +67,7 @@ const putUserMiddleware = (request, response, next) => {
     lastNameUser,
     emailUser,
     carnetUser,
+    numberPhone,
     stateUser,
   } = request.body;
   const typeId = dataId(+idUser);
@@ -82,6 +90,12 @@ const putUserMiddleware = (request, response, next) => {
     return response
       .status(400)
       .json({ message: `Por favor ingrese un carnet` });
+  }
+
+  if (!dataId(numberPhone).state) {
+    return response
+      .status(400)
+      .json({ message: `Ingrese un numero de contacto!` });
   }
 
   const constCarnet = lengthCarnetUser(carnetUser);
