@@ -23,7 +23,7 @@ create table user(
   emailUser varchar(100) unique not null,
   passwordUser varchar(100) not null,
   addressUser varchar(500) default "",
-  dateBirthUser date default null,
+  dateBirthUser date not null,
   carnetUser int unique not null,
   numberPhone int not null,
   photoUser text default "",
