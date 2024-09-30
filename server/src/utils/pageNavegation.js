@@ -18,6 +18,9 @@ function queryIdObject(queryId, page, operation, direction) {
 }
 
 function nextPage(direction, page, pages, queryId) {
+  if (pages === 0) {
+    return null;
+  }
   if (pages === 1 || pages === page) {
     return null;
   }

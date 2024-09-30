@@ -1,15 +1,8 @@
 const pool = require("../dataBase/conexion");
 const responseData = require("../utils/response");
-const {
-  isNumber,
-  lengthName,
-  isString,
-  codeUser,
-  completeUser,
-  stateBoolean,
-} = require("../helpers/funcAux");
+const { isNumber, codeUser } = require("../helpers/funcAux");
 const hashedPassword = require("../utils/passwordEncrypt");
-
+const _emailSend = require("../helpers/_sendEmail");
 const {
   selectMaxLevel,
   countUser,
@@ -18,6 +11,7 @@ const {
   matchEmail,
   allUser,
   existIdLevel,
+  nameLevelInfo,
 } = require("./controllerData");
 
 //TODO CREACION DE USUARIO NUEVO
@@ -40,17 +34,19 @@ const createUser = async (
     throw Error(`No pueden haber emails repetidos`);
   }
   if (!(await matchCarnetUser(carnetUser))) {
-    throw Error(`No se puede haber un carnet repetido`);
+    throw Error(`No puede haber carnets repetidos`);
   }
   const password = await hashedPassword(
-    codeUser(lastNameUser, nameUser, carnetUser)
+    codeUser(nameUser, lastNameUser, carnetUser)
   );
+
   let level = 0;
   if (parseInt(await countUser()) === 0) {
     level = await selectMaxLevel();
   } else {
     level = idLevel;
   }
+
   const [ResultSetHeader] = await pool.query(
     "INSERT INTO user (idLevel, idExtension, nameUser, lastNameUser, emailUser, passwordUser, addressUser, dateBirthUser, carnetUser, numberPhone, photoUser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
@@ -67,6 +63,10 @@ const createUser = async (
       photoUser ? photoUser : "",
     ]
   );
+
+  // ENVIO DE CORREO POR SER NUEVO MIEMBRO SOLO PARA ESTUDIANTES
+  // const levelInfo = await nameLevelInfo(idLevel); 
+  // levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
   const userData = await getIdUser(ResultSetHeader.insertId);
   const infoData = await getAllUser();
   return { userData, infoData, state: "create" };
@@ -89,7 +89,7 @@ const getPageUser = async (page) => {
 // TODO MOSTRAR USUARIO POR ID
 const getIdUser = async (idUser) => {
   const [data] = await pool.query(
-    "SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.passwordUser,  s.addressUser, s.dateBirthUser,  s.carnetUser,  s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idUser = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
+    "SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.addressUser, s.dateBirthUser,  s.carnetUser, s.numberPhone, s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idUser = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
     [idUser]
   );
   if (!data.length) {
