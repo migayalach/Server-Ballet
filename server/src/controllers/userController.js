@@ -34,7 +34,7 @@ const createUser = async (
     throw Error(`No pueden haber emails repetidos`);
   }
   if (!(await matchCarnetUser(carnetUser))) {
-    throw Error(`No se puede haber un carnet repetido`);
+    throw Error(`No puede haber carnets repetidos`);
   }
   const password = await hashedPassword(
     codeUser(nameUser, lastNameUser, carnetUser)
@@ -65,9 +65,8 @@ const createUser = async (
   );
 
   // ENVIO DE CORREO POR SER NUEVO MIEMBRO SOLO PARA ESTUDIANTES
-  const levelInfo = await nameLevelInfo(idLevel); 
-  levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
-
+  // const levelInfo = await nameLevelInfo(idLevel); 
+  // levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
   const userData = await getIdUser(ResultSetHeader.insertId);
   const infoData = await getAllUser();
   return { userData, infoData, state: "create" };
@@ -90,7 +89,7 @@ const getPageUser = async (page) => {
 // TODO MOSTRAR USUARIO POR ID
 const getIdUser = async (idUser) => {
   const [data] = await pool.query(
-    "SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.addressUser, s.dateBirthUser,  s.carnetUser,  s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idUser = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
+    "SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.addressUser, s.dateBirthUser,  s.carnetUser, s.numberPhone, s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idUser = ? AND s.idExtension = e.idExtension AND s.idLevel = l.idLevel ",
     [idUser]
   );
   if (!data.length) {
