@@ -16,10 +16,12 @@ const loginAccess = async (email, password) => {
   }
 
   return {
-    access: true,
-    user: `${data[0].nameUser} ${data[0].lastNameUser}`,
-    level: `${data[0].nameLevel}`,
-    dataUser: await getIdUser(data[0].idUser),
+    state: "login",
+    access: {
+      idUser: `${data[0].idUser}`,
+      level: `${data[0].nameLevel}`,
+      name: data[0].nameUser.split(" ").slice(0, 1)[0],
+    },
   };
 };
 
