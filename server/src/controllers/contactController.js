@@ -17,7 +17,7 @@ const createContact = async (nameContact, emailContact, phoneContact) => {
     [nameContact, emailContact, phoneContact]
   );
 
-  return { message: "Registrado con exito", state: true };
+  return { message: "Registrado con exito", state: "success" };
 };
 
 const getAllContact = async () => {
