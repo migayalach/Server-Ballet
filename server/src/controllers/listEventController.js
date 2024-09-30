@@ -14,9 +14,6 @@ const createListEvent = async (hour, dateNews, title, body, urlPicture) => {
 
 const getAllListEvent = async () => {
   const data = await allListEvent();
-  if (data.length < 1) {
-    throw Error(`Lo siento no hay eventos programados`);
-  }
   return responseData(data, "listEvents", (page = 1));
 };
 
