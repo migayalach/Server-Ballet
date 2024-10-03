@@ -16,26 +16,27 @@ const assistanceRouter = require("./assistanceRoute");
 const attendanceRouter = require("./_attendanceRoute");
 const listEventRouter = require("./listEventRoute");
 const sendContactRouter = require("./contactDataRoute");
+const passwordRouter = require("./_passwordRoute");
 const filterRouter = require("./filterRoute");
 
 // ENTRY POINT'S
-mainRouter.use("/level", levelRouter);                  //OK
-mainRouter.use("/extension", extensionRouter);          //OK
-mainRouter.use("/typeClass", typeClassRouter);          //OK
-mainRouter.use("/hours", hoursRouter);                  //OK
-mainRouter.use("/login", loginRouter);                  //OK
-mainRouter.use("/contact", sendContactRouter);          //OK
-mainRouter.use("/listEvents", listEventRouter);         //OK
-mainRouter.use("/user", userRouter);                    //OK
-mainRouter.use("/class", classRouter);                  //OK
-mainRouter.use("/classStudent", classStudentRouter);    //OK
-mainRouter.use("/params", paramsRouter);                //OK
+mainRouter.use("/level", levelRouter); //OK
+mainRouter.use("/extension", extensionRouter); //OK
+mainRouter.use("/typeClass", typeClassRouter); //OK
+mainRouter.use("/hours", hoursRouter); //OK
+mainRouter.use("/login", loginRouter); //OK
+mainRouter.use("/contact", sendContactRouter); //OK
+mainRouter.use("/listEvents", listEventRouter); //OK
+mainRouter.use("/user", userRouter); //OK
+mainRouter.use("/class", classRouter); //OK
+mainRouter.use("/classStudent", classStudentRouter); //OK
+mainRouter.use("/params", paramsRouter); //OK
+mainRouter.use("/change", passwordRouter);
 
-mainRouter.use("/qualification", qualificationRouter);  //PROBAR CON EL FRONTEND *POR EL ATRUBUTO PAGE
+mainRouter.use("/qualification", qualificationRouter); //PROBAR CON EL FRONTEND *POR EL ATRUBUTO PAGE
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
 
 // mainRouter.use("/filter", filterRouter);
 
 module.exports = mainRouter;
- 

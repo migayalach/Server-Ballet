@@ -71,12 +71,12 @@ const putUser = async (request, response) => {
     nameUser,
     lastNameUser,
     emailUser,
-    passwordUser,
     addressUser,
     dateBirthUser,
     carnetUser,
     numberPhone,
     stateUser,
+    photoUser,
   } = request.body;
   try {
     const data = await updateUser(
@@ -86,12 +86,12 @@ const putUser = async (request, response) => {
       nameUser,
       lastNameUser,
       emailUser,
-      passwordUser,
       addressUser,
       dateBirthUser,
       +carnetUser,
       +numberPhone,
-      stateUser
+      stateUser,
+      photoUser
     );
     response.status(200).json(data);
   } catch (error) {

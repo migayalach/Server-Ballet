@@ -65,7 +65,7 @@ const createUser = async (
   );
 
   // ENVIO DE CORREO POR SER NUEVO MIEMBRO SOLO PARA ESTUDIANTES
-  // const levelInfo = await nameLevelInfo(idLevel); 
+  // const levelInfo = await nameLevelInfo(idLevel);
   // levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
   const userData = await getIdUser(ResultSetHeader.insertId);
   const infoData = await getAllUser();
@@ -106,12 +106,12 @@ const updateUser = async (
   nameUser,
   lastNameUser,
   emailUser,
-  passwordUser,
   addressUser,
   dateBirthUser,
   carnetUser,
   numberPhone,
-  stateUser
+  stateUser,
+  photoUser
 ) => {
   if (!(await existIdLevel(idLevel))) {
     throw Error(`El nivel que usted quiere asignar no se encuentra registrado`);
@@ -120,45 +120,49 @@ const updateUser = async (
   if (!(await existExtension(idExtension))) {
     throw Error(`La extension que usted quiere asignar no existe`);
   }
-  if (!passwordUser) {
-    await pool.query(
-      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ? WHERE idUser = ?",
-      [
-        idLevel,
-        idExtension,
-        nameUser,
-        lastNameUser,
-        emailUser,
-        addressUser,
-        dateBirthUser,
-        carnetUser,
-        numberPhone,
-        stateUser,
-        idUser,
-      ]
-    );
-    return await getIdUser(idUser);
-  } else if (passwordUser.length >= 8) {
-    const password = await hashedPassword(passwordUser);
-    await pool.query(
-      "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, passwordUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ? WHERE idUser = ?",
-      [
-        idLevel,
-        idExtension,
-        nameUser,
-        lastNameUser,
-        emailUser,
-        password,
-        addressUser,
-        dateBirthUser,
-        carnetUser,
-        numberPhone,
-        stateUser,
-        idUser,
-      ]
-    );
-    return await getIdUser(idUser);
-  }
+
+  await pool.query(
+    "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ?, photoUser = ? WHERE idUser = ?",
+    [
+      idLevel,
+      idExtension,
+      nameUser,
+      lastNameUser,
+      emailUser,
+      addressUser,
+      dateBirthUser,
+      carnetUser,
+      numberPhone,
+      stateUser,
+      photoUser,
+      idUser,
+    ]
+  );
+  return await getIdUser(idUser);
+
+  //   if (!passwordUser) {
+  // } else if (passwordUser.length >= 8) {
+  //   const password = await hashedPassword(passwordUser);
+  //   await pool.query(
+  //     "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, passwordUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ?, photoUser = ? WHERE idUser = ?",
+  //     [
+  //       idLevel,
+  //       idExtension,
+  //       nameUser,
+  //       lastNameUser,
+  //       emailUser,
+  //       password,
+  //       addressUser,
+  //       dateBirthUser,
+  //       carnetUser,
+  //       numberPhone,
+  //       stateUser,
+  //       photoUser,
+  //       idUser,
+  //     ]
+  //   );
+  //   return await getIdUser(idUser);
+  // }
 };
 
 // TODO ELIMINAR USUARIO

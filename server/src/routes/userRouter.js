@@ -18,7 +18,9 @@ const userRouter = Router();
 userRouter.post("/", postUserMiddleware, postUser);
 userRouter.get("/", getUserAllOrPage);
 userRouter.get("/:idUser", getIdUserMiddleware, getUserId);
-userRouter.put("/", putUserMiddleware, passwordCases, putUser);
+userRouter.put("/", putUserMiddleware, putUser);
 userRouter.delete("/:idUser", deleteUserMiddleware, deleteUser);
 
 module.exports = userRouter;
+
+// userRouter.put("/", putUserMiddleware, passwordCases, putUser);
