@@ -86,7 +86,7 @@ const putUserMiddleware = (request, response, next) => {
       .json({ message: `Por favor ingrese una extension valida` });
   }
 
-  if (!dataId(carnetUser).state) {
+  if (!dataId(+carnetUser).state) {
     return response
       .status(400)
       .json({ message: `Por favor ingrese un carnet` });
