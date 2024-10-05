@@ -1,12 +1,12 @@
 const passwordChangeController = require("../controllers/_passwordController");
 
 const changePasswordHandler = async (request, response) => {
-  const { idUser, newPassword, oldPassword } = request.body;
+  const { idUser, oldPassword, newPassword } = request.body;
   try {
     const data = await passwordChangeController(
       idUser,
-      newPassword,
-      oldPassword
+      oldPassword,
+      newPassword
     );
     response.status(200).json(data);
   } catch (error) {
