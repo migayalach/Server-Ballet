@@ -5,7 +5,7 @@ const lengthPassword = /.{8,}/;
 const letterLowerCase = /(?=.*[a-z])/;
 const letterCapitalLetter = /(?=.*[A-Z])/;
 const numberPassword = /(?=.*\d)/;
-const characterSpecial = /(?=.*[@$!%*?&])/;
+const characterSpecial = /(?=.*[.@$!%*?&])/;
 
 module.exports = {
   emailRegex,
