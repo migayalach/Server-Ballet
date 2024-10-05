@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const pool = require("../dataBase/conexion");
-const { getIdUser } = require("../controllers/userController");
 
 // TODO ACCESO LOGIN
 const loginAccess = async (email, password) => {
