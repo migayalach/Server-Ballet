@@ -18,8 +18,11 @@ const passwordChangeController = async (idUser, oldPassword, newPassword) => {
     await hashedPassword(newPassword),
     idUser,
   ]);
-  
-  return { state: true, message: `Contraseña actualizada con exito` };
+
+  return {
+    state: "changePassword",
+    message: `Contraseña actualizada con exito`,
+  };
 };
 
 module.exports = passwordChangeController;
