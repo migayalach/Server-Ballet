@@ -18,6 +18,7 @@ const listEventRouter = require("./listEventRoute");
 const sendContactRouter = require("./contactDataRoute");
 const passwordRouter = require("./_passwordRoute");
 const filterRouter = require("./filterRoute");
+const allDataRouter = require("./allDataRoute");
 
 // ENTRY POINT'S
 mainRouter.use("/level", levelRouter); //OK
@@ -31,6 +32,7 @@ mainRouter.use("/user", userRouter); //OK
 mainRouter.use("/class", classRouter); //OK
 mainRouter.use("/classStudent", classStudentRouter); //OK
 mainRouter.use("/params", paramsRouter); //OK
+mainRouter.use("/allData", allDataRouter);
 mainRouter.use("/change", passwordRouter);
 
 mainRouter.use("/qualification", qualificationRouter); //PROBAR CON EL FRONTEND *POR EL ATRUBUTO PAGE
