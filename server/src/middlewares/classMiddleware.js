@@ -8,6 +8,7 @@ const {
 const postClassMiddleware = (request, response, next) => {
   const { idUserCreate, idHours, idUser, idTypeClass, parallel } = request.body;
   const idUserAllClass = dataId(+idUserCreate);
+
   if (!idUserAllClass.state) {
     return response.status(400).json({
       message: `Se necesita un miembro del staff con acceso para mostrar los datos`,
@@ -51,7 +52,7 @@ const postClassMiddleware = (request, response, next) => {
 const putClassMiddleware = (request, response, next) => {
   const { idClass, idHours, idUser, idTypeClass, parallel, stateClass } =
     request.body;
-  
+
   const classId = dataId(+idClass);
   if (!classId.state) {
     return response.status(400).json({

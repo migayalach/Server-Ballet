@@ -2,6 +2,7 @@ const {
   allTeacher,
   allTypeDance,
   allHours,
+  allStudents
 } = require("../controllers/allDataController");
 
 const selectCaseAll = async (search) => {
@@ -14,6 +15,9 @@ const selectCaseAll = async (search) => {
 
     case "hours":
       return await allHours();
+
+    case "students":
+      return await allStudents();
 
     default:
       break;
