@@ -17,9 +17,9 @@ const allHours = async () => {
   return data;
 };
 
-const allStudents = async () => {
+const allStudents = async (idClass) => {
   const [data] = await pool.query(
-    `SELECT u.idUser, u.photoUser, u.nameUser, u.lastNameUser, u.carnetUser FROM user u, level l WHERE u.idLevel = l.idLevel AND l.nameLevel = "Estudiante"`
+    `SELECT u.idUser, u.photoUser, u.nameUser, u.lastNameUser, u.carnetUser FROM user u, level l, student s WHERE u.idLevel = l.idLevel AND u.idUser = s.idUser AND l.nameLevel = "Estudiante" AND s.idClass != ${idClass};`
   );
   return data;
 };
