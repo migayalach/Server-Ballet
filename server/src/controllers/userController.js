@@ -139,30 +139,6 @@ const updateUser = async (
     ]
   );
   return await getIdUser(idUser);
-
-  //   if (!passwordUser) {
-  // } else if (passwordUser.length >= 8) {
-  //   const password = await hashedPassword(passwordUser);
-  //   await pool.query(
-  //     "UPDATE user SET idLevel = ?, idExtension = ?, nameUser = ?, lastNameUser = ?, emailUser = ?, passwordUser = ?, addressUser = ?, dateBirthUser = ?,  carnetUser = ?, numberPhone = ?, stateUser = ?, photoUser = ? WHERE idUser = ?",
-  //     [
-  //       idLevel,
-  //       idExtension,
-  //       nameUser,
-  //       lastNameUser,
-  //       emailUser,
-  //       password,
-  //       addressUser,
-  //       dateBirthUser,
-  //       carnetUser,
-  //       numberPhone,
-  //       stateUser,
-  //       photoUser,
-  //       idUser,
-  //     ]
-  //   );
-  //   return await getIdUser(idUser);
-  // }
 };
 
 // TODO ELIMINAR USUARIO
