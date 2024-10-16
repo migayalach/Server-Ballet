@@ -11,7 +11,7 @@ const createHours = async (startTime, endTime, totalTime) => {
     );
     const hoursData = await getIdHours(ResultSetHeader.insertId);
     const infoData = await getAllHours();
-    return { hoursData, infoData, state: "create" };
+    return { hoursData, infoData, state: "create-hour" };
   }
 };
 
@@ -87,7 +87,7 @@ const removeHours = async (idHours) => {
 
   await pool.query(`DELETE FROM hours WHERE idHours = ?`, [idHours]);
   const infoData = await getAllHours();
-  return { infoData, state: "delete" };
+  return { infoData, state: "delete-hour" };
 };
 
 module.exports = {
