@@ -2,7 +2,7 @@ const {
   allTeacher,
   allTypeDance,
   allHours,
-  allStudents
+  allStudents,
 } = require("../controllers/allDataController");
 
 const selectCaseAll = async (search) => {
@@ -16,18 +16,19 @@ const selectCaseAll = async (search) => {
     case "hours":
       return await allHours();
 
-    case "students":
-      return await allStudents();
-
     default:
       break;
   }
 };
 
 const allDataHandler = async (request, response) => {
-  const { dataRequest } = request.query;
+  const { dataRequest, idClass } = request.query;
   try {
-    const data = await selectCaseAll(dataRequest);
+    const data =
+      idClass && dataRequest === "students"
+        ? await allStudents(idClass)
+        : await selectCaseAll(dataRequest);
+
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
