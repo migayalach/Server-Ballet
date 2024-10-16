@@ -48,7 +48,7 @@ const createClass = async (
   );
   const classData = await getByIdClass(ResultSetHeader.insertId);
   const infoData = await getAllClass(idUserCreate);
-  return { classData, infoData, state: "create" };
+  return { classData, infoData, state: "create-class" };
 };
 
 // TODO MOSTRAR TODAS LAS CLASES
@@ -134,7 +134,7 @@ const removeClass = async (idUser, idClass) => {
   await pool.query("DELETE FROM class WHERE idClass = ? ", [idClass]);
 
   const infoData = await getAllClass(idUser);
-  return { infoData, state: "delete" };
+  return { infoData, state: "delete-class" };
 };
 
 module.exports = {
