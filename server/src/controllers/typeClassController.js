@@ -17,7 +17,7 @@ const createTypeClass = async (nameClass, description) => {
   );
   const typeClassData = await getIdTypeClass(ResultSetHeader.insertId);
   const infoData = await getAllTypeClass();
-  return { typeClassData, infoData, state: "create" };
+  return { typeClassData, infoData, state: "create-typeClass" };
 };
 
 const getAllTypeClass = async () => {
@@ -55,9 +55,6 @@ const updateTypeClass = async (idTypeClass, nameClass, description) => {
   if (!(await existIdTypeClass(idTypeClass))) {
     throw Error(`El tipo de clase que usted quiere modificar no existe`);
   }
-  // if (await matchNameClass(nameClass)) {
-  //   throw Error(`Lo siento no pueden haber tipo de clases repetidas`);
-  // }
   await pool.query(
     "UPDATE typeClass SET nameClass = ?, description = ? WHERE idTypeClass = ?",
     [nameClass, description, idTypeClass]
@@ -73,7 +70,7 @@ const removeTypeClass = async (idTypeClass) => {
     idTypeClass,
   ]);
   const infoData = await getAllTypeClass();
-  return { infoData, state: "delete" };
+  return { infoData, state: "delete-typeClass" };
 };
 
 module.exports = {
