@@ -9,7 +9,12 @@ const createListEvent = async (hour, dateNews, title, body, urlPicture) => {
   );
   const listEventData = await getIdListEvent(ResultSetHeader.insertId);
   const infoData = await getAllListEvent();
-  return { listEventData, infoData, state: "create" };
+  return {
+    listEventData,
+    infoData,
+    state: "create-event",
+    action: "create-event",
+  };
 };
 
 const getAllListEvent = async () => {
@@ -49,7 +54,8 @@ const updateListEvent = async (
   const infoData = await getIdListEvent(idListEvent);
   return {
     infoData,
-    state: "edit",
+    state: "edit-event",
+    action: "edit-event",
   };
 };
 
@@ -67,7 +73,7 @@ const removeListEvent = async (idListEvent) => {
     await pool.query(`DELETE FROM listEvents WHERE idListEvent = ?`, [
       idListEvent,
     ]);
-    return { state: "delete" };
+    return { state: "delete-event", action: "delete-event" };
   } else if (dateDB <= dateCurrently) {
     throw Error(`Este evento no puede ser eliminado!`);
   }
