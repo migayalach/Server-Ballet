@@ -6,8 +6,11 @@ const {
 } = require("../controllers/controllerData");
 
 const createContact = async (nameContact, emailContact, phoneContact) => {
-  const [data] = await pool.query(`SELECT emailContact FROM sendContact WHERE emailContact = ?`, [emailContact]);
-  
+  const [data] = await pool.query(
+    `SELECT emailContact FROM sendContact WHERE emailContact = ?`,
+    [emailContact]
+  );
+
   if (data.length) {
     throw Error(`Este email ya se encuentra registrado!`);
   }
@@ -17,7 +20,11 @@ const createContact = async (nameContact, emailContact, phoneContact) => {
     [nameContact, emailContact, phoneContact]
   );
 
-  return { message: "Registrado con exito", state: "success" };
+  return {
+    message: "Registrado con exito",
+    state: "success",
+    action: "create-contact",
+  };
 };
 
 const getAllContact = async () => {
