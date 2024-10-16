@@ -69,7 +69,7 @@ const createUser = async (
   // levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
   const userData = await getIdUser(ResultSetHeader.insertId);
   const infoData = await getAllUser();
-  return { userData, infoData, state: "create" };
+  return { userData, infoData, state: "create-user" };
 };
 
 const getAllUser = async () => {
@@ -145,7 +145,7 @@ const updateUser = async (
 const removeUser = async (idUser) => {
   await pool.query("DELETE FROM user WHERE idUser = ? ", [idUser]);
   const infoData = await getAllUser();
-  return { infoData, state: "delete" };
+  return { infoData, state: "delete-user" };
 };
 
 module.exports = {
