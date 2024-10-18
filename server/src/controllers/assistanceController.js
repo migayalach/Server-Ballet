@@ -71,7 +71,7 @@ const createNewAssistance = async (idClass, dateAssistance) => {
 
   const assistanceData = newClass[0];
   const infoData = await getAllIdClassLiss(idClass);
-  return { assistanceData, infoData, state: "create" };
+  return { assistanceData, infoData, state: "create-assistance" };
 };
 
 const updateDateAssistance = async (idAssistance, idClass, dateAssistance) => {
@@ -122,7 +122,7 @@ const removeAssistance = async (idAssistance, idClass) => {
   ]);
 
   const infoData = await getAllIdClassLiss(idClass);
-  return { infoData, state: "delete" };
+  return { infoData, state: "delete-assistance" };
 };
 
 module.exports = {
