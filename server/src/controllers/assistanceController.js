@@ -102,18 +102,18 @@ const updateDateAssistance = async (idAssistance, idClass, dateAssistance) => {
 const removeAssistance = async (idAssistance, idClass) => {
   await existClass(idClass);
   await existAssistance(idAssistance);
-  if (
-    (
-      await pool.query(
-        `SELECT assistance FROM attendance WHERE idAssistance = ?`,
-        [idAssistance]
-      )
-    ).includes(true)
-  ) {
-    throw Error(
-      `Lo siento no se puede modificar la fecha ya que actualmente ya se registro la asistencia`
-    );
-  }
+  const [existReg] = await pool.query(
+    `SELECT assistance FROM attendance WHERE idAssistance = ?`,
+    [idAssistance]
+  );
+
+  existReg.forEach(({assistance}) => {
+    if(assistance === 1) {
+      throw Error(
+        `Lo siento no se puede eliminar ya que actualmente ya se registro asistencias`
+      );  
+    }
+  });
 
   await deleteRegAttendance(idAssistance);
 
