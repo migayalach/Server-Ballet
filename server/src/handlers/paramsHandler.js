@@ -8,9 +8,9 @@ const {
 
 // TODO: CREAR UNA NUEVA EVALUACION UTILIZANDO 'idUser, idClass, dateTest, title, params' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const postParams = async (request, response) => {
-  const { idUser, idClass, dateTest, title, params } = request.body;
+  const { idClass, dateTest, title, params } = request.body;
   try {
-    const data = await createParams(idUser, idClass, dateTest, title, params);
+    const data = await createParams(idClass, dateTest, title, params);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -19,38 +19,31 @@ const postParams = async (request, response) => {
 
 // TODO: RETORNAR TODAS LAS EVALUACIONES BUSCADAS POR 'idUser' EN LOS PARÁMETROS DE LA RUTA
 const getParamsId = async (request, response) => {
-  const { idUser } = request.params;
+  const { idClass } = request.params;
   try {
-    const data = await getIdParams(idUser);
+    const data = await getIdParams(idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-// TODO: EDITA UNA EVALUACION UTILIZANDO 'idParams, idUser, idClass, dateTest, title, params' PROPORCIONADO POR EL BODY DE LA SOLICITUD
+// TODO: EDITA UNA EVALUACION UTILIZANDO 'idParams, idClass, dateTest, title, params' PROPORCIONADO POR EL BODY DE LA SOLICITUD
 const putParams = async (request, response) => {
-  const { idParams, idUser, idClass, dateTest, title, params } = request.body;
+  const { idParams, idClass, dateTest, title, params } = request.body;
   try {
-    const data = await updateParams(
-      idParams,
-      idUser,
-      idClass,
-      dateTest,
-      title,
-      params
-    );
+    const data = await updateParams(idParams, idClass, dateTest, title, params);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
 };
 
-// TODO: RETORNA LA LISTA COMPLETA DE EVALUACIONES O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'idUser, page'
+// TODO: RETORNA LA LISTA COMPLETA DE EVALUACIONES O LOS DATOS PAGINADOS SI SE PROPORCIONA EL PARÁMETRO DE CONSULTA 'idClass, page'
 const getParamsAllPage = async (request, response) => {
-  const { idUser, page } = request.query;
+  const { idClass, page } = request.query;
   try {
-    const data = await getPageParams(idUser, page);
+    const data = await getPageParams(idClass, page);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
@@ -59,9 +52,9 @@ const getParamsAllPage = async (request, response) => {
 
 // TODO: ELIMINA LA EVALUACION BUSCADA POR 'idUser, idParams' PROPORCIONADO POR EL PARÁMETRO DE LA RUTA
 const deleteParams = async (request, response) => {
-  const { idUser, idParams } = request.params;
+  const { idClass, idParams } = request.params;
   try {
-    const data = await removeParams(idUser, idParams);
+    const data = await removeParams(idClass, idParams);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
