@@ -2,15 +2,6 @@ const responseData = require("../utils/response");
 const pool = require("../dataBase/conexion");
 const { getIdUser } = require("./userController");
 
-const noteQualification = (qualification) => {
-  let sum = 0;
-  const note = qualification.map(({ calification }) => calification);
-  for (let i = 0; i < note.length; i++) {
-    sum += note[i];
-  }
-  return sum;
-};
-
 const createQualification = async (idParams, idUser, arrayData) => {
   const noteFinish = arrayData.map(
     ({ idUser, observation, note, qualification }) => ({
