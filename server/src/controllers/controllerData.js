@@ -175,7 +175,9 @@ async function matchCarnetStaff(carnetStaff) {
 }
 
 async function allUser() {
-  const [data] = await pool.query("SELECT idUser, idLevel, idExtension, nameUser, lastNameUser, emailUser, addressUser, dateBirthUser, carnetUser, numberPhone, photoUser, stateUser FROM user");
+  const [data] = await pool.query(
+    "SELECT idUser, idLevel, idExtension, nameUser, lastNameUser, emailUser, addressUser, dateBirthUser, carnetUser, numberPhone, photoUser, stateUser FROM user"
+  );
   return data;
 }
 
@@ -242,25 +244,11 @@ async function existClass(idClass) {
   return;
 }
 
-const allParams = async (idUser) => {
-  const [userInfo] = await pool.query(
-    `SELECT l.nameLevel FROM user u, level l WHERE u.idUser = ${idUser} AND u.idLevel = l.idLevel`
-  );
-
-  if (
-    userInfo[0].nameLevel === "Secretaria" ||
-    userInfo[0].nameLevel === "Director"
-  ) {
-    const [list] = await pool.query(
-      `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title, p.noteFinish FROM params p, class c, user u WHERE p.idClass = c.idClass AND u.idUser = c.idUser`
-    );
-    return list;
-  }
-
+const allParams = async (idClass) => {  
   const [data] = await pool.query(
-    `SELECT p.idParams, p.idClass, u.idUser, c.parallel, u.nameUser, u.lastNameUser, p.dateTest, p.title, p.noteFinish FROM params p, class c, user u WHERE  u.idUser = ${idUser} AND p.idClass = c.idClass AND u.idUser = c.idUser`
+    `SELECT p.idParams, p.idClass, p.dateTest, p.title, p.noteFinish FROM params p, class c WHERE p.idClass = c.idClass AND p.idClass = ? ORDER BY p.dateTest ASC`,
+    [idClass]
   );
-
   return data;
 };
 
@@ -341,7 +329,7 @@ async function existContact(idContact) {
   return true;
 }
 
-async function nameLevelInfo (idLevel) {
+async function nameLevelInfo(idLevel) {
   const [data] = await pool.query(
     `SELECT nameLevel FROM level WHERE idLevel = ?`,
     [idLevel]
@@ -383,5 +371,5 @@ module.exports = {
   allListEvent,
   getContactAll,
   existContact,
-  nameLevelInfo
+  nameLevelInfo,
 };
