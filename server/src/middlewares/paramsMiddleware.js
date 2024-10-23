@@ -1,13 +1,7 @@
 const { dataId } = require("./funAuxMiddleware");
 
 const validatePostParams = (request, response, next) => {
-  const { idUser, idClass, dateTest, title, params } = request.body;
-
-  if (!dataId(+idUser).state) {
-    return response
-      .status(400)
-      .json({ message: `Por favor ingrese un usuario valido` });
-  }
+  const { idClass, dateTest, title, params } = request.body;
 
   if (!dataId(+idClass).state) {
     return response
@@ -35,27 +29,22 @@ const validatePostParams = (request, response, next) => {
 };
 
 const validateIdParams = (request, response, next) => {
-  const { idUser } = request.params;
-  if (!dataId(+idUser).state) {
+  const { idClass } = request.params;
+ 
+  if (!dataId(+idClass).state) {
     return response
       .status(400)
-      .json({ message: `Por favor ingrese un usuario valido` });
+      .json({ message: `Por favor ingrese una clase valida` });
   }
   next();
 };
 
 const validateUpdateParams = (request, response, next) => {
-  const { idParams, idUser, idClass, dateTest, title, params } = request.body;
+  const { idParams, idClass, dateTest, title, params } = request.body;
   if (!dataId(+idParams).state) {
     return response
       .status(400)
       .json({ message: `Por favor ingrese un parametro valido` });
-  }
-
-  if (!dataId(+idUser).state) {
-    return response
-      .status(400)
-      .json({ message: `Por favor ingrese un usuario valido` });
   }
 
   if (!dataId(+idClass).state) {
@@ -83,11 +72,11 @@ const validateUpdateParams = (request, response, next) => {
 };
 
 const validateDeleteParams = (request, response, next) => {
-  const { idUser, idParams } = request.params;
-  if (!dataId(+idUser).state) {
+  const { idClass, idParams } = request.params;
+  if (!dataId(+idClass).state) {
     return response
       .status(400)
-      .json({ message: `Por favor ingrese un usuario valido` });
+      .json({ message: `Por favor ingrese un clase valida` });
   }
   if (!dataId(+idParams).state) {
     return response
