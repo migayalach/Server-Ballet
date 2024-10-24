@@ -4,6 +4,7 @@ const {
   getIdParams,
   updateParams,
   removeParams,
+  getIdParamsInfo,
 } = require("../controllers/paramsController");
 
 // TODO: CREAR UNA NUEVA EVALUACION UTILIZANDO 'idUser, idClass, dateTest, title, params' PROPORCIONADO POR EL BODY DE LA SOLICITUD
@@ -19,9 +20,11 @@ const postParams = async (request, response) => {
 
 // TODO: RETORNAR TODAS LAS EVALUACIONES BUSCADAS POR 'idUser' EN LOS PARÁMETROS DE LA RUTA
 const getParamsId = async (request, response) => {
-  const { idClass } = request.params;
+  const { idClass, idParams } = request.params;
   try {
-    const data = await getIdParams(idClass);
+    const data = idParams
+      ? await getIdParamsInfo(idParams)
+      : await getIdParams(idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
