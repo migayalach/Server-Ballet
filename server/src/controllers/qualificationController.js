@@ -2,7 +2,7 @@ const responseData = require("../utils/response");
 const pool = require("../dataBase/conexion");
 const { getIdUser } = require("./userController");
 
-const createQualification = async (idParams, idUser, arrayData) => {
+const createQualification = async (idParams, arrayData) => { 
   const noteFinish = arrayData.map(
     ({ idUser, observation, note, qualification }) => ({
       idUser,
@@ -39,19 +39,20 @@ const createQualification = async (idParams, idUser, arrayData) => {
   ]);
 
   // MOSTRAR NUEVO REGISTRO CON LAS NOTAS
-  return await getAllQualification(idParams, idUser, (page = 1));
+  return await getAllQualification(idParams, (page = 1));
 };
 
 const deleteQualification = async (idParams) => {
-  await pool.query(`DELETE FROM qualification WHERE idParams = ${idParams}`);
+  const [data] = await pool.query(
+    `DELETE FROM qualification WHERE idParams = ${idParams}`
+  );
+  if (data.affectedRows > 0) {
+    return;
+  }
+  throw Error(`No se pudo realizar esta operacion!`);
 };
 
-const getAllQualification = async (idParams, idUser, page) => {
-  const { nameLevel } = await getIdUser(idUser);
-  if (nameLevel === "Estudiante") {
-    throw Error(`No cuenta con los permisos necesarios`);
-  }
-
+const getAllQualification = async (idParams, page, flag) => {
   // TRAER LISTA CON TODOS LOS ESTUDIANTES A CALIFICAR
   const [data] = await pool.query(
     `SELECT q.*, u.nameUser, u.lastNameUser, u.carnetUser, e.department FROM qualification q, user u, extension e WHERE q.idParams = ${idParams} AND q.idUser = u.idUser AND u.idExtension = e.idExtension`
@@ -93,16 +94,19 @@ const getAllQualification = async (idParams, idUser, page) => {
     noteFinish,
   }));
 
-  const { info, results } = responseData(response, "qualification", page, {
-    idParams,
-    idUser,
-  });
+  if (flag === "frontend") {
+    return { params: paramsData, results: response };
+  } else {
+    const { info, results } = responseData(response, "qualification", page, {
+      idParams,
+    });
 
-  return {
-    info,
-    params: paramsData,
-    results,
-  };
+    return {
+      info,
+      params: paramsData,
+      results,
+    };
+  }
 };
 
 module.exports = {

@@ -1,7 +1,7 @@
 const { dataId } = require("./funAuxMiddleware");
 
 const validateGetQuaAll = (request, response, next) => {
-  const { idParams, idUser } = request.query;
+  const { idParams } = request.query;
 
   if (!dataId(+idParams).state) {
     return response
@@ -9,27 +9,16 @@ const validateGetQuaAll = (request, response, next) => {
       .json({ message: `Por favor ingrese un parametro valido` });
   }
 
-  if (!dataId(+idUser).state) {
-    return response
-      .status(400)
-      .json({ message: `Por favor ingrese un usuario valido` });
-  }
   next();
 };
 
 const validatePostQua = (request, response, next) => {
-  const { idParams, idUser, arrayData } = request.body;
+  const { idParams, arrayData } = request.body;
 
   if (!dataId(+idParams).state) {
     return response
       .status(400)
       .json({ message: `Por favor ingrese un parametro valido` });
-  }
-
-  if (!dataId(+idUser).state) {
-    return response
-      .status(400)
-      .json({ message: `Por favor ingrese un usuario valido` });
   }
 
   if (!arrayData.length) {

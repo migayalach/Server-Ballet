@@ -34,8 +34,8 @@ mainRouter.use("/classStudent", classStudentRouter); //OK
 mainRouter.use("/params", paramsRouter); //OK
 mainRouter.use("/allData", allDataRouter);
 mainRouter.use("/change", passwordRouter);
+mainRouter.use("/qualification", qualificationRouter);
 
-mainRouter.use("/qualification", qualificationRouter); //PROBAR CON EL FRONTEND *POR EL ATRUBUTO PAGE
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
 

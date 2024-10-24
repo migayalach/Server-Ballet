@@ -17,7 +17,7 @@ const {
 const paramsRouter = Router();
 
 paramsRouter.post("/", validatePostParams, postParams);
-paramsRouter.get("/:idClass", validateIdParams, getParamsId);
+paramsRouter.get("/:idClass/:idParams?", validateIdParams, getParamsId);
 paramsRouter.delete("/:idClass/:idParams", validateDeleteParams, deleteParams);
 paramsRouter.put("/", validateUpdateParams, putParams);
 paramsRouter.get("/", getParamsAllPage);
