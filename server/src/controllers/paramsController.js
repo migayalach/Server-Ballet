@@ -106,10 +106,19 @@ const updateParams = async (idParams, idClass, dateTest, title, params) => {
 };
 
 const removeParams = async (idClass, idParams) => {
+  const [existClass] = await pool.query(
+    `SELECT * FROM class WHERE idClass = ?`,
+    [idClass]
+  );
+
+  if (!existClass.length) {
+    throw Error(`La clase no existe`);
+  }
+
   const [data] = await pool.query(`SELECT * FROM params WHERE idParams = ? `, [
     idParams,
   ]);
-  
+
   if (!data.length) {
     throw Error(`Esta evaluacion no existe`);
   }
@@ -127,9 +136,35 @@ const removeParams = async (idClass, idParams) => {
 
   await deleteQualification(idParams);
 
-  await pool.query(`DELETE FROM params WHERE idParams = ?`, [idParams]);
+  const [resData] = await pool.query(`DELETE FROM params WHERE idParams = ?`, [
+    idParams,
+  ]);
 
-  return await getAllParams(idClass);
+  if (resData.affectedRows > 0) {
+    return await getAllParams(idClass);
+  }
+
+  throw Error(`No se pudo realizar esta operacion!`);
+};
+
+const getIdParamsInfo = async (idParams) => {
+  const [data] = await pool.query(
+    `SELECT * FROM params p WHERE p.idParams = ?`,
+    [idParams]
+  );
+
+  if (!data.length) {
+    throw Error(`Esta evaluacion no existe`);
+  }
+
+  return {
+    idParams: data[0].idParams,
+    idClass: data[0].idClass,
+    dateTest: data[0].dateTest,
+    title: data[0].title,
+    params: JSON.parse(data[0].params),
+    noteFinish: data[0].noteFinish,
+  };
 };
 
 module.exports = {
@@ -138,4 +173,5 @@ module.exports = {
   getPageParams,
   updateParams,
   removeParams,
+  getIdParamsInfo,
 };

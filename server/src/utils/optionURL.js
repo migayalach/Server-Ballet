@@ -17,7 +17,7 @@ function URL_OPTION(option, queryId) {
     case "class":
       return `class?idUser=${queryId}&page=`;
     case "params":
-      return `params?idUser=${queryId}&page=`;
+      return `params?idClass=${queryId}&page=`;
     case "listEvents":
       return `listEvents?page=`;
     case "contact":
