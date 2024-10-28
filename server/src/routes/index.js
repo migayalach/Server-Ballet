@@ -19,6 +19,7 @@ const sendContactRouter = require("./contactDataRoute");
 const passwordRouter = require("./_passwordRoute");
 const filterRouter = require("./filterRoute");
 const allDataRouter = require("./allDataRoute");
+const downloadRouter = require("./downloadRoute");
 
 // ENTRY POINT'S
 mainRouter.use("/level", levelRouter); //OK
@@ -35,6 +36,7 @@ mainRouter.use("/params", paramsRouter); //OK
 mainRouter.use("/allData", allDataRouter);
 mainRouter.use("/change", passwordRouter);
 mainRouter.use("/qualification", qualificationRouter);
+mainRouter.use("/download", downloadRouter);
 
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
