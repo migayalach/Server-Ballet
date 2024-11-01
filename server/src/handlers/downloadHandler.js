@@ -14,8 +14,7 @@ const getGenerateArchive = async (request, response) => {
         'attachment; filename="lista-estudiantes.pdf"'
       );
       response.setHeader("Content-Type", "application/pdf");
-      response.end(data);
-      response.status(200).send("Generado con exito");
+      response.end(data); // Enviar el archivo y terminar la respuesta
     } else if (option === "listAssitance") {
       const excelBuffer = await generateListAssitance(
         idClass,
@@ -30,14 +29,22 @@ const getGenerateArchive = async (request, response) => {
         "Content-Type",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       );
-
-      // Enviar el buffer del archivo Excel
-      response.end(excelBuffer); // Cambiado de data a excelBuffer
-      response.status(200).send("Generado con exito");
+      response.end(excelBuffer); // Enviar el archivo y terminar la respuesta
     } else if (option === "listQualification") {
-      const data = await generateListQualification(idUser, idClass, idParams);
-      response.status(200).json(data);
-      // response.status(200).send("Generado con exito");
+      const excelBuffer = await generateListQualification(
+        idUser,
+        idClass,
+        idParams
+      );
+      response.setHeader(
+        "Content-Disposition",
+        'attachment; filename="lista-calificaciones.xlsx"'
+      );
+      response.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      response.end(excelBuffer); // Enviar el archivo y terminar la respuesta
     }
   } catch (error) {
     response.status(400).json({ error: error.message });

@@ -44,7 +44,7 @@ const generateListAssitance = async (idClass, idAssistance, idUser) => {
   return listAssistanceExcel(assitanceMap, info);
 };
 
-const generateListQualification = async(idUser, idClass, idParams) => {
+const generateListQualification = async (idUser, idClass, idParams) => {
   await existUser(idUser);
   await existClass(idClass);
   const [data] = await pool.query(
@@ -74,8 +74,8 @@ const generateListQualification = async(idUser, idClass, idParams) => {
       note,
     })
   );
-  
-  return response
+
+  return listQualificationExcel(response);
 };
 
 const generateListStudents = async (idClass, idUser) => {
@@ -107,7 +107,7 @@ module.exports = {
 // LISTA DE ALUMNOS PDF ok
 
 // SOLO PARA PROFESORES, DIRECTOR Y SECRETARIA
-// GENERAR EXCEL DE ASISTENCIA Y NOTAS 
+// GENERAR EXCEL DE ASISTENCIA Y NOTAS
 
 // ACCESSO TODOS
 // IMPRIMIR DE CADA ALUMNO SU HISTORIAL DE NOTAS EN PDF

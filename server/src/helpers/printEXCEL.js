@@ -58,6 +58,64 @@ const listAssistanceExcel = async (data, info) => {
   return buffer;
 };
 
-const listQualificationExcel = async () => {};
+const listQualificationExcel = async (data) => {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Calificaciones");
+
+  // Agregar encabezado principal y fusionar celdas
+  const titleRow = worksheet.addRow(["Lista de Calificaciones"]);
+  titleRow.font = { bold: true, size: 16 }; // Título en negrita y más grande
+  titleRow.alignment = { horizontal: "center" }; // Centrar el título
+  worksheet.mergeCells(`A1:G1`); // Fusionar celdas desde A1 hasta G1 para el título
+  worksheet.addRow([]); // Fila vacía para separación
+
+  // Definir los encabezados de la tabla de calificaciones
+  worksheet.addRow([
+    "N°",
+    "Nombre",
+    "Apellido",
+    "Carnet",
+    "Departamento",
+    "Calificación",
+    "Observación",
+    "Nota",
+  ]).font = { bold: true }; // Encabezados en negrita
+
+  // Definir el ancho de las columnas
+  worksheet.columns = [
+    { key: "index", width: 5 },
+    { key: "nameUser", width: 20 },
+    { key: "lastNameUser", width: 20 },
+    { key: "carnetUser", width: 15 },
+    { key: "department", width: 20 },
+    { key: "qualification", width: 15 },
+    { key: "observation", width: 20 },
+    { key: "note", width: 20 },
+  ];
+
+  // Agregar datos de calificaciones
+  data.forEach((item, index) => {
+    worksheet.addRow({
+      index: index + 1,
+      ...item,
+    });
+  });
+
+  // Aplicar bordes a las celdas
+  worksheet.eachRow((row, rowNumber) => {
+    row.eachCell((cell) => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+
+  // Guardar el archivo
+  const buffer = await workbook.xlsx.writeBuffer();
+  return buffer;
+};
 
 module.exports = { listAssistanceExcel, listQualificationExcel };
