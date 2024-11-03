@@ -7,7 +7,7 @@ const {
   allClass,
   existClass,
 } = require("./controllerData");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const {
   lengthName,
   isString,

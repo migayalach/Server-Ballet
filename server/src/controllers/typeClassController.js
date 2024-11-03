@@ -1,4 +1,4 @@
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const {
   allTypeClass,
   matchNameClass,

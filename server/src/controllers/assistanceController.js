@@ -1,5 +1,5 @@
 const pool = require("../dataBase/conexion");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const {
   existClass,
   existDate,
@@ -107,11 +107,11 @@ const removeAssistance = async (idAssistance, idClass) => {
     [idAssistance]
   );
 
-  existReg.forEach(({assistance}) => {
-    if(assistance === 1) {
+  existReg.forEach(({ assistance }) => {
+    if (assistance === 1) {
       throw Error(
         `Lo siento no se puede eliminar ya que actualmente ya se registro asistencias`
-      );  
+      );
     }
   });
 

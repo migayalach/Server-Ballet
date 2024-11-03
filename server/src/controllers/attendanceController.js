@@ -1,5 +1,5 @@
 const pool = require("../dataBase/conexion");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 
 const addAttendance = async (idAssistance, list) => {
   console.log(idAssistance, list);
@@ -21,7 +21,7 @@ const addAttendance = async (idAssistance, list) => {
   //     );
   //   })
   // );
-  
+
   // after
   for (let { idUser, assistance } of list) {
     await pool.query(

@@ -1,8 +1,8 @@
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const pool = require("../dataBase/conexion");
 const { getIdUser } = require("./userController");
 
-const createQualification = async (idParams, arrayData) => { 
+const createQualification = async (idParams, arrayData) => {
   const noteFinish = arrayData.map(
     ({ idUser, observation, note, qualification }) => ({
       idUser,

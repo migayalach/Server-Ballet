@@ -1,5 +1,5 @@
 const pool = require("../dataBase/conexion");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const {
   isNumber,
   lengthName,

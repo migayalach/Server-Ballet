@@ -1,4 +1,4 @@
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const { existIdLevel, repeatedLevel, allLevel } = require("./controllerData");
 const { isNumber } = require("../helpers/funcAux");
 const pool = require("../dataBase/conexion");

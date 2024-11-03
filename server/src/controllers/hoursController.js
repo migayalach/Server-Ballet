@@ -1,6 +1,6 @@
 const pool = require("../dataBase/conexion");
 const { allHours, existIdHours } = require("./controllerData");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const { isNumber, isString, dateComplete } = require("../helpers/funcAux");
 
 const createHours = async (startTime, endTime, totalTime) => {

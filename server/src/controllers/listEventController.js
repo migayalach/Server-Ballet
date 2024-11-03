@@ -1,6 +1,6 @@
 const pool = require("../dataBase/conexion");
 const { existIdHours, allListEvent } = require("./controllerData");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 
 const createListEvent = async (hour, dateNews, title, body, urlPicture) => {
   const [ResultSetHeader] = await pool.query(

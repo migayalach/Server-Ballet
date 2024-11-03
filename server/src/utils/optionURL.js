@@ -1,6 +1,4 @@
 function URL_OPTION(option, queryId) {
-  // console.log(option, queryId);
-
   switch (option) {
     case "level":
       return `level?page=`;
@@ -22,9 +20,6 @@ function URL_OPTION(option, queryId) {
       return `listEvents?page=`;
     case "contact":
       return `contact?page=`;
-
-    // case "filter":
-    //   return `filter?page=`;
     case "attendance":
       return `attendance?idAssistance=${queryId}&page=`;
     case "assistance":
@@ -32,4 +27,4 @@ function URL_OPTION(option, queryId) {
   }
 }
 
-module.exports = URL_OPTION;
+module.exports =  URL_OPTION ;
