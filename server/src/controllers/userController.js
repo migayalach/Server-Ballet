@@ -1,5 +1,5 @@
 const pool = require("../dataBase/conexion");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const { isNumber, codeUser } = require("../helpers/funcAux");
 const hashedPassword = require("../utils/passwordEncrypt");
 const _emailSend = require("../helpers/_sendEmail");
