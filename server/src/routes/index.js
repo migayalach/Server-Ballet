@@ -17,9 +17,9 @@ const attendanceRouter = require("./_attendanceRoute");
 const listEventRouter = require("./listEventRoute");
 const sendContactRouter = require("./contactDataRoute");
 const passwordRouter = require("./_passwordRoute");
-const filterRouter = require("./filterRoute");
 const allDataRouter = require("./allDataRoute");
 const downloadRouter = require("./downloadRoute");
+const filterRouter = require("./filterRoute");
 
 // ENTRY POINT'S
 mainRouter.use("/level", levelRouter); //OK
@@ -37,10 +37,8 @@ mainRouter.use("/allData", allDataRouter);
 mainRouter.use("/change", passwordRouter);
 mainRouter.use("/qualification", qualificationRouter);
 mainRouter.use("/download", downloadRouter);
-
 mainRouter.use("/assistance", assistanceRouter);
 mainRouter.use("/attendance", attendanceRouter);
-
-// mainRouter.use("/filter", filterRouter);
+mainRouter.use("/filter", filterRouter);
 
 module.exports = mainRouter;
