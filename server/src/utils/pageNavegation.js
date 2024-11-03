@@ -2,7 +2,6 @@ require("dotenv").config();
 const { URL } = process.env;
 const URL_OPTION = require("./optionURL");
 
-// TODO AGREGAR UN SWITCH PARA PODER CONTROLAR LAS URL DE LOS ENLACES
 function queryIdObject(queryId, page, operation, direction) {
   let search = "";
   for (let i in queryId) {
@@ -13,8 +12,6 @@ function queryIdObject(queryId, page, operation, direction) {
   return operation === "+"
     ? `${URL}qualification?${search}page=${page + 1}`
     : `${URL}qualification?${search}page=${page - 1}`;
-  // ? `${URL}filter?${search}page=${page + 1}`
-  // : `${URL}filter?${search}page=${page - 1}`;
 }
 
 function nextPage(direction, page, pages, queryId) {
