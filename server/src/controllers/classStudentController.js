@@ -1,6 +1,6 @@
 const pool = require("../dataBase/conexion");
 const { existUser, existClass } = require("./controllerData");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const { isNumber } = require("../helpers/funcAux");
 
 const allClassStudent = async (idClass) => {
