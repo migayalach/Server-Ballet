@@ -1,5 +1,5 @@
 const pool = require("../dataBase/conexion");
-const responseData = require("../utils/response");
+const { responseData } = require("../utils/response");
 const { deleteQualification } = require("./qualificationController");
 const { allClassStudent } = require("./classStudentController");
 const { paramsList, promisseResolve } = require("./controllerData");
