@@ -10,7 +10,7 @@ const dataSearh = async (search, data) => {
     case "listEvent":
       const [info] = await pool.query(
         `SELECT l.idListEvent, l.hourEvent, l.dateNews, l.title, l.body, l.stateEvent, l.urlPicture 
-        FROM listEvents l WHERE l.dateNews BETWEEN ? AND ? AND l.stateEvent = ? ORDER BY l.dateNews ${data.order}`,
+        FROM listEvents l WHERE l.dateNews BETWEEN ? AND ? ORDER BY l.dateNews ${data.order}`,
         [
           data.dateStart,
           !data.dateEnd ? !data.dateEnd && obtainDate() : data.dateEnd,
