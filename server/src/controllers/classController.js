@@ -12,7 +12,6 @@ const {
   lengthName,
   isString,
   isNumber,
-  stateBoolean,
 } = require("../helpers/funcAux");
 
 // TODO CREACION DE CLASE
