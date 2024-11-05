@@ -67,7 +67,7 @@ function infoFilter(data, direction, objSearch, page) {
   return {
     count,
     pages,
-    next: current("+", page, pages, direction, objSearch),
+    next: count !== 0 ? current("+", page, pages, direction, objSearch) : null,
     prev: current("-", page, pages, direction, objSearch),
   };
 }
