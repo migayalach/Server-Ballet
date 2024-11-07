@@ -37,26 +37,28 @@ const dataSearh = async (search, data) => {
       return typeClass;
 
     case "hours":
-      const [hours] = await pool.query(
-        `SELECT * FROM hours ORDER BY totalTime ${data.order}`
-      );
+      let queryHours = `SELECT * FROM hours WHERE stateHours = ${data.state}`;
+
+      if (data.order) {
+        queryHours += ` ORDER BY totalTime ${data.order}`;
+      }
+
+      const [hours] = await pool.query(queryHours);
       return hours;
 
     case "user":
       let query = `SELECT s.idUser, s.idLevel, l.nameLevel, s.idExtension, e.department, s.nameUser,  s.lastNameUser,  s.emailUser,  s.addressUser, s.dateBirthUser,  s.carnetUser, s.numberPhone, s.photoUser,  s.stateUser FROM user s, extension e, level l WHERE s.idExtension = e.idExtension AND s.idLevel = l.idLevel`;
-      if (data.nameLevel) {
-        query += ` AND l.nameLevel = "${data.nameLevel}"`;
+      if (data.idLevel > 0) {
+        query += ` AND l.idLevel = "${data.idLevel}"`;
       }
       if (data.stateUser) {
         query += ` AND stateUser = ${data.stateUser}`;
       }
-
       if (data.nameUser && !data.lastName) {
-        query += ` ORDER BY nameUser ${data.order}`;
+        query += ` ORDER BY s.nameUser ${data.order}`;
       } else if (data.lastName && !data.nameUser) {
-        query += ` ORDER BY lastNameUser ${data.order}`;
+        query += ` ORDER BY s.lastNameUser ${data.order}`;
       }
-
       const [user] = await pool.query(query);
       return user;
 
