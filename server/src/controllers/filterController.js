@@ -110,7 +110,9 @@ const dataSearh = async (search, data) => {
         queryQualification += ` ORDER BY dateTest`;
       }
       queryQualification += ` ${data.order}`;
+
       const [qualification] = await pool.query(queryQualification);
+
       return qualification;
 
     default:

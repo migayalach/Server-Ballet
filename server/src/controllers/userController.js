@@ -65,8 +65,8 @@ const createUser = async (
   );
 
   // ENVIO DE CORREO POR SER NUEVO MIEMBRO SOLO PARA ESTUDIANTES
-  // const levelInfo = await nameLevelInfo(idLevel);
-  // levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
+  const levelInfo = await nameLevelInfo(idLevel);
+  levelInfo === "Estudiante" && (await _emailSend(emailUser, nameUser));
   const userData = await getIdUser(ResultSetHeader.insertId);
   const infoData = await getAllUser();
   return { userData, infoData, state: "create-user" };
