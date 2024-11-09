@@ -33,4 +33,18 @@ const allStudents = async (idClass) => {
   return users;
 };
 
-module.exports = { allTeacher, allTypeDance, allHours, allStudents };
+const infoCourse = async (idUser) => {
+  const [infoClassUser] = await pool.query(
+    `SELECT c.idClass, t.nameClass, h.startTime, h.endTime, c.parallel, c.stateClass FROM user u, class c, student s, typeClass t, hours h WHERE u.idUser = s.idClass AND c.idClass = s.idClass AND t.idTypeClass = c.idTypeClass AND c.idHours = h.idHours AND s.idUser = ?`,
+    [idUser]
+  );
+  return infoClassUser;
+};
+
+module.exports = {
+  allTeacher,
+  allTypeDance,
+  allHours,
+  allStudents,
+  infoCourse,
+};
