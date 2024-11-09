@@ -115,6 +115,20 @@ const dataSearh = async (search, data) => {
 
       return qualification;
 
+    case "qualificationUser":
+      const [quaUser] = await pool.query(
+        `SELECT t.nameClass, c.parallel, p.title, p.dateTest, q.note FROM user u, class c, params p, qualification q, typeClass t WHERE c.idClass = p.idClass AND p.idParams = q.idParams AND u.idUser = q.idUser AND c.idTypeClass = t.idTypeClass AND u.idUser = ? AND c.idClass = ?`,
+        [data.idUser, data.idCourse]
+      );
+      return quaUser;
+
+    case "assistanceUser":
+      const [assisUser] = await pool.query(
+        `SELECT t.nameClass, c.parallel, a.dateAssistance, att.assistance FROM user u, class c, typeClass t, assistance a, attendance att WHERE c.idTypeClass = t.idTypeClass AND a.idAssistance = att.idAssistance AND u.idUser = att.idUser AND u.idUser = ? AND c.idClass = ?`,
+        [data.idUser, data.idCourse]
+      );
+      return assisUser;
+
     default:
       break;
   }
