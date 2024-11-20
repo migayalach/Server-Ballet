@@ -22,17 +22,17 @@ const downloadRouter = require("./downloadRoute");
 const filterRouter = require("./filterRoute");
 
 // ENTRY POINT'S
-mainRouter.use("/level", levelRouter); //OK
-mainRouter.use("/extension", extensionRouter); //OK
-mainRouter.use("/typeClass", typeClassRouter); //OK
-mainRouter.use("/hours", hoursRouter); //OK
-mainRouter.use("/login", loginRouter); //OK
-mainRouter.use("/contact", sendContactRouter); //OK
-mainRouter.use("/listEvents", listEventRouter); //OK
-mainRouter.use("/user", userRouter); //OK
-mainRouter.use("/class", classRouter); //OK
-mainRouter.use("/classStudent", classStudentRouter); //OK
-mainRouter.use("/params", paramsRouter); //OK
+mainRouter.use("/level", levelRouter);
+mainRouter.use("/extension", extensionRouter);
+mainRouter.use("/typeClass", typeClassRouter);
+mainRouter.use("/hours", hoursRouter);
+mainRouter.use("/login", loginRouter);
+mainRouter.use("/contact", sendContactRouter);
+mainRouter.use("/listEvents", listEventRouter);
+mainRouter.use("/user", userRouter);
+mainRouter.use("/class", classRouter);
+mainRouter.use("/classStudent", classStudentRouter);
+mainRouter.use("/params", paramsRouter);
 mainRouter.use("/allData", allDataRouter);
 mainRouter.use("/change", passwordRouter);
 mainRouter.use("/qualification", qualificationRouter);
