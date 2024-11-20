@@ -1,14 +1,46 @@
 const pool = require("../dataBase/conexion");
 const { existUser, existClass } = require("./controllerData");
 const { responseData } = require("../utils/response");
-const { isNumber } = require("../helpers/funcAux");
+const { isNumber, totalNoteAndState } = require("../helpers/funcAux");
 
 const allClassStudent = async (idClass) => {
   const [data] = await pool.query(
     "SELECT c.idClass, l.nameLevel, e.department, u.* FROM class c, student s, user u, level l, extension e WHERE c.idClass = ? AND c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension",
     [idClass]
   );
-  return data;
+
+  // LISTA DE ESTUDIANTES CON SU ID
+  let listStudents = data.map(
+    ({
+      idUser,
+      nameUser,
+      lastNameUser,
+      carnetUser,
+      department,
+      emailUser,
+      numberPhone,
+      photoUser,
+    }) => ({
+      idUser,
+      nameUser,
+      lastNameUser,
+      carnetUser,
+      department,
+      emailUser,
+      numberPhone,
+      photoUser,
+      stateStudent: null,
+      note: 0,
+    })
+  );
+
+  // LISTA CON TODAS LOS DATOS NOTAS Y ESTADO PRINCIPALMENTE
+  let [listData] = await pool.query(
+    `SELECT q.idUser, q.note, s.stateStudent FROM qualification q, params p, class c, user u, student s WHERE q.idParams = p.idParams AND c.idClass = p.idClass AND u.idUser = q.idUser AND s.idClass = c.idClass AND s.idUser = u.idUser AND c.idClass = ?`,
+    [idClass]
+  );
+
+  return totalNoteAndState(listStudents, listData);
 };
 
 // TODO MOSTRAR ALUMNOS POR CLASE
