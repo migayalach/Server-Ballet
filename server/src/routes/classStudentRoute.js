@@ -17,6 +17,7 @@ const classStudentRoute = Router();
 
 // TODO ESTA RUTA MUESTRA TODO EL LISTADO DE ESTUDIANTES POR CLASE
 classStudentRoute.get("/:idClass", validategetIdClassStu, getClassStudentId);
+
 classStudentRoute.get("/", getClassStudentAll);
 classStudentRoute.post("/", validatePostClassStu, postClassStudent);
 // TODO FALTA REALIZAR DELETE EN EL FRONTEND

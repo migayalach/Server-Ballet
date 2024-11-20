@@ -1,25 +1,10 @@
 const pool = require("../dataBase/conexion");
 const { allClassStudent } = require("./classStudentController");
 const { responseFilter } = require("../utils/response");
+const { orderListCourse } = require("../helpers/funcAux");
 
 const obtainDate = () => {
   return new Date().toISOString().slice(0, 10);
-};
-
-const averangeUser = (idUser, listNotes) => {
-  let averange = 0;
-  listNotes.forEach((element) => {
-    if (element.idUser === idUser) {
-      averange += element.note;
-    }
-  });
-  return averange;
-};
-
-const totalNote = (listStudents, listNotes) => {
-  for (let i = 0; i < listStudents.length; i++) {
-    let user = averangeUser(listStudents[i], listNotes);
-  }
 };
 
 const dataSearh = async (search, data) => {
@@ -83,9 +68,6 @@ const dataSearh = async (search, data) => {
       const [user] = await pool.query(query);
       return user;
 
-    case "userInfo":
-      return;
-
     case "class":
       let queryClass =
         "SELECT c.idClass, h.totalTime, s.idUser, s.nameUser, s.lastNameUser, s.carnetUser, e.department, t.nameClass, c.parallel, c.stateClass FROM class c, typeClass t, user s, hours h, extension e WHERE c.idTypeClass = t.idTypeClass AND c.idHours = h.idHours AND c.idUser = s.idUser AND  s.idExtension = e.idExtension";
@@ -146,48 +128,9 @@ const dataSearh = async (search, data) => {
       );
       return assisUser;
 
-    case "classList":
-      // LISTA DE ESTUDIANTES CON SU ID
-      let listStudents = (await allClassStudent(data.idClass)).map(
-        ({ idUser }) => idUser
-      );
-
-      // LISTA CON TODAS LAS NOTAS
-      let [listNotes] = await pool.query(
-        `SELECT q.idUser, q.note FROM qualification q, params p, class c, user u WHERE q.idParams = p.idParams AND c.idClass = p.idClass AND u.idUser = q.idUser AND c.idClass = ?`,
-        [data.idClass]
-      );
-
-      totalNote(listStudents, listNotes);
-      
-      // console.log(listStudents);
-      // console.log(listNotes);
-
-      return listNotes;
-    // let queryClassList = `SELECT c.idClass, u.idUser, u.photoUser, u.nameUser, u.lastNameUser, u.carnetUser, e.department, s.stateStudent,
-    // MAX(q.note) AS note FROM class c, student s, user u, level l, extension e, qualification q, params p
-    // WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension
-    // AND q.idUser = u.idUser AND p.idParams = q.idParams AND p.idClass = c.idClass AND c.idClass = ?
-    // AND s.stateStudent = ? GROUP BY c.idClass, u.idUser, u.photoUser, u.nameUser, u.lastNameUser,
-    // u.carnetUser, e.department, s.stateStudent ORDER BY `;
-    // if (data.value === "nameUser" || data.value === "lastNameUser") {
-    //   queryClassList += `u.${data.value} `;
-    //   queryClassList += `${data.order}`;
-    //   const [classLiss] = await pool.query(`${queryClassList}`, [
-    //     data.idClass,
-    //     data.state,
-    //   ]);
-    //   return classLiss;
-    // } else if (data.value === "note") {
-    //   queryClassList += `u.nameUser ${data.order}`;
-    //   const [classLiss] = await pool.query(`${queryClassList}`, [
-    //     data.idClass,
-    //     data.state,
-    //   ]);
-    //   console.log(classLiss);
-
-    //   return ":D";
-    // } else return [];
+    case "classList":     
+      const dataList = await allClassStudent(data.idClass);
+      return orderListCourse(dataList, data.state, data.order);
 
     default:
       break;
@@ -200,25 +143,3 @@ const filterData = async (search, data, page) => {
 };
 
 module.exports = { filterData };
-
-// MOSTRAR LISTA DE ESTUDIANTES
-// SELECT c.idClass, u.idUser, u.photoUser, u.nameUser, u.lastNameUser, u.carnetUser, e.department, s.stateStudent FROM class c, student s, user u, level l, extension e WHERE c.idClass = ? AND c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension
-
-// case "classList":
-//   let queryClassList = `SELECT c.idClass, u.idUser, u.photoUser, u.nameUser, u.lastNameUser, u.carnetUser, e.department, s.stateStudent,
-//     MAX(q.note) AS note FROM class c, student s, user u, level l, extension e, qualification q, params p
-//     WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension
-//     AND q.idUser = u.idUser AND p.idParams = q.idParams AND p.idClass = c.idClass AND c.idClass = ?
-//     AND s.stateStudent = ? GROUP BY c.idClass, u.idUser, u.photoUser, u.nameUser, u.lastNameUser,
-//     u.carnetUser, e.department, s.stateStudent ORDER BY `;
-//   if (data.value === "nameUser" || data.value === "lastNameUser") {
-//     queryClassList += `u.${data.value} `;
-//   } else {
-//     queryClassList += `q.note `;
-//   }
-//   queryClassList += `${data.order}`;
-//   const [classLiss] = await pool.query(`${queryClassList}`, [
-//     data.idClass,
-//     data.state,
-//   ]);
-//   return classLiss;
