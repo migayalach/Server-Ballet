@@ -2,11 +2,12 @@ const {
   createClassStudent,
   getPageClassStudent,
   getIdClassStudent,
-  removeClassStudent,s
+  removeClassStudent,
+  updateClassStudent,
 } = require("../controllers/classStudentController");
 
 // TODO: RETORNA LA LISTA COMPLETA DE ESTUDIANTES Y EL PAGINADO, SE NECESITAN 'idClass  y page'
-const getClassStudentAll = async (request, response) => { 
+const getClassStudentAll = async (request, response) => {
   const { idClass, page } = request.query;
   try {
     const data = await getPageClassStudent(idClass, page);
@@ -49,9 +50,20 @@ const deleteClassStudent = async (request, response) => {
   }
 };
 
+const putClassStudent = async (request, response) => {
+  const { idClass, idUser, state } = request.body;
+  try {
+    const data = await updateClassStudent(idClass, idUser, state);
+    response.status(200).json(data);
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getClassStudentAll,
   getClassStudentId,
   postClassStudent,
   deleteClassStudent,
+  putClassStudent,
 };
