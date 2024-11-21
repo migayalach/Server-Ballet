@@ -38,7 +38,7 @@ const createNewAssistance = async (idClass, dateAssistance) => {
   await existClass(idClass);
 
   const [listStudents] = await pool.query(
-    `SELECT idUser, stateStudent FROM student WHERE idClass = ?`,
+    `SELECT idUser, stateStudent FROM student WHERE stateStudent = true AND idClass = ?`,
     [idClass]
   );
 
