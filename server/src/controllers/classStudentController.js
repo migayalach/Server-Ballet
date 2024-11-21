@@ -2,15 +2,19 @@ const pool = require("../dataBase/conexion");
 const { existUser, existClass } = require("./controllerData");
 const { responseData } = require("../utils/response");
 const { isNumber, totalNoteAndState } = require("../helpers/funcAux");
+const { getIdUser } = require("./userController");
 
-const allClassStudent = async (idClass) => {
-  const [data] = await pool.query(
-    "SELECT c.idClass, l.nameLevel, e.department, u.* FROM class c, student s, user u, level l, extension e WHERE c.idClass = ? AND c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension",
+// LISTA CON TODAS LOS DATOS NOTAS Y ESTADO PRINCIPALMENTE
+const listNotes = async (idClass) => {
+  const [listData] = await pool.query(
+    `SELECT q.idUser, q.note, s.stateStudent FROM qualification q, params p, class c, user u, student s WHERE q.idParams = p.idParams AND c.idClass = p.idClass AND u.idUser = q.idUser AND s.idClass = c.idClass AND s.idUser = u.idUser AND c.idClass = ?`,
     [idClass]
   );
+  return listData;
+};
 
-  // LISTA DE ESTUDIANTES CON SU ID
-  let listStudents = data.map(
+const clearDataList = (data) =>
+  data.map(
     ({
       idUser,
       nameUser,
@@ -20,6 +24,7 @@ const allClassStudent = async (idClass) => {
       emailUser,
       numberPhone,
       photoUser,
+      stateStudent,
     }) => ({
       idUser,
       nameUser,
@@ -29,18 +34,26 @@ const allClassStudent = async (idClass) => {
       emailUser,
       numberPhone,
       photoUser,
-      stateStudent: null,
+      stateStudent,
       note: 0,
     })
   );
 
-  // LISTA CON TODAS LOS DATOS NOTAS Y ESTADO PRINCIPALMENTE
-  let [listData] = await pool.query(
-    `SELECT q.idUser, q.note, s.stateStudent FROM qualification q, params p, class c, user u, student s WHERE q.idParams = p.idParams AND c.idClass = p.idClass AND u.idUser = q.idUser AND s.idClass = c.idClass AND s.idUser = u.idUser AND c.idClass = ?`,
+const allClassStudentOff = async (idClass) => {
+  const [data] = await pool.query(
+    `SELECT c.idClass, u.idUser, u.nameUser, u.lastNameUser, u.emailUser, u.carnetUser, e.department, u.numberPhone, u.photoUser, s.stateStudent FROM class c, student s, user u, level l, extension e WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension AND s.stateStudent = false AND c.idClass = ?`,
+    [idClass]
+  );
+  return totalNoteAndState(clearDataList(data), await listNotes(idClass));
+};
+
+const allClassStudent = async (idClass) => {
+  const [data] = await pool.query(
+    `SELECT c.idClass, u.idUser, u.nameUser, u.lastNameUser, u.emailUser, u.carnetUser, e.department, u.numberPhone, u.photoUser, s.stateStudent FROM class c, student s, user u, level l, extension e WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension AND s.stateStudent = true AND c.idClass = ?`,
     [idClass]
   );
 
-  return totalNoteAndState(listStudents, listData);
+  return totalNoteAndState(clearDataList(data), await listNotes(idClass));
 };
 
 // TODO MOSTRAR ALUMNOS POR CLASE
@@ -92,10 +105,23 @@ const removeClassStudent = async (idClass, idUser) => {
   return await getIdClassStudent(idClass);
 };
 
+const updateClassStudent = async (idClass, idUser, state) => {
+  await existClass(idClass);
+  await getIdUser(idUser);
+  const data = await pool.query(
+    `UPDATE student SET stateStudent = ? WHERE idClass = ? AND idUser = ? `,
+    [state, idClass, idUser]
+  );
+
+  return await getIdClassStudent(idClass);
+};
+
 module.exports = {
   getPageClassStudent,
   createClassStudent,
   getIdClassStudent,
   removeClassStudent,
   allClassStudent,
+  updateClassStudent,
+  allClassStudentOff,
 };
