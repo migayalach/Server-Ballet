@@ -1,5 +1,8 @@
 const pool = require("../dataBase/conexion");
-const { allClassStudent } = require("./classStudentController");
+const {
+  allClassStudent,
+  allClassStudentOff,
+} = require("./classStudentController");
 const { responseFilter } = require("../utils/response");
 const { orderListCourse } = require("../helpers/funcAux");
 
@@ -128,7 +131,11 @@ const dataSearh = async (search, data) => {
       );
       return assisUser;
 
-    case "classList":     
+    case "classList":
+      if (!data.state && data.order === "") {
+        const dataOff = await allClassStudentOff(data.idClass);        
+        return (dataOff);
+      }
       const dataList = await allClassStudent(data.idClass);
       return orderListCourse(dataList, data.state, data.order);
 
