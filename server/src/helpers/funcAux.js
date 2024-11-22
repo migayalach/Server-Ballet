@@ -92,16 +92,6 @@ function stateBoolean(state) {
   throw Error(`Por favor asigne un estado`);
 }
 
-function stateUserClass(idUser, listData) {
-  let state = null;
-  listData.forEach((element) => {
-    if (element.idUser === idUser) {
-      state = element.stateStudent;
-    }
-  });
-  return state;
-}
-
 function averangeUser(idUser, listData) {
   let averange = 0;
   listData.forEach((element) => {
@@ -114,10 +104,6 @@ function averangeUser(idUser, listData) {
 
 function totalNoteAndState(listStudents, listData) {
   for (let i = 0; i < listStudents.length; i++) {
-    listStudents[i].stateStudent = stateUserClass(
-      listStudents[i].idUser,
-      listData
-    );
     listStudents[i].note = averangeUser(listStudents[i].idUser, listData);
   }
   return listStudents;
