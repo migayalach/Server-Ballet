@@ -145,6 +145,32 @@ function orderListCourse(array, state, order) {
   return array;
 }
 
+const clearDataList = (data) =>
+  data.map(
+    ({
+      idUser,
+      nameUser,
+      lastNameUser,
+      carnetUser,
+      department,
+      emailUser,
+      numberPhone,
+      photoUser,
+      stateStudent,
+    }) => ({
+      idUser,
+      nameUser,
+      lastNameUser,
+      carnetUser,
+      department,
+      emailUser,
+      numberPhone,
+      photoUser,
+      stateStudent,
+      note: 0,
+    })
+  );
+
 module.exports = {
   isNumber,
   isString,
@@ -159,4 +185,5 @@ module.exports = {
   stateBoolean,
   totalNoteAndState,
   orderListCourse,
+  clearDataList,
 };
