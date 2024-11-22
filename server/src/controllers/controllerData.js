@@ -360,6 +360,7 @@ const allClassStudent = async (idClass) => {
     `SELECT c.idClass, u.idUser, u.nameUser, u.lastNameUser, u.emailUser, u.carnetUser, e.department, u.numberPhone, u.photoUser, s.stateStudent FROM class c, student s, user u, level l, extension e WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension AND s.stateStudent = true AND c.idClass = ?`,
     [idClass]
   );
+
   return totalNoteAndState(clearDataList(data), await listNotes(idClass));
 };
 
