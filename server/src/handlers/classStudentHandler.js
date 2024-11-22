@@ -4,6 +4,7 @@ const {
   getIdClassStudent,
   removeClassStudent,
   updateClassStudent,
+  getIdClassIdStudent,
 } = require("../controllers/classStudentController");
 
 // TODO: RETORNA LA LISTA COMPLETA DE ESTUDIANTES Y EL PAGINADO, SE NECESITAN 'idClass  y page'
@@ -19,9 +20,14 @@ const getClassStudentAll = async (request, response) => {
 
 // TODO: RETORNAR LA LISTA DE ALUMNOS BUSCADO POR 'idClass' EN LOS PARÁMETROS DE LA RUTA
 const getClassStudentId = async (request, response) => {
-  const { idClass } = request.params;
+  const { idClass, idUser } = request.params;
+  console.log(idClass, idUser);
+  
   try {
-    const data = await getIdClassStudent(idClass);
+    const data =
+      idClass > 0 && idUser > 0
+        ? await getIdClassIdStudent(idClass, idUser)
+        : await getIdClassStudent(idClass);
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });

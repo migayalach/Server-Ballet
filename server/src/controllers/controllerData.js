@@ -1,5 +1,6 @@
 // BASE DE DATOS
 const pool = require("../dataBase/conexion");
+const { totalNoteAndState, clearDataList } = require("../helpers/funcAux");
 
 // LEVEL
 async function allLevel() {
@@ -244,7 +245,7 @@ async function existClass(idClass) {
   return;
 }
 
-const allParams = async (idClass) => {  
+const allParams = async (idClass) => {
   const [data] = await pool.query(
     `SELECT p.idParams, p.idClass, p.dateTest, p.title, p.noteFinish FROM params p, class c WHERE p.idClass = c.idClass AND p.idClass = ? ORDER BY p.dateTest ASC`,
     [idClass]
@@ -337,6 +338,31 @@ async function nameLevelInfo(idLevel) {
   return data[0].nameLevel;
 }
 
+// LISTA CON TODAS LOS DATOS NOTAS Y ESTADO PRINCIPALMENTE
+const listNotes = async (idClass) => {
+  const [listData] = await pool.query(
+    `SELECT q.idUser, q.note, s.stateStudent FROM qualification q, params p, class c, user u, student s WHERE q.idParams = p.idParams AND c.idClass = p.idClass AND u.idUser = q.idUser AND s.idClass = c.idClass AND s.idUser = u.idUser AND c.idClass = ?`,
+    [idClass]
+  );
+  return listData;
+};
+
+const allClassStudentOff = async (idClass) => {
+  const [data] = await pool.query(
+    `SELECT c.idClass, u.idUser, u.nameUser, u.lastNameUser, u.emailUser, u.carnetUser, e.department, u.numberPhone, u.photoUser, s.stateStudent FROM class c, student s, user u, level l, extension e WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension AND s.stateStudent = false AND c.idClass = ?`,
+    [idClass]
+  );
+  return totalNoteAndState(clearDataList(data), await listNotes(idClass));
+};
+
+const allClassStudent = async (idClass) => {
+  const [data] = await pool.query(
+    `SELECT c.idClass, u.idUser, u.nameUser, u.lastNameUser, u.emailUser, u.carnetUser, e.department, u.numberPhone, u.photoUser, s.stateStudent FROM class c, student s, user u, level l, extension e WHERE c.idClass = s.idClass AND u.idUser = s.idUser AND l.idLevel = u.idLevel AND e.idExtension = u.idExtension AND s.stateStudent = true AND c.idClass = ?`,
+    [idClass]
+  );
+  return totalNoteAndState(clearDataList(data), await listNotes(idClass));
+};
+
 module.exports = {
   selectMaxLevel,
   allLevel,
@@ -372,4 +398,6 @@ module.exports = {
   getContactAll,
   existContact,
   nameLevelInfo,
+  allClassStudentOff,
+  allClassStudent,
 };
