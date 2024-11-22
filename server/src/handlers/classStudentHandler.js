@@ -22,7 +22,7 @@ const getClassStudentAll = async (request, response) => {
 const getClassStudentId = async (request, response) => {
   const { idClass, idUser } = request.params;
   console.log(idClass, idUser);
-  
+
   try {
     const data =
       idClass > 0 && idUser > 0
@@ -57,9 +57,13 @@ const deleteClassStudent = async (request, response) => {
 };
 
 const putClassStudent = async (request, response) => {
-  const { idClass, idUser, state } = request.body;
+  const { idClass, idUser, stateStudent } = request.body;
   try {
-    const data = await updateClassStudent(idClass, idUser, state);
+    const data = await updateClassStudent(
+      idClass,
+      idUser,
+      (state = stateStudent)
+    );
     response.status(200).json(data);
   } catch (error) {
     response.status(400).json({ error: error.message });
