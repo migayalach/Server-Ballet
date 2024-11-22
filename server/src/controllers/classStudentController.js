@@ -23,7 +23,7 @@ const getIdClassStudent = async (idClass) => {
   if (isNumber(idClass)) {
     throw Error(`El parametro debe ser un numero`);
   }
-  const data = await allClassStudent(idClass);
+  const data = await allClassStudent(idClass); 
   return responseData(data, "classStudent", 1, idClass);
 };
 
