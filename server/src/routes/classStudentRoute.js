@@ -15,7 +15,7 @@ const {
 const classStudentRoute = Router();
 
 // TODO ESTA RUTA MUESTRA TODO EL LISTADO DE ESTUDIANTES POR CLASE
-classStudentRoute.get("/:idClass", validategetIdClassStu, getClassStudentId);
+classStudentRoute.get("/:idClass/:idUser?", validategetIdClassStu, getClassStudentId);
 classStudentRoute.get("/", getClassStudentAll);
 classStudentRoute.post("/", validatePostClassStu, postClassStudent);
 classStudentRoute.put("/", validatePostClassStu, putClassStudent);
